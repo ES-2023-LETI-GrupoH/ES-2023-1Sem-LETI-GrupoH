@@ -17,6 +17,7 @@ public class main {
                                      }
                                  }
                              }
+
        //             while (sc.hasNext()) {
        //                 String temporario = sc.next();
        //                     System.out.println(temporario);
