@@ -4,72 +4,54 @@
     <meta charset="UTF-8">
     <title>Horário</title>
     <style>
-        table {
-            width: 90%;
-            border-collapse: collapse;
-            margin: 20px auto;
-            font-family: Arial;
-        }
-
-        th, td {
-            border: 2px solid black;
-            padding: 15px;
-            text-align: center;
-            font-size: 20px;
-        }
-
-        th {
-            background-color: #B8B8B8;
-        }
-
-        td[rowspan] {
-            vertical-align: middle;
-        }
-
-        .intervalo {
-            font-size: 25px;
-             background-color: #B8B8B8
-        }
-
-        .tempo {
-            font-size: 20px;
-        }
-
-        .aula {
-            font-size: 17px;
-            width: 220px;
-            height: 39px;
-        }
-
-        .titulo {
-            font-size: 40px;
-            width: auto;
-            height: auto;
-        }
-         body {
+        body {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
+            min-height: 100vh; /* Ensure the body takes at least the full height of the viewport */
+            margin: 50px;
+            font-family: Arial, sans-serif;
         }
 
-        #csv-form {
+        table {
+            width: 100%; /* Make the table responsive to the screen width */
+            font-size: 18px;
+            border-collapse: collapse; /* Remove spacing between cells */
+            border-spacing: 0; /* Remove spacing between cells */
+        }
+
+        th, td {
+            border: 2px solid black;
+            padding: 20px; /* Adjust padding for better spacing on smaller screens */
             text-align: center;
         }
-         #csv-file {
-            font-size: 18px; /* Defina o tamanho desejado */
+
+        .tituloDeTabela {
+            font-size: 32px; /* Adjust font size for the title on smaller screens */
+        }
+        /* Style the cells for time and days of the week */
+        th.tempo,th.dia{
+            background-color: dimgrey; /* Dark gray background color */
+            color: #fff; /* White text color */
+
         }
 
-          label {
-            font-size: 18px; /* Defina o tamanho desejado */
-            font-family: Arial;
+        @media (max-width: 768px) {
+            /* Responsive styles for screens up to 768px wide */
+            th, td {
+                padding: 1px; /* Further adjust padding for smaller screens */
+                font-size: 17px; /* Adjust font size for smaller screens */
+            }
+
+            .titulo {
+                font-size: 24px; /* Adjust font size for the title on smaller screens */
+            }
         }
     </style>
 </head>
 <body>
-<p></p>
+
 <!-- Adicione um formulário para carregar um arquivo CSV -->
 <form id="csv-form" enctype="multipart/form-data">
     <label for="csv-file">Carregar arquivo CSV:</label>
@@ -79,139 +61,25 @@
 
 <!-- Adicione um local para exibir os dados do CSV (vamos chamá-lo de <div id="csv-data"></div> -->
 <div id="csv-data"></div>
-
-<script>
-    // Adicione JavaScript para lidar com o envio do arquivo CSV e exibir os dados
-    const csvForm = document.getElementById("csv-form");
-    const csvFileInput = document.getElementById("csv-file");
-    const csvDataDisplay = document.getElementById("csv-data");
-
-    csvForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-
-        const file = csvFileInput.files[0];
-        if (file) {
-            const reader = new FileReader();
-
-            reader.onload = function (e) {
-                const csvContent = e.target.result;
-                // Aqui você pode processar os dados do CSV e exibi-los no elemento csvDataDisplay
-                csvDataDisplay.textContent = "Conteúdo do arquivo CSV:\n" + csvContent;
-            };
-
-            reader.readAsText(file);
-        } else {
-            csvDataDisplay.textContent = "Nenhum arquivo selecionado.";
-        }
-    });
-</script>
-
+<p></p>
 <table>
     <!-- Linha centralizada -->
     <tr>
-        <td colspan="7" class="titulo">Horário</td>
+        <td colspan="7" class="tituloDeTabela">Horário</td>
     </tr>
 
     <tr>
-        <th>Horas/Dias</th>
-        <th>Segunda-feira</th>
-        <th>Terça-feira</th>
-        <th>Quarta-feira</th>
-        <th>Quinta-feira</th>
-        <th>Sexta-feira</th>
-        <th>Sábado</th>
-    </tr>
-    <tr>
-        <th class="tempo" >8:00-9:30</th>
-        <td class="aula"></td><!-- Segunda-feira-->
-        <td class="aula"></td><!-- terca-feira-->
-        <td class="aula"></td><!-- quarta-feira-->
-        <td class="aula"></td><!-- quinta-feira-->
-        <td class="aula"></td><!-- sexta-feira-->
-        <td class="aula"></td><!-- Sábado-->
-    </tr>
-    <tr>
-        <th class="tempo">9:30-11:00</th>
-        <td class="aula"></td><!-- Segunda-feira-->
-        <td class="aula"></td><!-- terca-feira-->
-        <td class="aula"></td><!-- quarta-feira-->
-        <td class="aula"></td><!-- quinta-feira-->
-        <td class="aula"></td><!-- sexta-feira-->
-        <td class="aula"></td><!-- Sábado-->
-    </tr>
-    <tr>
-        <th class="tempo">11:00-12:30</th>
-        <td class="aula"></td><!-- Segunda-feira-->
-        <td class="aula"></td><!-- terca-feira-->
-        <td class="aula"></td><!-- quarta-feira-->
-        <td class="aula"></td><!-- quinta-feira-->
-        <td class="aula"></td><!-- sexta-feira-->
-        <td class="aula"></td><!-- Sábado-->
-    </tr>
-    <tr>
-        <th class="tempo">12:30-13:00</th>
-        <td colspan="6" class="intervalo">Intervalo</td>
-    </tr>
-    <tr>
-        <th class="tempo">13:00-14:30</th>
-        <td class="aula"></td><!-- Segunda-feira-->
-        <td class="aula"></td><!-- terca-feira-->
-        <td class="aula"></td><!-- quarta-feira-->
-        <td class="aula"></td><!-- quinta-feira-->
-        <td class="aula"></td><!-- sexta-feira-->
-        <td class="aula"></td><!-- Sábado-->
-    </tr>
-    <tr>
-        <th class="tempo">14:30-16:00</th>
-        <td class="aula"></td><!-- Segunda-feira-->
-        <td class="aula"></td><!-- terca-feira-->
-        <td class="aula"></td><!-- quarta-feira-->
-        <td class="aula"></td><!-- quinta-feira-->
-        <td class="aula"></td><!-- sexta-feira-->
-        <td class="aula"></td><!-- Sábado-->
-    </tr>
-    <tr>
-        <th class="tempo">16:00-17:30</th>
-        <td class="aula"></td><!-- Segunda-feira-->
-        <td class="aula"></td><!-- terca-feira-->
-        <td class="aula"></td><!-- quarta-feira-->
-        <td class="aula"></td><!-- quinta-feira-->
-        <td class="aula"></td><!-- sexta-feira-->
-        <td class="aula"></td><!-- Sábado-->
-    </tr>
-    <tr>
-        <th class="tempo">17:30-18:00</th>
-        <td colspan="6" class="intervalo">Intervalo</td>
-    </tr>
-    <tr>
-        <th class="tempo">18:00-19:30</th>
-        <td class="aula"></td><!-- Segunda-feira-->
-        <td class="aula"></td><!-- terca-feira-->
-        <td class="aula"></td><!-- quarta-feira-->
-        <td class="aula"></td><!-- quinta-feira-->
-        <td class="aula"></td><!-- sexta-feira-->
-        <td class="aula"></td><!-- Sábado-->
-    </tr>
-    <tr>
-        <th class="tempo">19:30-21:00</th>
-        <td class="aula"></td><!-- Segunda-feira-->
-        <td class="aula"></td><!-- terca-feira-->
-        <td class="aula"></td><!-- quarta-feira-->
-        <td class="aula"></td><!-- quinta-feira-->
-        <td class="aula"></td><!-- sexta-feira-->
-        <td class="aula"></td><!-- Sábado-->
-    </tr>
-    <tr>
-        <th class="tempo">21:00-22:30</th>
-        <td class="aula"></td><!-- Segunda-feira-->
-        <td class="aula"></td><!-- terca-feira-->
-        <td class="aula"></td><!-- quarta-feira-->
-        <td class="aula"></td><!-- quinta-feira-->
-        <td class="aula"></td><!-- sexta-feira-->
-        <td class="aula"></td><!-- Sábado-->
+        <th class="dia">Horas/Dias</th>
+        <th class="dia">Segunda-feira</th>
+        <th class="dia">Terça-feira</th>
+        <th class="dia">Quarta-feira</th>
+        <th class="dia">Quinta-feira</th>
+        <th class="dia">Sexta-feira</th>
+        <th class="dia">Sábado</th>
     </tr>
 </table>
 
+<script src="js/scripts.js"></script>
 </body>
 
 </html>
