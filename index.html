@@ -6,34 +6,40 @@
     <style>
         body {
             display: flex;
+            /*create a flex container. A flex container is a block-level element that can contain flex items.
+            It enables a flex layout context for its children*/
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh; /* Ensure the body takes at least the full height of the viewport */
-            margin: 50px;
-            font-family: Arial, sans-serif;
+            /* center the text content of the page both vertically and horizontally in a column layout */
+            align-items: center; /* aligns all text of the page on the center */
+            justify-content: center; /* aligns all text of the page on the center */
+            margin: 50px; /* defines the margins of the page */
+            font-family: Arial, sans-serif; /* Defines the type of font for the entire page */
         }
 
         table {
             width: 100%; /* Make the table responsive to the screen width */
-            font-size: 18px;
+            font-size: 18px; /* Adjust the size of the text inside the table */
             border-collapse: collapse; /* Remove spacing between cells */
             border-spacing: 0; /* Remove spacing between cells */
         }
 
+        /* cell settings */
         th, td {
-            border: 2px solid black;
-            padding: 20px; /* Adjust padding for better spacing on smaller screens */
+            border: 2px solid black;/* Adjust the size of the border of the cells */
+            padding: 20px; /* Adjust the minimum size of the cells */
             text-align: center;
         }
 
+        /* Defines the font size for the title*/
         .tituloDeTabela {
-            font-size: 32px; /* Adjust font size for the title on smaller screens */
+            font-size: 32px;
         }
-        /* Style the cells for time and days of the week */
+
+        /* make the background color of the days of the week cells and the time intervals
+         gray with white colored text*/
         th.tempo,th.dia{
-            background-color: dimgrey; /* Dark gray background color */
-            color: #fff; /* White text color */
+            background-color: dimgrey;
+            color: #fff;
 
         }
 
@@ -43,32 +49,28 @@
                 padding: 1px; /* Further adjust padding for smaller screens */
                 font-size: 17px; /* Adjust font size for smaller screens */
             }
-
-            .titulo {
-                font-size: 24px; /* Adjust font size for the title on smaller screens */
-            }
         }
     </style>
 </head>
 <body>
 
-<!-- Adicione um formulário para carregar um arquivo CSV -->
+<!-- div for loading the CSV data -->
 <form id="csv-form" enctype="multipart/form-data">
     <label for="csv-file">Carregar arquivo CSV:</label>
     <input type="file" id="csv-file" name="csv-file" accept=".csv">
     <button type="submit">Enviar</button>
 </form>
-
-<!-- Adicione um local para exibir os dados do CSV (vamos chamá-lo de <div id="csv-data"></div> -->
 <div id="csv-data"></div>
 <p></p>
 <table>
-    <!-- Linha centralizada -->
+
     <tr>
-        <td colspan="7" class="tituloDeTabela">Horário</td>
+        <!-- Creation of the "Horario" cell with the size of 8 normal cells -->
+        <td colspan="8" class="tituloDeTabela">Horário</td>
     </tr>
 
     <tr>
+        <!-- Creation of the days of the week cells -->
         <th class="dia">Horas/Dias</th>
         <th class="dia">Segunda-feira</th>
         <th class="dia">Terça-feira</th>
@@ -76,9 +78,11 @@
         <th class="dia">Quinta-feira</th>
         <th class="dia">Sexta-feira</th>
         <th class="dia">Sábado</th>
+        <th class="dia">Domingo</th>
     </tr>
 </table>
-
+<!-- Calling the javascript file for creation of cells that represent 30 min
+ intervals from 8h to 23h and the cells that will have event information-->
 <script src="js/scripts.js"></script>
 </body>
 
