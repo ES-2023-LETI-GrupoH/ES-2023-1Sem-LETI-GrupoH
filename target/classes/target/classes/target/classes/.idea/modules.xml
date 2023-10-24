@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ES-2023-1Sem-LETI-GrupoH.iml" filepath="$PROJECT_DIR$/ES-2023-1Sem-LETI-GrupoH.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ES-2023-1Sem-LETI-GrupoH.iml" filepath="$PROJECT_DIR$/.idea/ES-2023-1Sem-LETI-GrupoH.iml" />
     </modules>
   </component>
 </project>
