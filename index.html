@@ -40,7 +40,11 @@
         th.tempo,th.dia{
             background-color: dimgrey;
             color: #fff;
+        }
 
+        #week-navigation button {
+            margin-right: 250px; /* Adjust the value to control the spacing */
+            margin-left: 250px;
         }
 
         @media (max-width: 768px) {
@@ -62,6 +66,18 @@
 </form>
 <div id="csv-data"></div>
 <p></p>
+<p></p>
+<p></p>
+
+<!-- Navigation buttons and current week header -->
+<div id="week-navigation">
+    <button id="prev-week">Previous Week</button>
+    <button id="next-week">Next Week</button>
+</div>
+<h1 id="current-week"></h1>
+
+
+
 <table>
 
     <tr>
