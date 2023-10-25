@@ -2,6 +2,8 @@ package csv_loading;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class main {
@@ -9,6 +11,7 @@ public class main {
     static int m_rows = 150;
     static int m_columns = 11;
     static String[][] matriz = new String[m_rows][m_columns];
+
 
     private static String delimiter = ";";
 
