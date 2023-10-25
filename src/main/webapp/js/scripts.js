@@ -1,3 +1,11 @@
+
+const startDate = new Date("September 15, 2023");
+const lastDate = new Date("August 23, 2024")
+const WeekFirstDate = startDate; // This variable is used for the week navigation
+
+
+
+
 // Adicione JavaScript para lidar com o envio do arquivo CSV e exibir os dados
 const csvForm = document.getElementById("csv-form");
 const csvFileInput = document.getElementById("csv-file");
@@ -13,15 +21,58 @@ csvForm.addEventListener("submit", function (event) {
         reader.onload = function (e) {
             const csvContent = e.target.result;
             // CSV information processing
-            csvDataDisplay.textContent = "Conteúdo do arquivo CSV:\n" + csvContent;
         };
 
         reader.readAsText(file); //read the file name
-    } else {
-        csvDataDisplay.textContent = "Nenhum arquivo selecionado.";
-        //if no file is found it displays ""Nenhum arquivo selecionado.""
     }
 });
+
+// ---------------- WEEK NAVIGATOR -------------------------------
+
+function updateWeekStatus() {
+
+    // Sets the start date for the nearest monday available ( monday = 1 )
+    while (WeekFirstDate.getDay() !== 1) {
+        WeekFirstDate.setDate(WeekFirstDate.getDate() - 1);
+    }
+
+    // Calculates the endDate for the week of the startingDay
+    let WeekLastDate = new Date(WeekFirstDate);
+    WeekLastDate.setDate(WeekFirstDate.getDate() + 6);
+
+    // Puts the date in the Portuguese Format
+    let WeekFirstDateString = formatDate(startDate);
+    let WeekLastDateString = formatDate(WeekLastDate);
+
+    // Sends the week date to the HTML span which id is "week-date"
+    document.getElementById("week-date").textContent = WeekFirstDateString + " - " + WeekLastDateString;
+
+}
+
+// FIRST Week Navigation Update
+updateWeekStatus();
+
+// Previous week and Next Week functions
+const previousWeekBttn = document.getElementById("previous-week");
+previousWeekBttn.addEventListener("click", function (event) {
+    if (!(WeekFirstDate.getTime() === startDate.getTime())) { // Checks if the is the first week
+        WeekFirstDate.setDate(WeekFirstDate.getDate() - 7);
+        updateWeekStatus();
+    }
+});
+
+// Previous week and Next Week functions
+const nextWeekBttn = document.getElementById("next-week");
+nextWeekBttn.addEventListener("click", function (event) {
+    WeekFirstDate.setDate(WeekFirstDate.getDate() - 7);
+    if (!(WeekFirstDate.getTime() === lastDate.getTime())) { // Checks if is the last week
+        updateWeekStatus();
+    } else WeekFirstDate.setDate(WeekFirstDate.getDate() + 7); //If it is the last wee, it reverts the process
+});
+
+
+// -------------------------- TABLE CREATION ---------------------------------
+
 
 // Select the HTML table element with the 'table' tag and assign it to the 'table' variable.
 const table = document.querySelector('table');
@@ -58,4 +109,23 @@ for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (incl
         // Append the row to the table, adding it to the grid of cells.
         table.appendChild(row);
     }
+
+}
+
+
+
+
+// Auxiliary Functions
+
+// This function sets any date in the format DD/MM/YYYY
+function formatDate(date) {
+    var day = date.getDate();
+    var month = date.getMonth() + 1; // Os meses são indexados a partir de 0 em JavaScript
+    var year = date.getFullYear();
+
+    // Adicione um zero à frente se o dia ou o mês for menor que 10
+    if (day < 10) day = '0' + day;
+    if (month < 10) month = '0' + month;
+
+    return day + '/' + month + '/' + year;
 }

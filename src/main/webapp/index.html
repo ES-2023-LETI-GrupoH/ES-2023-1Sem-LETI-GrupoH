@@ -3,58 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Horário</title>
-    <style>
-        body {
-            display: flex;
-            /*create a flex container. A flex container is a block-level element that can contain flex items.
-            It enables a flex layout context for its children*/
-            flex-direction: column;
-            /* center the text content of the page both vertically and horizontally in a column layout */
-            align-items: center; /* aligns all text of the page on the center */
-            justify-content: center; /* aligns all text of the page on the center */
-            margin: 50px; /* defines the margins of the page */
-            font-family: Arial, sans-serif; /* Defines the type of font for the entire page */
-        }
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 
-        table {
-            width: 100%; /* Make the table responsive to the screen width */
-            font-size: 18px; /* Adjust the size of the text inside the table */
-            border-collapse: collapse; /* Remove spacing between cells */
-            border-spacing: 0; /* Remove spacing between cells */
-        }
 
-        /* cell settings */
-        th, td {
-            border: 2px solid black;/* Adjust the size of the border of the cells */
-            padding: 20px; /* Adjust the minimum size of the cells */
-            text-align: center;
-        }
 
-        /* Defines the font size for the title*/
-        .tituloDeTabela {
-            font-size: 32px;
-        }
-
-        /* make the background color of the days of the week cells and the time intervals
-         gray with white colored text*/
-        th.tempo,th.dia{
-            background-color: dimgrey;
-            color: #fff;
-        }
-
-        #week-navigation button {
-            margin-right: 250px; /* Adjust the value to control the spacing */
-            margin-left: 250px;
-        }
-
-        @media (max-width: 768px) {
-            /* Responsive styles for screens up to 768px wide */
-            th, td {
-                padding: 1px; /* Further adjust padding for smaller screens */
-                font-size: 17px; /* Adjust font size for smaller screens */
-            }
-        }
-    </style>
 </head>
 <body>
 
@@ -71,8 +23,9 @@
 
 <!-- Navigation buttons and current week header -->
 <div id="week-navigation">
-    <button id="prev-week">Previous Week</button>
-    <button id="next-week">Next Week</button>
+    <button id="previous-week" type="click">Anterior</button>
+    <span id="week-date"></span>
+    <button id="next-week" type="click" >Próxima</button>
 </div>
 <h1 id="current-week"></h1>
 
@@ -82,7 +35,7 @@
 
     <tr>
         <!-- Creation of the "Horario" cell with the size of 8 normal cells -->
-        <td colspan="8" class="tituloDeTabela">Horário</td>
+        <td colspan="8" class="fw-bold">Horário</td>
     </tr>
 
     <tr>
