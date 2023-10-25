@@ -2,18 +2,24 @@ package csv_loading;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class main {
 
-    static String[][] matriz = new String[10][150];
+    static int m_rows = 150;
+    static int m_columns = 11;
+    static String[][] matriz = new String[m_rows][m_columns];
+
     private static String delimiter = ";";
 
     public static void setDelimiter(String s) {
         delimiter = s;
     }
+    public static void setMatrixSize(int rows, int columns) {
+        m_rows = rows;
+        m_columns = columns;
+    }
+
 
     public static void parse(FileReader f) {
         Scanner sc = new Scanner(f);
@@ -39,22 +45,14 @@ public class main {
 
         for (int x = 0; x < matriz.length; x++) {
             for (int y = 0; y < matriz[x].length; y++) {
-                //if (lines.hasNext()) {
+                if (sc.hasNext()) {
                     matriz[x][y] = sc.next();
-               // } else {
-                //    break;
-               // }
+                } else {
+                    break;
+                }
             }
         }
         sc.close();
-    }
-
-    private static boolean equals(String next, String lineBreak) {
-        return false;
-    }
-
-    private static boolean equals(boolean b, String lineBreak) {
-        return b;
     }
 
     public static void print2D(String[][] mat) {
@@ -67,7 +65,7 @@ public class main {
     }
 
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         setDelimiter(";");
         FileReader testread;
         try {
