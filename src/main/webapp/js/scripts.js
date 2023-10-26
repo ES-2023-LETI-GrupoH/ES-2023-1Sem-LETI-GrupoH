@@ -1,13 +1,16 @@
 
 const startDate = new Date("September 15, 2023");
 const lastDate = new Date("August 23, 2024")
-const WeekFirstDate = startDate; // This variable is used for the week navigation
+const WeekDate = new Date(startDate) // This variable is used for the week navigation.
+                                           // It can't be directly assign to startDate or else it
+                                           // will update in the week navigation the both variables.
+
 
 
 
 
 // Adicione JavaScript para lidar com o envio do arquivo CSV e exibir os dados
-const csvForm = document.getElementById("csv-form");
+const csvForm = document.getElementById("csv-form-js");
 const csvFileInput = document.getElementById("csv-file");
 const csvDataDisplay = document.getElementById("csv-data");
 
@@ -29,19 +32,25 @@ csvForm.addEventListener("submit", function (event) {
 
 // ---------------- WEEK NAVIGATOR -------------------------------
 
+
+
 function updateWeekStatus() {
 
+    console.log(formatDate(WeekDate));
+    let WeekMonday = new Date(WeekDate);
     // Sets the start date for the nearest monday available ( monday = 1 )
-    while (WeekFirstDate.getDay() !== 1) {
-        WeekFirstDate.setDate(WeekFirstDate.getDate() - 1);
+    while (WeekMonday.getDay() !== 1) {
+        WeekMonday.setDate(WeekMonday.getDate() - 1);
     }
 
+
     // Calculates the endDate for the week of the startingDay
-    let WeekLastDate = new Date(WeekFirstDate);
-    WeekLastDate.setDate(WeekFirstDate.getDate() + 6);
+    let WeekLastDate = new Date(WeekMonday);
+    WeekLastDate.setDate(WeekMonday.getDate() + 6);
+
 
     // Puts the date in the Portuguese Format
-    let WeekFirstDateString = formatDate(startDate);
+    let WeekFirstDateString = formatDate(WeekMonday);
     let WeekLastDateString = formatDate(WeekLastDate);
 
     // Sends the week date to the HTML span which id is "week-date"
@@ -52,24 +61,32 @@ function updateWeekStatus() {
 // FIRST Week Navigation Update
 updateWeekStatus();
 
-// Previous week and Next Week functions
+// Previous Week functions
 const previousWeekBttn = document.getElementById("previous-week");
-previousWeekBttn.addEventListener("click", function (event) {
-    if (!(WeekFirstDate.getTime() === startDate.getTime())) { // Checks if the is the first week
-        WeekFirstDate.setDate(WeekFirstDate.getDate() - 7);
+previousWeekBttn.addEventListener("click", function () {
+    if (WeekDate.getTime() > startDate) { // Checks if is the first week
+        WeekDate.setDate(WeekDate.getDate() - 7);
         updateWeekStatus();
     }
 });
 
-// Previous week and Next Week functions
+// Next Week functions
 const nextWeekBttn = document.getElementById("next-week");
-nextWeekBttn.addEventListener("click", function (event) {
-    WeekFirstDate.setDate(WeekFirstDate.getDate() - 7);
-    if (!(WeekFirstDate.getTime() === lastDate.getTime())) { // Checks if is the last week
+nextWeekBttn.addEventListener("click", function () {
+    let nextWeekDate = new Date(WeekDate); //Temporary variable for the next week
+    nextWeekDate.setDate(nextWeekDate.getDate()+6) // Predicts the next week date and stores it temporarily in the nextWeekDate var
+    if (nextWeekDate < lastDate) { // Compares if the predicted date is smaller than the last date
+        WeekDate.setDate(WeekDate.getDate() + 6);  //Updates the WeekDate for the next week
         updateWeekStatus();
-    } else WeekFirstDate.setDate(WeekFirstDate.getDate() + 7); //If it is the last wee, it reverts the process
+    }
 });
 
+// Reset Week functions
+const resetWeekBttn = document.getElementById("reset-week");
+resetWeekBttn.addEventListener("click", function () {
+    WeekDate.setTime(startDate.getTime()); // Updates the WeekDate for the first week. It needs to be GetTime() instead of GetDate()
+    updateWeekStatus();                    // because if its GetDate it only updates the day and not the entire date
+});
 
 // -------------------------- TABLE CREATION ---------------------------------
 
@@ -129,3 +146,14 @@ function formatDate(date) {
 
     return day + '/' + month + '/' + year;
 }
+
+
+/*function findLastWeekDay(date) {
+    while (date.getDay() !== 7) {
+        date.setDate(date.getDate() + 7);
+    }
+    return date;
+}*/
+
+//Prints to HTML footer the current year
+document.getElementById("year").innerHTML = new Date().getFullYear();

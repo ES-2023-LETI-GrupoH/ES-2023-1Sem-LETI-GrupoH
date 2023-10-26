@@ -1,3 +1,6 @@
+
+/* -------------------- Body Style -------------------- */
+
 body {
     display: flex;
     /*create a flex container. A flex container is a block-level element that can contain flex items.
@@ -10,16 +13,58 @@ body {
     font-family: Arial, sans-serif; /* Defines the type of font for the entire page */
 }
 
-table {
+/* -------------------- Form Style --------------------
+.csv-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 100px;
+}
+
+.form-label{
+    margin-top: 20px;
+}
+
+
+/* -------------------- Navigation Style --------------------
+
+.week-navigation button {
+    margin-right: 60px; /* Adjust the value to control the spacing
+    margin-left: 60px;
+    font-size: 20px;
+}
+
+#week-date {
+    font-size: 30px;
+}
+
+.reset-bttn{
+    margin-top: 20px;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+
+/* -------------------- Table Style -------------------- */
+
+
+.table-calendar {
     width: 100%; /* Make the table responsive to the screen width */
     font-size: 18px; /* Adjust the size of the text inside the table */
     border-collapse: collapse; /* Remove spacing between cells */
     border-spacing: 0; /* Remove spacing between cells */
 }
 
+.table-name{
+    font-weight: bold !important;
+    font-size: 30px !important;
+}
+
+/* -------------------- Cell Style -------------------- */
+
 /* cell settings */
 th, td {
-    border: 2px solid black;/* Adjust the size of the border of the cells */
+    border: 1px solid black !important;/* Adjust the size of the border of the cells */
     padding: 20px; /* Adjust the minimum size of the cells */
     text-align: center;
 }
@@ -31,20 +76,12 @@ th.tempo,th.dia{
     color: #fff;
 }
 
-#week-navigation button {
-    margin-right: 150px; /* Adjust the value to control the spacing */
-    margin-left: 150px;
-    font-size: 20px;
-}
-
-#week-date {
-    font-size: 30px;
-}
-
 @media (max-width: 768px) {
     /* Responsive styles for screens up to 768px wide */
     th, td {
-        padding: 1px; /* Further adjust padding for smaller screens */
-        font-size: 17px; /* Adjust font size for smaller screens */
+        padding: 1px !important; /* Further adjust padding for smaller screens */
+        font-size: 17px !important; /* Adjust font size for smaller screens */
     }
 }
+
+
