@@ -8,8 +8,7 @@ const WeekDate = new Date(startDate) // This variable is used for the week navig
 
 
 
-
-// Adicione JavaScript para lidar com o envio do arquivo CSV e exibir os dados
+//Add JavaScript to deal with the sending and archiving of the CSV and data exibition
 const csvForm = document.getElementById("csv-form-js");
 const csvFileInput = document.getElementById("csv-file");
 const csvDataDisplay = document.getElementById("csv-data");
@@ -137,10 +136,10 @@ for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (incl
 // This function sets any date in the format DD/MM/YYYY
 function formatDate(date) {
     var day = date.getDate();
-    var month = date.getMonth() + 1; // Os meses são indexados a partir de 0 em JavaScript
+    var month = date.getMonth() + 1; // Months are indexed from 0 in JavaScript
     var year = date.getFullYear();
 
-    // Adicione um zero à frente se o dia ou o mês for menor que 10
+    //Add a zero in front if the day or month is less than 10
     if (day < 10) day = '0' + day;
     if (month < 10) month = '0' + month;
 
