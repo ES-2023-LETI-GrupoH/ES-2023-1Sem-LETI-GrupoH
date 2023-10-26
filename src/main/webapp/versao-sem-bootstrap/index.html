@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <title>Horário</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+
+
+</head>
+<body>
+
+<!-- div for loading the CSV data -->
+<div class="csv-form">
+    <form id="csv-form-js" enctype="multipart/form-data">
+        <label for="csv-file">Carregar arquivo CSV:</label>
+        <input type="file" id="csv-file" name="csv-file" accept=".csv">
+        <button type="submit">Enviar</button>
+    </form>
+</div>
+
+<!-- Navigation buttons and current week header -->
+<div class="week-navigation">
+    <button id="previous-week" type="click">Anterior</button>
+    <span id="week-date"></span>
+    <button id="next-week" type="click" >Próxima</button>
+    <div class="reset-bttn">
+        <button id="reset-week" type="click" >Voltar ao Inicio</button>
+    </div>
+</div>
+
+
+<div>
+    <table class="table-calendar">
+
+        <tr>
+            <!-- Creation of the "Horario" cell with the size of 8 normal cells -->
+            <td colspan="8" class="table-name">Horário</td>
+        </tr>
+
+        <tr>
+            <!-- Creation of the days of the week cells -->
+            <th class="dia">Horas/Dias</th>
+            <th class="dia">Segunda-feira</th>
+            <th class="dia">Terça-feira</th>
+            <th class="dia">Quarta-feira</th>
+            <th class="dia">Quinta-feira</th>
+            <th class="dia">Sexta-feira</th>
+            <th class="dia">Sábado</th>
+            <th class="dia">Domingo</th>
+        </tr>
+    </table>
+</div>
+<!-- Calling the javascript file for creation of cells that represent 30 min
+ intervals from 8h to 23h and the cells that will have event information-->
+<script src="js/scripts.js"></script>
+</body>
+
+</html>
