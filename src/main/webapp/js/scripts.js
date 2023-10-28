@@ -8,14 +8,76 @@ const WeekDate = new Date(startDate) // This variable is used for the week navig
 
 
 
+// ---------------- MODAL -------------------------------
+var myModal = document.getElementById('exampleModal')
+var myInput = document.getElementById('myInput')
 
-// Adicione JavaScript para lidar com o envio do arquivo CSV e exibir os dados
-const csvForm = document.getElementById("csv-form-js");
+
+// ----------------- CSV Download -------------------------------
+function downloadCSVFromURL(url) {
+    fetch(url)
+        .then(response => response.blob())
+        .then(blob => {
+            const a = document.createElement('a');
+            a.href = window.URL.createObjectURL(blob);
+            a.download = 'data.csv'; // Specify the filename
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(a.href);
+        })
+        .catch(error => console.error('Error downloading CSV:', error));
+}
+
+// ---------------- CSV Input -------------------------------
+
+// Adicione um evento de mudança para o dropdown menu
+const importTypeDropdown = document.getElementById("csv-import");
 const csvFileInput = document.getElementById("csv-file");
+const csvUrlInput = document.getElementById("csv-url");
 const csvDataDisplay = document.getElementById("csv-data");
+
+// Define the event handler function
+function handleImportTypeChange() {
+    const selectedOption = importTypeDropdown.value;
+
+    // Exibir ou ocultar os campos apropriados com base na escolha do usuário
+    if (selectedOption === "file") {
+        csvFileInput.style.display = "block";
+        csvUrlInput.style.display = "none";
+    } else if (selectedOption === "url") {
+        csvFileInput.style.display = "none";
+        csvUrlInput.style.display = "block";
+    } else {
+        // Lógica de tratamento adicional, se necessário
+    }
+}
+
+window.addEventListener("load", handleImportTypeChange);
+
+importTypeDropdown.addEventListener("change", handleImportTypeChange);
+
+
+
+// Lógica para processar o envio do formulário
+
+const csvForm = document.getElementById("csv-form-js");
+
 
 csvForm.addEventListener("submit", function (event) {
     event.preventDefault();
+
+    if (importTypeDropdown.value === "file" && csvFileInput.files.length > 0) {
+        console.log("WORKS FILE");
+        // Processar arquivo CSV
+    } else if (importTypeDropdown.value === "url" && csvUrlInput.value) {
+        // Processar CSV por URL
+        downloadCSVFromURL(csvUrlInput.value); // Call a function to download CSV from the URL
+    } else {
+        // Lógica para lidar com nenhum arquivo selecionado ou URL inserida
+        myInput.focus();
+    }
+
 
     const file = csvFileInput.files[0];
     if (file) {
@@ -29,6 +91,8 @@ csvForm.addEventListener("submit", function (event) {
         reader.readAsText(file); //read the file name
     }
 });
+
+
 
 // ---------------- WEEK NAVIGATOR -------------------------------
 
