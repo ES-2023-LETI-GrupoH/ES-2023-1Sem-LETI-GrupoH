@@ -9,10 +9,11 @@ const WeekDate = new Date(startDate) // This variable is used for the week navig
 
 
 // ---------------- MODAL -------------------------------
-var myModal = document.getElementById('exampleModal')
-var myInput = document.getElementById('myInput')
 
 
+var errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {
+    keyboard: true,
+})
 
 
 
@@ -62,16 +63,16 @@ const csvForm = document.getElementById("csv-form-js");
 
 csvForm.addEventListener("submit", function (event) {
     event.preventDefault();
-
     if (importTypeDropdown.value === "file" && csvFileInput.files.length > 0) {
-        console.log("WORKS FILE");
-        // Processar arquivo CSV
+        // Processar CSV por arquivo
+        loadAndParseCSV(csvFileInput.files[0],false); // Call a function to download CSV from the file
     } else if (importTypeDropdown.value === "url" && csvUrlInput.value) {
         // Processar CSV por URL
-        loadAndParseCSV(csvUrlInput.value); // Call a function to download CSV from the URL
+        loadAndParseCSV(csvUrlInput.value,true); // Call a function to download CSV from the URL
     } else {
         // Lógica para lidar com nenhum arquivo selecionado ou URL inserida
-        myInput.focus();
+        console.log("Nenhum arquivo selecionado ou URL inserida");
+        errorModal.toggle();
     }
 });
 
@@ -87,15 +88,29 @@ function setDelimiter(s) {
     delimiter = s;
 }
 
-function loadAndParseCSV(fileData) {
-    fetch(fileData)
-        .then(response => response.text())
-        .then(data => {
-            // Aqui você pode chamar a função 'parse' e 'print' para processar e exibir os dados
-            const parsedData = parse(data);
+function loadAndParseCSV(fileData, isURL) {
+    let parsedData;
+
+    if (isURL) {
+        // Se for uma URL, faça uma solicitação para obter o conteúdo do CSV
+        fetch(fileData)
+            .then(response => response.text())
+            .then(data => {
+                // Chame a função 'parse' e 'print' para processar e exibir os dados
+                parsedData = parse(data);
+                print(parsedData);
+            })
+            .catch(error => console.error(error));
+    } else if (fileData instanceof File) {
+        // Se for um arquivo local, leia o conteúdo e processe diretamente
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const csvContent = e.target.result;
+            parsedData = parse(csvContent);
             print(parsedData);
-        })
-        .catch(error => console.error(error));
+        };
+        reader.readAsText(fileData);
+    }
 }
 
 function parse(data) {
