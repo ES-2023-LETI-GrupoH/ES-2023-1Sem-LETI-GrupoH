@@ -91,10 +91,12 @@
 
 <div class="container">
     <div class="table-responsive">
-        <table class="table table-calendar">
-            <tr>
-                <td colspan="8" class="table-name text-center">Horário</td>
-            </tr>
+        <table id="csv-table" class="table table-calendar">
+            <thead>
+                <tr>
+                    <td colspan="8" class="table-name text-center">Horário</td>
+                </tr>
+            </thead>
             <tr>
                 <th class="dia">Horas/Dias</th>
                 <th class="dia">Segunda-feira</th>
@@ -105,6 +107,7 @@
                 <th class="dia">Sábado</th>
                 <th class="dia">Domingo</th>
             </tr>
+            <tbody class="table-rows"></tbody>
         </table>
     </div>
 </div>

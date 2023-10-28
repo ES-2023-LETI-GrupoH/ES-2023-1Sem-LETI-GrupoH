@@ -13,21 +13,17 @@ var myModal = document.getElementById('exampleModal')
 var myInput = document.getElementById('myInput')
 
 
-// ----------------- CSV Download -------------------------------
-function downloadCSVFromURL(url) {
-    fetch(url)
-        .then(response => response.blob())
-        .then(blob => {
-            const a = document.createElement('a');
-            a.href = window.URL.createObjectURL(blob);
-            a.download = 'data.csv'; // Specify the filename
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(a.href);
-        })
-        .catch(error => console.error('Error downloading CSV:', error));
-}
+
+
+
+
+
+
+
+
+
+// ----------------------------------------------------- CSV RELATED -------------------------------
+
 
 // ---------------- CSV Input -------------------------------
 
@@ -72,25 +68,81 @@ csvForm.addEventListener("submit", function (event) {
         // Processar arquivo CSV
     } else if (importTypeDropdown.value === "url" && csvUrlInput.value) {
         // Processar CSV por URL
-        downloadCSVFromURL(csvUrlInput.value); // Call a function to download CSV from the URL
+        loadAndParseCSV(csvUrlInput.value); // Call a function to download CSV from the URL
     } else {
         // Lógica para lidar com nenhum arquivo selecionado ou URL inserida
         myInput.focus();
     }
-
-
-    const file = csvFileInput.files[0];
-    if (file) {
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-            const csvContent = e.target.result;
-            // CSV information processing
-        };
-
-        reader.readAsText(file); //read the file name
-    }
 });
+
+
+// ---------------- CSV Processing -------------------------------
+
+//const parsedData = parse(fileData);
+
+
+var delimiter = ';';
+
+function setDelimiter(s) {
+    delimiter = s;
+}
+
+function loadAndParseCSV(fileData) {
+    fetch(fileData)
+        .then(response => response.text())
+        .then(data => {
+            // Aqui você pode chamar a função 'parse' e 'print' para processar e exibir os dados
+            const parsedData = parse(data);
+            print(parsedData);
+        })
+        .catch(error => console.error(error));
+}
+
+function parse(data) {
+    const dataList = [];
+    let maximumNumberOfFields = 0;
+
+    const lines = data.split('\n');
+    lines.forEach((line) => {
+        const fields = line.split(delimiter);
+        maximumNumberOfFields = Math.max(maximumNumberOfFields, fields.length);
+        dataList.push(fields);
+    });
+
+    const totalNumberOfLines = dataList.length;
+    const result = new Array(totalNumberOfLines);
+    for (let i = 0; i < totalNumberOfLines; i++) {
+        result[i] = new Array(maximumNumberOfFields);
+        const fields = dataList[i];
+        for (let j = 0; j < fields.length; j++) {
+            result[i][j] = fields[j];
+        }
+    }
+
+    return { totalNumberOfLines, maximumNumberOfFields, data: result };
+}
+
+function print(parsedData) {
+    console.log(`Total number of lines: ${parsedData.totalNumberOfLines} and each line has ${parsedData.maximumNumberOfFields} parts`);
+    for (let y = 0; y < parsedData.totalNumberOfLines; y++) {
+        console.log(parsedData.data[y].join(' | '));
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -152,11 +204,11 @@ resetWeekBttn.addEventListener("click", function () {
     updateWeekStatus();                    // because if its GetDate it only updates the day and not the entire date
 });
 
-// -------------------------- TABLE CREATION ---------------------------------
+// -------------------------- TABLE CREATION AND POLULATION ---------------------------------
 
 
 // Select the HTML table element with the 'table' tag and assign it to the 'table' variable.
-const table = document.querySelector('table');
+const table = document.querySelector('tbody');
 
 // Loop to create time intervals between 8:00 (8 AM) and 23:00 (11:00 PM).
 for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (inclusive).
@@ -194,8 +246,6 @@ for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (incl
 }
 
 
-
-
 // Auxiliary Functions
 
 // This function sets any date in the format DD/MM/YYYY
@@ -210,6 +260,8 @@ function formatDate(date) {
 
     return day + '/' + month + '/' + year;
 }
+
+
 
 
 /*function findLastWeekDay(date) {

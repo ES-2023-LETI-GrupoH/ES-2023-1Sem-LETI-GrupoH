@@ -78,7 +78,7 @@ th.tempo,th.dia{
 
 @media (max-width: 768px) {
     /* Responsive styles for screens up to 768px wide */
-    th, td {
+    .table-rows.th, .table-rows.td {
         padding: 1px !important; /* Further adjust padding for smaller screens */
         font-size: 17px !important; /* Adjust font size for smaller screens */
     }
