@@ -219,7 +219,7 @@ resetWeekBttn.addEventListener("click", function () {
     updateWeekStatus();                    // because if its GetDate it only updates the day and not the entire date
 });
 
-// -------------------------- TABLE CREATION AND POLULATION ---------------------------------
+// -------------------------- TABLE CREATION AND POPULATION ---------------------------------
 
 
 // Select the HTML table element with the 'table' tag and assign it to the 'table' variable.
@@ -259,6 +259,8 @@ for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (incl
     }
 
 }
+
+// TABLE DATA RENDERING
 
 
 // Auxiliary Functions
