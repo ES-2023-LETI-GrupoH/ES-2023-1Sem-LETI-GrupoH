@@ -1,7 +1,7 @@
 
-let startDate = new Date("October 15, 2022");
-let lastDate = new Date("August 23, 2023")
-let WeekDate = new Date(startDate) // This variable is used for the week navigation.
+let startDate;// = new Date("October 15, 2022");
+let lastDate;// = new Date("August 23, 2023")
+let WeekDate;// = new Date(startDate) // This variable is used for the week navigation.
                                            // It can't be directly assign to startDate or else it
                                            // will update in the week navigation the both variables.
 
@@ -61,12 +61,12 @@ csvForm.addEventListener("submit", function (event) {
     if (importTypeDropdown.value === "file" && csvFileInput.files.length > 0) {
         // Processar CSV por arquivo
         loadAndParseCSV(csvFileInput.files[0],false); // Call a function to download CSV from the file
-        //assignEvent(3,4, startDate); // Rewrite the table content
-        //assignEvent(3,5, lastDate); // Rewrite the table content
+        assignEvent(3,4, startDate); // Rewrite the table content
+        assignEvent(3,5, lastDate); // Rewrite the table content
     } else if (importTypeDropdown.value === "url" && csvUrlInput.value) {
         // Processar CSV por URL
         loadAndParseCSV(csvUrlInput.value,true); // Call a function to download CSV from the URL
-        //assignEvent();
+        assignEvent();
     } else {
         // Lógica para lidar com nenhum arquivo selecionado ou URL inserida
         console.log("Nenhum arquivo selecionado ou URL inserida");
@@ -94,8 +94,8 @@ function loadAndParseCSV(fileData, isURL) {
             .then(data => {
                 // Chame a função 'parse' e 'print' para processar e exibir os dados
                 parsedData = parse(data);
-                //getStartAndLastDate(parsedData);
-                print(parsedData);
+                getStartAndLastDate(parsedData);
+                //print(parsedData);
             })
             .catch(error => console.error(error));
     } else if (fileData instanceof File) {
@@ -104,8 +104,8 @@ function loadAndParseCSV(fileData, isURL) {
         reader.onload = function (e) {
             const csvContent = e.target.result;
             parsedData = parse(csvContent);
-            //getStartAndLastDate(parsedData);
-            print(parsedData);
+            getStartAndLastDate(parsedData);
+            //print(parsedData);
         };
         reader.readAsText(fileData);
     }
@@ -154,9 +154,9 @@ let WeekSunday ;
 
 function updateWeekStatus() {
 
-    //if(parsedData == null){
-    //   document.getElementById("week-date").textContent = "Importe um horário";
-    //} else {
+    if(parsedData == null){
+       document.getElementById("week-date").textContent = "Importe um horário";
+    } else {
 
         console.log(formatDate(WeekDate));
         WeekMonday = new Date(WeekDate);
@@ -177,7 +177,7 @@ function updateWeekStatus() {
 
         // Sends the week date to the HTML span which id is "week-date"
         document.getElementById("week-date").textContent = WeekFirstDateString + " - " + WeekLastDateString;
-    //}
+    }
 
 
 
