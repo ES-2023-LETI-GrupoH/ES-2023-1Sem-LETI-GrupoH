@@ -1,7 +1,7 @@
 
-const startDate = new Date("September 15, 2023");
-const lastDate = new Date("August 23, 2024")
-const WeekDate = new Date(startDate) // This variable is used for the week navigation.
+let startDate = new Date("October 15, 2022");
+let lastDate = new Date("August 23, 2023")
+let WeekDate = new Date(startDate) // This variable is used for the week navigation.
                                            // It can't be directly assign to startDate or else it
                                            // will update in the week navigation the both variables.
 
@@ -14,11 +14,6 @@ const WeekDate = new Date(startDate) // This variable is used for the week navig
 var errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {
     keyboard: true,
 })
-
-
-
-
-
 
 
 
@@ -66,9 +61,12 @@ csvForm.addEventListener("submit", function (event) {
     if (importTypeDropdown.value === "file" && csvFileInput.files.length > 0) {
         // Processar CSV por arquivo
         loadAndParseCSV(csvFileInput.files[0],false); // Call a function to download CSV from the file
+        //assignEvent(3,4, startDate); // Rewrite the table content
+        //assignEvent(3,5, lastDate); // Rewrite the table content
     } else if (importTypeDropdown.value === "url" && csvUrlInput.value) {
         // Processar CSV por URL
         loadAndParseCSV(csvUrlInput.value,true); // Call a function to download CSV from the URL
+        //assignEvent();
     } else {
         // Lógica para lidar com nenhum arquivo selecionado ou URL inserida
         console.log("Nenhum arquivo selecionado ou URL inserida");
@@ -79,8 +77,7 @@ csvForm.addEventListener("submit", function (event) {
 
 // ---------------- CSV Processing -------------------------------
 
-//const parsedData = parse(fileData);
-
+let parsedData;
 
 var delimiter = ';';
 
@@ -89,8 +86,7 @@ function setDelimiter(s) {
 }
 
 function loadAndParseCSV(fileData, isURL) {
-    let parsedData;
-
+    parsedData = null;
     if (isURL) {
         // Se for uma URL, faça uma solicitação para obter o conteúdo do CSV
         fetch(fileData)
@@ -98,6 +94,7 @@ function loadAndParseCSV(fileData, isURL) {
             .then(data => {
                 // Chame a função 'parse' e 'print' para processar e exibir os dados
                 parsedData = parse(data);
+                //getStartAndLastDate(parsedData);
                 print(parsedData);
             })
             .catch(error => console.error(error));
@@ -107,10 +104,14 @@ function loadAndParseCSV(fileData, isURL) {
         reader.onload = function (e) {
             const csvContent = e.target.result;
             parsedData = parse(csvContent);
+            //getStartAndLastDate(parsedData);
             print(parsedData);
         };
         reader.readAsText(fileData);
     }
+
+
+    updateWeekStatus();
 }
 
 function parse(data) {
@@ -146,46 +147,41 @@ function print(parsedData) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ---------------- WEEK NAVIGATOR -------------------------------
 
-
+let WeekMonday ;
+let WeekSunday ;
 
 function updateWeekStatus() {
 
-    console.log(formatDate(WeekDate));
-    let WeekMonday = new Date(WeekDate);
-    // Sets the start date for the nearest monday available ( monday = 1 )
-    while (WeekMonday.getDay() !== 1) {
-        WeekMonday.setDate(WeekMonday.getDate() - 1);
-    }
+    //if(parsedData == null){
+    //   document.getElementById("week-date").textContent = "Importe um horário";
+    //} else {
+
+        console.log(formatDate(WeekDate));
+        WeekMonday = new Date(WeekDate);
+        // Sets the start date for the nearest monday available ( monday = 1 )
+        while (WeekMonday.getDay() !== 1) {
+            WeekMonday.setDate(WeekMonday.getDate() - 1);
+        }
 
 
-    // Calculates the endDate for the week of the startingDay
-    let WeekLastDate = new Date(WeekMonday);
-    WeekLastDate.setDate(WeekMonday.getDate() + 6);
+        // Calculates the endDate for the week of the startingDay
+        WeekSunday = new Date(WeekMonday);
+        WeekSunday.setDate(WeekMonday.getDate() + 6);
 
 
-    // Puts the date in the Portuguese Format
-    let WeekFirstDateString = formatDate(WeekMonday);
-    let WeekLastDateString = formatDate(WeekLastDate);
+        // Puts the date in the Portuguese Format
+        let WeekFirstDateString = formatDate(WeekMonday);
+        let WeekLastDateString = formatDate(WeekSunday);
 
-    // Sends the week date to the HTML span which id is "week-date"
-    document.getElementById("week-date").textContent = WeekFirstDateString + " - " + WeekLastDateString;
+        // Sends the week date to the HTML span which id is "week-date"
+        document.getElementById("week-date").textContent = WeekFirstDateString + " - " + WeekLastDateString;
+    //}
+
+
+
+    //clearTable();
 
 }
 
@@ -205,9 +201,9 @@ previousWeekBttn.addEventListener("click", function () {
 const nextWeekBttn = document.getElementById("next-week");
 nextWeekBttn.addEventListener("click", function () {
     let nextWeekDate = new Date(WeekDate); //Temporary variable for the next week
-    nextWeekDate.setDate(nextWeekDate.getDate()+6) // Predicts the next week date and stores it temporarily in the nextWeekDate var
+    nextWeekDate.setDate(nextWeekDate.getDate()+7) // Predicts the next week date and stores it temporarily in the nextWeekDate var
     if (nextWeekDate < lastDate) { // Compares if the predicted date is smaller than the last date
-        WeekDate.setDate(WeekDate.getDate() + 6);  //Updates the WeekDate for the next week
+        WeekDate.setDate(WeekDate.getDate() + 7);  //Updates the WeekDate for the next week
         updateWeekStatus();
     }
 });
@@ -259,8 +255,35 @@ for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (incl
     }
 
 }
+// content -> what is to be written in the designated cell
+function assignEvent(rowIndex, columnIndex, content) {
+    const table = document.querySelector('tbody');
 
-// TABLE DATA RENDERING
+    if (table.rows[rowIndex] && table.rows[rowIndex].cells[columnIndex]) {
+        const cell = table.rows[rowIndex].cells[columnIndex];
+        cell.textContent = content;
+        cell.style.backgroundColor = "#8abdff";
+    } else {
+        console.error("Invalid row or column index.");
+    }
+}
+
+
+function clearTable() {
+    const table = document.querySelector('tbody');
+
+    // Loop through all rows starting from the second row (index 1)
+    for (let i = 1; i < table.rows.length; i++) {
+        // Loop through all cells in each row starting from the second cell (index 1)
+        for (let j = 1; j < table.rows[i].cells.length; j++) {
+            const cell = table.rows[i].cells[j];
+                cell.textContent = "";
+                cell.style.backgroundColor = "white";
+
+        }
+    }
+}
+
 
 
 // Auxiliary Functions
@@ -287,6 +310,42 @@ function formatDate(date) {
     }
     return date;
 }*/
+
+function getStartAndLastDate(data){
+    if(data !== null) {
+    print(data)
+        let  [firstDay, firstMonth, firstYear] = data.data[8].split("/").map(Number);
+
+        let csvFirstDate = new Date(firstYear, firstMonth - 1, firstDay);
+        console.log(formatDate(csvFirstDate));
+        let csvLastDate = new Date(firstYear, firstMonth - 1, firstDay);
+        let currentDate;
+        for (let i = 0; i < data.length; i++) {
+
+            let  [day, month, year] = data[i][8].split("/").map(Number);
+
+            currentDate = new Date(year, month - 1, day);
+            if (currentDate < csvFirstDate) {
+                csvFirstDate = currentDate;
+            }
+            if (currentDate > csvLastDate) {
+                csvLastDate = currentDate;
+            }
+        }
+
+        startDate = csvFirstDate;
+        lastDate = csvLastDate;
+        WeekDate = csvFirstDate;
+
+        //data[0][8].split('/')
+        //const emptyStringArray = new Array(3).fill('');
+        //csvFirstDate.setUTCDate(emptyStringArray[1]);
+        //csvFirstDate.setMonth(emptyStringArray[2]);
+        //csvFirstDate.setFullYear(3);
+    }
+}
+
+
 
 //Prints to HTML footer the current year
 document.getElementById("year").innerHTML = new Date().getFullYear();
