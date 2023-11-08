@@ -1,7 +1,7 @@
 
 let startDate;// = new Date("October 15, 2022");
 let lastDate;// = new Date("August 23, 2023")
-let WeekDate;// = new Date(startDate) // This variable is used for the week navigation.
+let WeekStart;// = new Date(startDate) // This variable is used for the week navigation.
                                            // It can't be directly assign to startDate or else it
                                            // will update in the week navigation the both variables.
 
@@ -61,8 +61,7 @@ csvForm.addEventListener("submit", function (event) {
     if (importTypeDropdown.value === "file" && csvFileInput.files.length > 0) {
         // Processar CSV por arquivo
         loadAndParseCSV(csvFileInput.files[0],false); // Call a function to download CSV from the file
-        assignEvent(3,4, startDate); // Rewrite the table content
-        assignEvent(3,5, lastDate); // Rewrite the table content
+
     } else if (importTypeDropdown.value === "url" && csvUrlInput.value) {
         // Processar CSV por URL
         loadAndParseCSV(csvUrlInput.value,true); // Call a function to download CSV from the URL
@@ -76,6 +75,8 @@ csvForm.addEventListener("submit", function (event) {
 
 
 // ---------------- CSV Processing -------------------------------
+
+
 
 let parsedData;
 
@@ -96,6 +97,9 @@ function loadAndParseCSV(fileData, isURL) {
                 parsedData = parse(data);
                 getStartAndLastDate(parsedData);
                 //print(parsedData);
+                assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
+                assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
+                updateWeekStatus();
             })
             .catch(error => console.error(error));
     } else if (fileData instanceof File) {
@@ -105,13 +109,13 @@ function loadAndParseCSV(fileData, isURL) {
             const csvContent = e.target.result;
             parsedData = parse(csvContent);
             getStartAndLastDate(parsedData);
+            assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
+            assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
             //print(parsedData);
+            updateWeekStatus();
         };
         reader.readAsText(fileData);
     }
-
-
-    updateWeekStatus();
 }
 
 function parse(data) {
@@ -158,8 +162,8 @@ function updateWeekStatus() {
        document.getElementById("week-date").textContent = "Importe um horário";
     } else {
 
-        console.log(formatDate(WeekDate));
-        WeekMonday = new Date(WeekDate);
+        console.log(formatDate(WeekStart));
+        WeekMonday = new Date(WeekStart);
         // Sets the start date for the nearest monday available ( monday = 1 )
         while (WeekMonday.getDay() !== 1) {
             WeekMonday.setDate(WeekMonday.getDate() - 1);
@@ -191,8 +195,11 @@ updateWeekStatus();
 // Previous Week functions
 const previousWeekBttn = document.getElementById("previous-week");
 previousWeekBttn.addEventListener("click", function () {
-    if (WeekDate.getTime() > startDate) { // Checks if is the first week
-        WeekDate.setDate(WeekDate.getDate() - 7);
+    //console.log(formatDate(startDate));
+    //console.log(formatDate(WeekMonday));
+    //console.log(WeekMonday.getTime() > startDate.getTime());
+    if (WeekStart.getTime() > startDate.getTime()) { // Checks if is the first week
+        WeekStart.setDate(WeekStart.getDate() - 7);
         updateWeekStatus();
     }
 });
@@ -200,10 +207,10 @@ previousWeekBttn.addEventListener("click", function () {
 // Next Week functions
 const nextWeekBttn = document.getElementById("next-week");
 nextWeekBttn.addEventListener("click", function () {
-    let nextWeekDate = new Date(WeekDate); //Temporary variable for the next week
-    nextWeekDate.setDate(nextWeekDate.getDate()+7) // Predicts the next week date and stores it temporarily in the nextWeekDate var
-    if (nextWeekDate < lastDate) { // Compares if the predicted date is smaller than the last date
-        WeekDate.setDate(WeekDate.getDate() + 7);  //Updates the WeekDate for the next week
+    let nextWeekStart = new Date(WeekStart); //Temporary variable for the next week
+    nextWeekStart.setDate(nextWeekStart.getDate()+7) // Predicts the next week date and stores it temporarily in the nextWeekStart var
+    if (nextWeekStart < lastDate) { // Compares if the predicted date is smaller than the last date
+        WeekStart.setDate(WeekStart.getDate() + 7);  //Updates the WeekStart for the next week
         updateWeekStatus();
     }
 });
@@ -211,7 +218,7 @@ nextWeekBttn.addEventListener("click", function () {
 // Reset Week functions
 const resetWeekBttn = document.getElementById("reset-week");
 resetWeekBttn.addEventListener("click", function () {
-    WeekDate.setTime(startDate.getTime()); // Updates the WeekDate for the first week. It needs to be GetTime() instead of GetDate()
+    WeekStart.setTime(startDate.getTime()); // Updates the WeekStart for the first week. It needs to be GetTime() instead of GetDate()
     updateWeekStatus();                    // because if its GetDate it only updates the day and not the entire date
 });
 
@@ -311,20 +318,18 @@ function formatDate(date) {
     return date;
 }*/
 
-function getStartAndLastDate(data){
-    if(data !== null) {
-    print(data)
-        let  [firstDay, firstMonth, firstYear] = data.data[8].split("/").map(Number);
+function getStartAndLastDate(data) {
+    if (data !== null) {
+        let csvFirstDate = new Date(); // Inicializa com a data atual
+        let csvLastDate = new Date(0); // Inicializa com a data mínima
 
-        let csvFirstDate = new Date(firstYear, firstMonth - 1, firstDay);
-        console.log(formatDate(csvFirstDate));
-        let csvLastDate = new Date(firstYear, firstMonth - 1, firstDay);
-        let currentDate;
-        for (let i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.totalNumberOfLines; i++) {
+            // Obtenha a data da 8ª coluna do CSV e divida-a em dia, mês e ano
+            let [day, month, year] = data.data[i][8].split("/").map(Number);
 
-            let  [day, month, year] = data[i][8].split("/").map(Number);
+            // Crie um objeto Date com base nos valores do CSV
+            let currentDate = new Date(year, month - 1, day);
 
-            currentDate = new Date(year, month - 1, day);
             if (currentDate < csvFirstDate) {
                 csvFirstDate = currentDate;
             }
@@ -333,15 +338,9 @@ function getStartAndLastDate(data){
             }
         }
 
-        startDate = csvFirstDate;
-        lastDate = csvLastDate;
-        WeekDate = csvFirstDate;
-
-        //data[0][8].split('/')
-        //const emptyStringArray = new Array(3).fill('');
-        //csvFirstDate.setUTCDate(emptyStringArray[1]);
-        //csvFirstDate.setMonth(emptyStringArray[2]);
-        //csvFirstDate.setFullYear(3);
+        startDate = new Date(csvFirstDate);
+        lastDate = new Date(csvLastDate);
+        WeekStart = new Date(csvFirstDate);
     }
 }
 
