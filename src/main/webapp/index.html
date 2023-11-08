@@ -8,16 +8,53 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="text-center">
+
+<!-- Adicione um elemento select para o dropdown menu -->
+<div class="csv-form mt-2 mb-5 container"  >
+    <form id="csv-form-js" class="row justify-content-center align-items-center" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="csv-import" class="form-label">Escolha a opção de importação:</label>
+        </div>
+        <div class="col-3 mt-1">
+            <select id="csv-import" class="form-select">
+                <option value="file">Arquivo</option>
+                <option value="url">URL</option>
+            </select>
+        </div>
+    <!-- Campos de entrada para arquivo e URL -->
+        <div class="col-8">
+            <input type="file" class="form-control" id="csv-file" name="csv-file" accept=".csv">
+            <input type="url" class="form-control" id="csv-url" name="csv-url">
+        </div>
+        <div class="col-1">
+            <button type="submit" data-bs-toggle="modal"  class="btn btn-primary">Enviar</button>
+        </div>
+    </form>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="bg-danger modal-content">
+            <div class="text-white bg-danger modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nenhum ficheiro/URL selecionado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
 <div id="form-container">
     <div class="csv-form mt-2 mb-5 container">
         <form id="csv-form-js" class="row justify-content-center align-items-center" enctype="multipart/form-data">
             <div class="col-2 mt-1">
                 <label for="csv-file" class="form-label">Carregar arquivo CSV:</label>
             </div>
-            <!--<div class="col-6 input-group mb-3">
+            <<div class="col-6 input-group mb-3">
                 <input type="file" class="form-control" id="inputGroupFile02">
                 <label class="input-group-text" for="inputGroupFile02">Upload</label>
-            </div>-->
+            </div>
 
             <div class="col-8">
                 <input type="file" class="form-control" id="csv-file" name="csv-file" accept=".csv">
@@ -27,7 +64,7 @@
             </div>
         </form>
     </div>
-</div>
+</div>-->
 
 <div class="week-navigation mt-5 row justify-content-center align-items-center ">
     <div class="col-auto">
@@ -46,10 +83,12 @@
 
 <div class="container">
     <div class="table-responsive">
-        <table class="table table-calendar">
-            <tr>
-                <td colspan="8" class="table-name text-center">Horário</td>
-            </tr>
+        <table id="csv-table" class="table table-calendar">
+            <thead>
+                <tr>
+                    <td colspan="8" class="table-name text-center">Horário</td>
+                </tr>
+            </thead>
             <tr>
                 <th class="dia">Horas/Dias</th>
                 <th class="dia">Segunda-feira</th>
@@ -60,6 +99,7 @@
                 <th class="dia">Sábado</th>
                 <th class="dia">Domingo</th>
             </tr>
+            <tbody class="table-rows"></tbody>
         </table>
     </div>
 </div>
@@ -68,7 +108,8 @@
 <div class="container-fluid bg-dark text-white text-center py-2 mt-5">
     <!-- Copyright -->
     <div class="text-center p-3">
-        © <span id="year"></span> Copyright <b>Grupo H</b>: Jorge Gomes, Vasco Baleia, Filipe Silveira e Guilherme Borrega
+        <p>© <span id="year"></span> Copyright <b>Grupo H</b></p>
+        <p>Jorge Gomes (nº 104558), Vasco Baleia (nº 104670), Filipe Silveira (nº 92489), e Guilherme Borrega (nº 92489)</p>
     </div>
     <div class="text-center p-3 row justify-content-center align-items-center">
         <div class="col-auto">
@@ -89,6 +130,7 @@
 
 
 <!-- JavaScript only -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <script src="js/scripts.js"></script>
 
