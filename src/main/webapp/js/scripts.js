@@ -1,10 +1,12 @@
 
-let startDate;// = new Date("October 15, 2022");
-let lastDate;// = new Date("August 23, 2023")
-let WeekStart;// = new Date(startDate) // This variable is used for the week navigation.
-                                           // It can't be directly assign to startDate or else it
-                                           // will update in the week navigation the both variables.
+let startDate, lastDate, WeekStart;
+// The 'startDate' represents the initial date of the data range and is used for reference in week navigation.
+// It is not directly modified during week navigation to maintain the original start date.
 
+// The 'lastDate' represents the final date of the data range and helps limit week navigation to stay within the dataset.
+
+// The 'WeekStart' is the reference point for the start of the current week during week navigation.
+// It is updated as weeks are navigated, and its initial value is based on 'startDate'.
 
 
 
@@ -14,8 +16,6 @@ let WeekStart;// = new Date(startDate) // This variable is used for the week nav
 var errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {
     keyboard: true,
 })
-
-
 
 
 // ----------------------------------------------------- CSV RELATED -------------------------------
@@ -183,8 +183,6 @@ function updateWeekStatus() {
         document.getElementById("week-date").textContent = WeekFirstDateString + " - " + WeekLastDateString;
     }
 
-
-
     //clearTable();
 
 }
@@ -195,9 +193,6 @@ updateWeekStatus();
 // Previous Week functions
 const previousWeekBttn = document.getElementById("previous-week");
 previousWeekBttn.addEventListener("click", function () {
-    //console.log(formatDate(startDate));
-    //console.log(formatDate(WeekMonday));
-    //console.log(WeekMonday.getTime() > startDate.getTime());
     if (WeekStart.getTime() > startDate.getTime()) { // Checks if is the first week
         WeekStart.setDate(WeekStart.getDate() - 7);
         updateWeekStatus();
@@ -310,14 +305,6 @@ function formatDate(date) {
 
 
 
-
-/*function findLastWeekDay(date) {
-    while (date.getDay() !== 7) {
-        date.setDate(date.getDate() + 7);
-    }
-    return date;
-}*/
-
 function getStartAndLastDate(data) {
     if (data !== null) {
         let csvFirstDate = new Date(); // Inicializa com a data atual
@@ -343,7 +330,6 @@ function getStartAndLastDate(data) {
         WeekStart = new Date(csvFirstDate);
     }
 }
-
 
 
 //Prints to HTML footer the current year
