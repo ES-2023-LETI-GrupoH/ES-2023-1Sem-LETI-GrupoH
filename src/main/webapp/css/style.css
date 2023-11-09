@@ -13,37 +13,6 @@ body {
     font-family: Arial, sans-serif; /* Defines the type of font for the entire page */
 }
 
-/* -------------------- Form Style --------------------
-.csv-form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 100px;
-}
-
-.form-label{
-    margin-top: 20px;
-}
-
-
-/* -------------------- Navigation Style --------------------
-
-.week-navigation button {
-    margin-right: 60px; /* Adjust the value to control the spacing
-    margin-left: 60px;
-    font-size: 20px;
-}
-
-#week-date {
-    font-size: 30px;
-}
-
-.reset-bttn{
-    margin-top: 20px;
-    text-align: center;
-    margin-bottom: 50px;
-}
-
 
 /* -------------------- Table Style -------------------- */
 
@@ -83,5 +52,3 @@ th.tempo,th.dia{
         font-size: 17px !important; /* Adjust font size for smaller screens */
     }
 }
-
-

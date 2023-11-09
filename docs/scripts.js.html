@@ -1,4 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: scripts.js</title>
 
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: scripts.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
 // ---------------- Global Varables -------------------------------
 /**
  * The 'startDate' is the reference point for the start of the current week during week navigation.
@@ -66,7 +94,7 @@ const csvForm = document.getElementById("csv-form-js");
 
 csvForm.addEventListener("submit", function (event) {
     event.preventDefault();
-    if (importTypeDropdown.value === "file" && csvFileInput.files.length > 0) {
+    if (importTypeDropdown.value === "file" &amp;&amp; csvFileInput.files.length > 0) {
         // Processar CSV por arquivo
         loadAndParseCSV(csvFileInput.files[0],false)
             .then(data=> {
@@ -76,7 +104,7 @@ csvForm.addEventListener("submit", function (event) {
                 console.error(error);
             })// Call a function to download CSV from the URL// Call a function to download CSV from the file
 
-    } else if (importTypeDropdown.value === "url" && csvUrlInput.value) {
+    } else if (importTypeDropdown.value === "url" &amp;&amp; csvUrlInput.value) {
         // Processar CSV por URL
         loadAndParseCSV(csvUrlInput.value,true) // Call a function to download CSV from the URL
             .then(data=> {
@@ -98,7 +126,7 @@ csvForm.addEventListener("submit", function (event) {
 
 /**
  * The parsed data variable corresponds to a matrix which holds the data that is loaded from a csv file or URL.
- * @type {Matrix<String>}
+ * @type {Matrix&lt;String>}
  */
 let parsedData;
 
@@ -125,7 +153,7 @@ function setDelimiter(s) {
  *
  * @param {File|string} fileData - The CSV file or URL to be loaded and parsed.
  * @param {boolean} isURL - Indicates whether the input is a URL (true) or a file (false).
- * @returns {Promise<Array>} A promise that resolves with the parsed CSV data or rejects with an error message.
+ * @returns {Promise&lt;Array>} A promise that resolves with the parsed CSV data or rejects with an error message.
  */
 function loadAndParseCSV(fileData, isURL) {
     return new Promise((resolve, reject) => {
@@ -145,9 +173,7 @@ function loadAndParseCSV(fileData, isURL) {
 
                     // To define the schedule table content
                     parsedData = parse(csvData);
-                    startDate = getStartAndLastDate(parsedData).startDate;
-                    lastDate = getStartAndLastDate(parsedData).lastDate;
-                    WeekStart = getStartAndLastDate(parsedData).WeekStart;
+                    getStartAndLastDate(parsedData);
                     //assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
                     //assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
                     //print(parsedData);
@@ -169,9 +195,7 @@ function loadAndParseCSV(fileData, isURL) {
 
                 // To define the schedule table content
                 parsedData = parse(csvContent);
-                startDate = getStartAndLastDate(parsedData).startDate;
-                lastDate = getStartAndLastDate(parsedData).lastDate;
-                WeekStart = getStartAndLastDate(parsedData).WeekStart;
+                getStartAndLastDate(parsedData);
                 //assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
                 //assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
                 //print(parsedData);
@@ -196,10 +220,10 @@ function parse(data) {
 
     const totalNumberOfLines = dataList.length;
     const result = new Array(totalNumberOfLines);
-    for (let i = 0; i < totalNumberOfLines; i++) {
+    for (let i = 0; i &lt; totalNumberOfLines; i++) {
         result[i] = new Array(maximumNumberOfFields);
         const fields = dataList[i];
-        for (let j = 0; j < fields.length; j++) {
+        for (let j = 0; j &lt; fields.length; j++) {
             result[i][j] = fields[j];
         }
     }
@@ -271,7 +295,7 @@ const nextWeekBttn = document.getElementById("next-week");
 nextWeekBttn.addEventListener("click", function () {
     let nextWeekStart = new Date(WeekStart); //Temporary variable for the next week
     nextWeekStart.setDate(nextWeekStart.getDate()+7) // Predicts the next week date and stores it temporarily in the nextWeekStart var
-    if (nextWeekStart < lastDate) { // Compares if the predicted date is smaller than the last date
+    if (nextWeekStart &lt; lastDate) { // Compares if the predicted date is smaller than the last date
         WeekStart.setDate(WeekStart.getDate() + 7);  //Updates the WeekStart for the next week
         updateWeekStatus();
     }
@@ -336,16 +360,16 @@ function createTabulatorTable(data) {
 const table = document.querySelector('tbody');
 
 // Loop to create time intervals between 8:00 (8 AM) and 23:00 (11:00 PM).
-for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (inclusive).
-    for (let minute = 0; minute < 60; minute += 30) { // Loop through minutes, incrementing by 30.
+for (let hour = 8; hour &lt; 23; hour++) { // Loop through hours from 8 to 22 (inclusive).
+    for (let minute = 0; minute &lt; 60; minute += 30) { // Loop through minutes, incrementing by 30.
         // Create the start and end times in the format "HH:MM" (e.g., "8:00-8:30").
-        let timeStart = `${hour}:${minute < 10 ? '0' : ''}${minute}`;
+        let timeStart = `${hour}:${minute &lt; 10 ? '0' : ''}${minute}`;
         // Determine the next hour and minute for the end time of the time interval.
         let nextHour = minute === 30 ? hour + 1 : hour;
         // If the current minute is 30, increment the hour by 1; otherwise, keep the same hour.
         let nextMinute = minute === 30 ? 0 : minute + 30;
         // Create the end time in the format "HH:MM" (e.g., "8:00-8:30").
-        let timeEnd = `${nextHour}:${nextMinute < 10 ? '0' : ''}${nextMinute}`;
+        let timeEnd = `${nextHour}:${nextMinute &lt; 10 ? '0' : ''}${nextMinute}`;
 
         // Create a new table row for each time interval.
         const row = document.createElement('tr');
@@ -357,7 +381,7 @@ for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (incl
         row.appendChild(timeCell);
 
         // Loop through the days of the week (7 days) and create a cell (td) for each day.
-        for (let day = 0; day < 7; day++) {
+        for (let day = 0; day &lt; 7; day++) {
             // Create a table data cell for the schedule information and set its class to 'aula'.
             const cell = document.createElement('td');
             cell.className = 'aula';
@@ -373,7 +397,7 @@ for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (incl
 function assignEvent(rowIndex, columnIndex, content) {
     const table = document.querySelector('tbody');
 
-    if (table.rows[rowIndex] && table.rows[rowIndex].cells[columnIndex]) {
+    if (table.rows[rowIndex] &amp;&amp; table.rows[rowIndex].cells[columnIndex]) {
         const cell = table.rows[rowIndex].cells[columnIndex];
         cell.textContent = content;
         cell.style.backgroundColor = "#8abdff";
@@ -387,9 +411,9 @@ function clearTable() {
     const table = document.querySelector('tbody');
 
     // Loop through all rows starting from the second row (index 1)
-    for (let i = 1; i < table.rows.length; i++) {
+    for (let i = 1; i &lt; table.rows.length; i++) {
         // Loop through all cells in each row starting from the second cell (index 1)
-        for (let j = 1; j < table.rows[i].cells.length; j++) {
+        for (let j = 1; j &lt; table.rows[i].cells.length; j++) {
             const cell = table.rows[i].cells[j];
                 cell.textContent = "";
                 cell.style.backgroundColor = "white";
@@ -416,8 +440,8 @@ function formatDate(date) {
     var year = date.getFullYear();
 
     // Adicione um zero à frente se o dia ou o mês for menor que 10
-    if (day < 10) day = '0' + day;
-    if (month < 10) month = '0' + month;
+    if (day &lt; 10) day = '0' + day;
+    if (month &lt; 10) month = '0' + month;
 
     return day + '/' + month + '/' + year;
 }
@@ -425,8 +449,8 @@ function formatDate(date) {
 /**
  * Extracts the start and last dates from the parsed CSV data and sets them in global variables.
  *
- * @param {Matrix<String>} data - The parsed CSV data.
- * @returns {{WeekStart: Date, startDate: Date, lastDate: Date}} The start date.
+ * @param {Matrix&lt;String>} data - The parsed CSV data.
+ * @returns {Date} The start date.
  * @returns {Date} The last date.
  * @returns {Date} The week start date.
  */
@@ -435,14 +459,14 @@ function getStartAndLastDate(data) {
         let csvFirstDate = new Date(); // Inicializa com a data atual
         let csvLastDate = new Date(0); // Inicializa com a data mínima
 
-        for (let i = 0; i < data.totalNumberOfLines; i++) {
+        for (let i = 0; i &lt; data.totalNumberOfLines; i++) {
             // Obtenha a data da 8ª coluna do CSV e divida-a em dia, mês e ano
             let [day, month, year] = data.data[i][8].split("/").map(Number);
 
             // Crie um objeto Date com base nos valores do CSV
             let currentDate = new Date(year, month - 1, day);
 
-            if (currentDate < csvFirstDate) {
+            if (currentDate &lt; csvFirstDate) {
                 csvFirstDate = currentDate;
             }
             if (currentDate > csvLastDate) {
@@ -465,3 +489,26 @@ function getStartAndLastDate(data) {
 document.getElementById("year").innerHTML = new Date().getFullYear();
 
 
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#WeekMonday">WeekMonday</a></li><li><a href="global.html#WeekStart">WeekStart</a></li><li><a href="global.html#WeekSunday">WeekSunday</a></li><li><a href="global.html#createTabulatorTable">createTabulatorTable</a></li><li><a href="global.html#delimiter">delimiter</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getStartAndLastDate">getStartAndLastDate</a></li><li><a href="global.html#handleImportTypeChange">handleImportTypeChange</a></li><li><a href="global.html#lastDate">lastDate</a></li><li><a href="global.html#loadAndParseCSV">loadAndParseCSV</a></li><li><a href="global.html#parsedData">parsedData</a></li><li><a href="global.html#setDelimiter">setDelimiter</a></li><li><a href="global.html#startDate">startDate</a></li><li><a href="global.html#updateWeekStatus">updateWeekStatus</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Nov 09 2023 05:54:16 GMT+0000 (Hora padrão da Europa Ocidental)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
