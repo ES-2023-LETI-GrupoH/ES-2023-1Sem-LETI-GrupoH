@@ -145,7 +145,9 @@ function loadAndParseCSV(fileData, isURL) {
 
                     // To define the schedule table content
                     parsedData = parse(csvData);
-                    getStartAndLastDate(parsedData);
+                    startDate = getStartAndLastDate(parsedData).startDate;
+                    lastDate = getStartAndLastDate(parsedData).lastDate;
+                    WeekStart = getStartAndLastDate(parsedData).WeekStart;
                     //assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
                     //assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
                     //print(parsedData);
@@ -167,7 +169,9 @@ function loadAndParseCSV(fileData, isURL) {
 
                 // To define the schedule table content
                 parsedData = parse(csvContent);
-                getStartAndLastDate(parsedData);
+                startDate = getStartAndLastDate(parsedData).startDate;
+                lastDate = getStartAndLastDate(parsedData).lastDate;
+                WeekStart = getStartAndLastDate(parsedData).WeekStart;
                 //assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
                 //assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
                 //print(parsedData);
@@ -422,6 +426,9 @@ function formatDate(date) {
  * Extracts the start and last dates from the parsed CSV data and sets them in global variables.
  *
  * @param {Matrix<String>} data - The parsed CSV data.
+ * @returns {{WeekStart: Date, startDate: Date, lastDate: Date}} The start date.
+ * @returns {Date} The last date.
+ * @returns {Date} The week start date.
  */
 function getStartAndLastDate(data) {
     if (data !== null) {
@@ -443,10 +450,15 @@ function getStartAndLastDate(data) {
             }
         }
 
-        startDate = new Date(csvFirstDate);
-        lastDate = new Date(csvLastDate);
-        WeekStart = new Date(csvFirstDate);
+        let startDate = new Date(csvFirstDate);
+        let lastDate = new Date(csvLastDate);
+        let WeekStart = new Date(csvFirstDate);
+
+        return { startDate, lastDate, WeekStart };
     }
+
+    return { startDate: null, lastDate: null, WeekStart: null };
+
 }
 
 //Prints to HTML footer the current year
