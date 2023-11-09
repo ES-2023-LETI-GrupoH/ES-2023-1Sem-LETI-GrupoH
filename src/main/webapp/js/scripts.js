@@ -1,4 +1,6 @@
 
+
+
 // ---------------- Global Varables -------------------------------
 
 let startDate;
@@ -17,10 +19,12 @@ let WeekStart;// = new Date(startDate) // This variable is used for the week nav
 // ---------------- CSV Input ----------------
 
 // Adicione um evento de mudança para o dropdown menu
-const importTypeDropdown = document.getElementById("csv-import");
-const csvFileInput = document.getElementById("csv-file");
-const csvUrlInput = document.getElementById("csv-url");
-const csvDataDisplay = document.getElementById("csv-data");
+
+const importTypeDropdown = 0 // COMMENT FOR TESTING = document.getElementById("csv-import");
+const csvFileInput = 0 // COMMENT FOR TESTING = document.getElementById("csv-file");
+const csvUrlInput = 0 // COMMENT FOR TESTING = document.getElementById("csv-url");
+const csvDataDisplay = 0 // COMMENT FOR TESTING = document.getElementById("csv-data");
+
 
 // Define the event handler function
 function handleImportTypeChange() {
@@ -38,17 +42,19 @@ function handleImportTypeChange() {
     }
 }
 
-window.addEventListener("load", handleImportTypeChange);
+// COMMENT FOR TESTING window.addEventListener("load", handleImportTypeChange);
 
-importTypeDropdown.addEventListener("change", handleImportTypeChange);
+// COMMENT FOR TESTING importTypeDropdown.addEventListener("change", handleImportTypeChange);
 
 
 
 // Lógica para processar o envio do formulário
 
-const csvForm = document.getElementById("csv-form-js");
+const csvForm = 0 // COMMENT FOR TESTING =  document.getElementById("csv-form-js");
 
 
+/*
+// COMMENT FOR TESTING
 csvForm.addEventListener("submit", function (event) {
     event.preventDefault();
     if (importTypeDropdown.value === "file" && csvFileInput.files.length > 0) {
@@ -76,6 +82,8 @@ csvForm.addEventListener("submit", function (event) {
         errorModal.toggle();
     }
 });
+
+ */
 
 
 // ---------------- CSV Processing ----------------
@@ -108,7 +116,9 @@ function loadAndParseCSV(fileData, isURL) {
 
                     // To define the schedule table content
                     parsedData = parse(csvData);
-                    getStartAndLastDate(parsedData);
+                    startDate=getStartAndLastDate(parsedData).startDate;
+                    lastDate=getStartAndLastDate(parsedData).lastDate;
+                    WeekStart=getStartAndLastDate(parsedData).WeekStart;
                     //assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
                     //assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
                     //print(parsedData);
@@ -130,7 +140,9 @@ function loadAndParseCSV(fileData, isURL) {
 
                 // To define the schedule table content
                 parsedData = parse(csvContent);
-                getStartAndLastDate(parsedData);
+                startDate=getStartAndLastDate(parsedData).startDate;
+                lastDate=getStartAndLastDate(parsedData).lastDate;
+                WeekStart=getStartAndLastDate(parsedData).WeekStart;
                 //assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
                 //assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
                 //print(parsedData);
@@ -140,7 +152,6 @@ function loadAndParseCSV(fileData, isURL) {
         }
     });
 }
-
 
 function parse(data) {
     const dataList = [];
@@ -166,6 +177,8 @@ function parse(data) {
     return { totalNumberOfLines, maximumNumberOfFields, data: result };
 }
 
+//module.exports=parse
+
 
 
 // ---------------- WEEK NAVIGATOR -------------------------------
@@ -175,7 +188,7 @@ let WeekSunday ;
 
 function updateWeekStatus() {
     if(parsedData == null){
-        document.getElementById("week-date").textContent = "Importe um horário";
+        // COMMENT FOR TESTING document.getElementById("week-date").textContent = "Importe um horário";
     } else {
 
         console.log(formatDate(WeekStart));
@@ -196,7 +209,7 @@ function updateWeekStatus() {
         let WeekLastDateString = formatDate(WeekSunday);
 
         // Sends the week date to the HTML span which id is "week-date"
-        document.getElementById("week-date").textContent = WeekFirstDateString + " - " + WeekLastDateString;
+        // COMMENT FOR TESTING document.getElementById("week-date").textContent = WeekFirstDateString + " - " + WeekLastDateString;
     }
 }
 
@@ -204,7 +217,8 @@ function updateWeekStatus() {
 updateWeekStatus();
 
 // Previous Week functions
-const previousWeekBttn = document.getElementById("previous-week");
+const previousWeekBttn = 0// COMMENT FOR TESTING = document.getElementById("previous-week");
+/* COMMENT FOR TESTING
 previousWeekBttn.addEventListener("click", function () {
     if (WeekStart.getTime() > startDate.getTime()) { // Checks if is the first week
         WeekStart.setDate(WeekStart.getDate() - 7);
@@ -213,7 +227,7 @@ previousWeekBttn.addEventListener("click", function () {
 });
 
 // Next Week functions
-const nextWeekBttn = document.getElementById("next-week");
+const nextWeekBttn = 0// COMMENT FOR TESTING = document.getElementById("next-week");
 nextWeekBttn.addEventListener("click", function () {
     let nextWeekStart = new Date(WeekStart); //Temporary variable for the next week
     nextWeekStart.setDate(nextWeekStart.getDate()+7) // Predicts the next week date and stores it temporarily in the nextWeekStart var
@@ -223,18 +237,21 @@ nextWeekBttn.addEventListener("click", function () {
     }
 });
 
+
+
 // Reset Week functions
-const resetWeekBttn = document.getElementById("reset-week");
+const resetWeekBttn=0 // COMMENT FOR TESTING = document.getElementById("reset-week");
 resetWeekBttn.addEventListener("click", function () {
     WeekStart.setTime(startDate.getTime()); // Updates the WeekStart for the first week. It needs to be GetTime() instead of GetDate()
     updateWeekStatus();                     // because if its GetDate it only updates the day and not the entire date
 });
 
-
+*/
 // -------------------------- TABULATOR --------------------------
 
 
 // Defines the waiting table
+/* COMMENT FOR TESTING
 var table = new Tabulator("#example-table", {
     layout:"fitColumns",
     autoColumns:true,
@@ -267,15 +284,18 @@ function createTabulatorTable(data) {
         },
     });
 }
-
+*/
 
 
 // -------------------------- SCHEDULE TABLE CREATION AND POPULATION ---------------------------------
 
+/* COMMENT FOR TESTING
+
+
 // This section is reserved for further development of a schedule table based on Fenix+
 
-/*// Select the HTML table element with the 'table' tag and assign it to the 'table' variable.
-const table = document.querySelector('tbody');
+// Select the HTML table element with the 'table' tag and assign it to the 'table' variable.
+const tableSchedule=0// COMMENT FOR TESTING = document.querySelector('tbody');
 
 // Loop to create time intervals between 8:00 (8 AM) and 23:00 (11:00 PM).
 for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (inclusive).
@@ -290,14 +310,13 @@ for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (incl
         let timeEnd = `${nextHour}:${nextMinute < 10 ? '0' : ''}${nextMinute}`;
 
         // Create a new table row for each time interval.
-        const row = document.createElement('tr');
+        const row = 0// COMMENT FOR TESTING = document.createElement('tr');
 
         // Create a table header cell (th) for the time interval and set its class to 'tempo'.
-        const timeCell = document.createElement('th');
+        const timeCell =0// COMMENT FOR TESTING = document.createElement('th');
         timeCell.className = 'tempo';
         timeCell.textContent = `${timeStart}-${timeEnd}`;
         row.appendChild(timeCell);
-
         // Loop through the days of the week (7 days) and create a cell (td) for each day.
         for (let day = 0; day < 7; day++) {
             // Create a table data cell for the schedule information and set its class to 'aula'.
@@ -307,39 +326,35 @@ for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (incl
         }
 
         // Append the row to the table, adding it to the grid of cells.
-        table.appendChild(row);
+        tableSchedule.appendChild(row);
     }
 
-}
+}*/
 // content -> what is to be written in the designated cell
-function assignEvent(rowIndex, columnIndex, content) {
-    const table = document.querySelector('tbody');
+/*function assignEvent(rowIndex, columnIndex, content) {
 
-    if (table.rows[rowIndex] && table.rows[rowIndex].cells[columnIndex]) {
-        const cell = table.rows[rowIndex].cells[columnIndex];
+    if (tableSchedule.rows[rowIndex] && tableSchedule.rows[rowIndex].cells[columnIndex]) {
+        const cell = tableSchedule.rows[rowIndex].cells[columnIndex];
         cell.textContent = content;
         cell.style.backgroundColor = "#8abdff";
     } else {
         console.error("Invalid row or column index.");
     }
-}
+}*/
 
 
-function clearTable() {
-    const table = document.querySelector('tbody');
-
+/*function clearTable() {
     // Loop through all rows starting from the second row (index 1)
-    for (let i = 1; i < table.rows.length; i++) {
+    for (let i = 1; i < tableSchedule.rows.length; i++) {
         // Loop through all cells in each row starting from the second cell (index 1)
-        for (let j = 1; j < table.rows[i].cells.length; j++) {
-            const cell = table.rows[i].cells[j];
+        for (let j = 1; j < tableSchedule.rows[i].cells.length; j++) {
+            const cell = tableSchedule.rows[i].cells[j];
                 cell.textContent = "";
                 cell.style.backgroundColor = "white";
 
         }
     }
 }*/
-
 
 
 // -------------------------- Auxiliary Functions --------------------------
@@ -356,7 +371,7 @@ function formatDate(date) {
 
     return day + '/' + month + '/' + year;
 }
-
+//module.exports=formatDate
 
 function getStartAndLastDate(data) {
     if (data !== null) {
@@ -378,13 +393,23 @@ function getStartAndLastDate(data) {
             }
         }
 
-        startDate = new Date(csvFirstDate);
-        lastDate = new Date(csvLastDate);
-        WeekStart = new Date(csvFirstDate);
+        let startDate = new Date(csvFirstDate);
+        let lastDate = new Date(csvLastDate);
+        let WeekStart = new Date(csvFirstDate);
+
+        return { startDate, lastDate, WeekStart };
     }
+
+    return { startDate: null, lastDate: null, WeekStart: null };
+
 }
+//.exports=getStartAndLastDate
 
 //Prints to HTML footer the current year
-document.getElementById("year").innerHTML = new Date().getFullYear();
+// COMMENT FOR TESTING document.getElementById("year").innerHTML = new Date().getFullYear();
 
 
+// ------------------------------- TEST FUNCTION
+module.exports.parse = parse;
+module.exports.formatDate = formatDate;
+module.exports.getStartAndLastDate = getStartAndLastDate;
