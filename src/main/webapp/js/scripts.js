@@ -1,27 +1,20 @@
 
-let startDate, lastDate, WeekStart;
-// The 'startDate' represents the initial date of the data range and is used for reference in week navigation.
-// It is not directly modified during week navigation to maintain the original start date.
+// ---------------- Global Varables -------------------------------
 
-// The 'lastDate' represents the final date of the data range and helps limit week navigation to stay within the dataset.
-
-// The 'WeekStart' is the reference point for the start of the current week during week navigation.
-// It is updated as weeks are navigated, and its initial value is based on 'startDate'.
-
+let startDate;
+let lastDate;
+let WeekStart;// = new Date(startDate) // This variable is used for the week navigation.
+              // It can't be directly assign to startDate or else it
+              // will update in the week navigation the both variables.
 
 
-// ---------------- MODAL -------------------------------
 
 
-var errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {
-    keyboard: true,
-})
+
+// -------------------------------------- CSV RELATED --------------------------------------
 
 
-// ----------------------------------------------------- CSV RELATED -------------------------------
-
-
-// ---------------- CSV Input -------------------------------
+// ---------------- CSV Input ----------------
 
 // Adicione um evento de mudança para o dropdown menu
 const importTypeDropdown = document.getElementById("csv-import");
@@ -60,12 +53,23 @@ csvForm.addEventListener("submit", function (event) {
     event.preventDefault();
     if (importTypeDropdown.value === "file" && csvFileInput.files.length > 0) {
         // Processar CSV por arquivo
-        loadAndParseCSV(csvFileInput.files[0],false); // Call a function to download CSV from the file
+        loadAndParseCSV(csvFileInput.files[0],false)
+            .then(data=> {
+                createTabulatorTable(data);
+            })
+            .catch(error => {
+                console.error(error);
+            })// Call a function to download CSV from the URL// Call a function to download CSV from the file
 
     } else if (importTypeDropdown.value === "url" && csvUrlInput.value) {
         // Processar CSV por URL
-        loadAndParseCSV(csvUrlInput.value,true); // Call a function to download CSV from the URL
-        assignEvent();
+        loadAndParseCSV(csvUrlInput.value,true) // Call a function to download CSV from the URL
+            .then(data=> {
+                createTabulatorTable(data);
+            })
+            .catch(error => {
+                console.error(error);
+            })// Call a function to download CSV from the URL// Call a function to download CSV from the file
     } else {
         // Lógica para lidar com nenhum arquivo selecionado ou URL inserida
         console.log("Nenhum arquivo selecionado ou URL inserida");
@@ -74,7 +78,7 @@ csvForm.addEventListener("submit", function (event) {
 });
 
 
-// ---------------- CSV Processing -------------------------------
+// ---------------- CSV Processing ----------------
 
 
 
@@ -87,36 +91,56 @@ function setDelimiter(s) {
 }
 
 function loadAndParseCSV(fileData, isURL) {
-    parsedData = null;
-    if (isURL) {
-        // Se for uma URL, faça uma solicitação para obter o conteúdo do CSV
-        fetch(fileData)
-            .then(response => response.text())
-            .then(data => {
-                // Chame a função 'parse' e 'print' para processar e exibir os dados
-                parsedData = parse(data);
+    return new Promise((resolve, reject) => {
+        parsedData = null;
+        if (isURL) {
+            // Se for uma URL, faça uma solicitação para obter o conteúdo do CSV
+            fetch(fileData)
+                .then(response => response.text())
+                .then(csvData => {
+                    // To define the tabulator table content
+                    const data = Papa.parse(csvData, { header: true, skipEmptyLines: true });
+                    if (data.errors.length === 0) {
+                        resolve(data.data);
+                    } else {
+                        reject("Erro ao analisar o arquivo CSV.");
+                    }
+
+                    // To define the schedule table content
+                    parsedData = parse(csvData);
+                    getStartAndLastDate(parsedData);
+                    //assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
+                    //assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
+                    //print(parsedData);
+                    updateWeekStatus();
+                })
+                .catch(error => console.error(error));
+        } else if (fileData instanceof File) {
+            // Se for um arquivo local, leia o conteúdo e processe diretamente
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                // To define the tabulator table content
+                const csvContent = e.target.result;
+                const data = Papa.parse(csvContent, { header: true, skipEmptyLines: true });
+                if (data.errors.length === 0) {
+                    resolve(data.data);
+                } else {
+                    reject("Erro ao analisar o arquivo CSV.");
+                }
+
+                // To define the schedule table content
+                parsedData = parse(csvContent);
                 getStartAndLastDate(parsedData);
+                //assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
+                //assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
                 //print(parsedData);
-                assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
-                assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
                 updateWeekStatus();
-            })
-            .catch(error => console.error(error));
-    } else if (fileData instanceof File) {
-        // Se for um arquivo local, leia o conteúdo e processe diretamente
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            const csvContent = e.target.result;
-            parsedData = parse(csvContent);
-            getStartAndLastDate(parsedData);
-            assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
-            assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
-            //print(parsedData);
-            updateWeekStatus();
-        };
-        reader.readAsText(fileData);
-    }
+            };
+            reader.readAsText(fileData);
+        }
+    });
 }
+
 
 function parse(data) {
     const dataList = [];
@@ -142,13 +166,6 @@ function parse(data) {
     return { totalNumberOfLines, maximumNumberOfFields, data: result };
 }
 
-function print(parsedData) {
-    console.log(`Total number of lines: ${parsedData.totalNumberOfLines} and each line has ${parsedData.maximumNumberOfFields} parts`);
-    for (let y = 0; y < parsedData.totalNumberOfLines; y++) {
-        console.log(parsedData.data[y].join(' | '));
-    }
-}
-
 
 
 // ---------------- WEEK NAVIGATOR -------------------------------
@@ -157,9 +174,8 @@ let WeekMonday ;
 let WeekSunday ;
 
 function updateWeekStatus() {
-
     if(parsedData == null){
-       document.getElementById("week-date").textContent = "Importe um horário";
+        document.getElementById("week-date").textContent = "Importe um horário";
     } else {
 
         console.log(formatDate(WeekStart));
@@ -182,9 +198,6 @@ function updateWeekStatus() {
         // Sends the week date to the HTML span which id is "week-date"
         document.getElementById("week-date").textContent = WeekFirstDateString + " - " + WeekLastDateString;
     }
-
-    //clearTable();
-
 }
 
 // FIRST Week Navigation Update
@@ -214,13 +227,54 @@ nextWeekBttn.addEventListener("click", function () {
 const resetWeekBttn = document.getElementById("reset-week");
 resetWeekBttn.addEventListener("click", function () {
     WeekStart.setTime(startDate.getTime()); // Updates the WeekStart for the first week. It needs to be GetTime() instead of GetDate()
-    updateWeekStatus();                    // because if its GetDate it only updates the day and not the entire date
+    updateWeekStatus();                     // because if its GetDate it only updates the day and not the entire date
 });
 
-// -------------------------- TABLE CREATION AND POPULATION ---------------------------------
+
+// -------------------------- TABULATOR --------------------------
 
 
-// Select the HTML table element with the 'table' tag and assign it to the 'table' variable.
+// Defines the waiting table
+var table = new Tabulator("#example-table", {
+    layout:"fitColumns",
+    autoColumns:true,
+    placeholder:"Pronto para receber os dados. Importe o ficheiro CSV",
+})
+
+// Creates the table with tabulator from an existing CSV file
+function createTabulatorTable(data) {
+
+    table = new Tabulator("#example-table", {
+        data: data,
+        delimiter: ";",
+        columns: Object.keys(data[0]).map(key => ({
+            title: key,
+            field: key,
+        })),
+        layout:"fitColumns",      //fit columns to width of table
+        responsiveLayout:"hide",  //hide columns that don't fit on the table
+        addRowPos:"top",          //when adding a new row, add it to the top of the table
+        history:true,             //allow undo and redo actions on the table
+        pagination:"local",       //paginate the data
+        paginationSize:8,         //allow 7 rows per page of data
+        paginationCounter:"rows", //display count of paginated rows in footer
+        movableColumns:true,      //allow column order to be changed
+        initialSort:[             //set the initial sort order of the data
+            {column:"name", dir:"asc"},
+        ],
+        columnDefaults:{
+            tooltip:true,         //show tool tips on cells
+        },
+    });
+}
+
+
+
+// -------------------------- SCHEDULE TABLE CREATION AND POPULATION ---------------------------------
+
+// This section is reserved for further development of a schedule table based on Fenix+
+
+/*// Select the HTML table element with the 'table' tag and assign it to the 'table' variable.
 const table = document.querySelector('tbody');
 
 // Loop to create time intervals between 8:00 (8 AM) and 23:00 (11:00 PM).
@@ -284,11 +338,11 @@ function clearTable() {
 
         }
     }
-}
+}*/
 
 
 
-// Auxiliary Functions
+// -------------------------- Auxiliary Functions --------------------------
 
 // This function sets any date in the format DD/MM/YYYY
 function formatDate(date) {
@@ -302,7 +356,6 @@ function formatDate(date) {
 
     return day + '/' + month + '/' + year;
 }
-
 
 
 function getStartAndLastDate(data) {
@@ -331,6 +384,7 @@ function getStartAndLastDate(data) {
     }
 }
 
-
 //Prints to HTML footer the current year
 document.getElementById("year").innerHTML = new Date().getFullYear();
+
+
