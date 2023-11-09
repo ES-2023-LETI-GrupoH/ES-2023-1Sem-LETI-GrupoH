@@ -26,7 +26,7 @@ let WeekStart;
 
 // ---------------- CSV Input ----------------
 
-// Adicione um evento de mudança para o dropdown menu
+// All the html fields related to CSV submission form
 
 const importTypeDropdown = 0 // COMMENT FOR TESTING = document.getElementById("csv-import");
 const csvFileInput = 0 // COMMENT FOR TESTING = document.getElementById("csv-file");
@@ -43,15 +43,13 @@ function handleImportTypeChange() {
 
     const selectedOption = importTypeDropdown.value;
 
-    // Exibir ou ocultar os campos apropriados com base na escolha do usuário
+    // Hide or show input fields depending on the dropdown option
     if (selectedOption === "file") {
         csvFileInput.style.display = "block";
         csvUrlInput.style.display = "none";
     } else if (selectedOption === "url") {
         csvFileInput.style.display = "none";
         csvUrlInput.style.display = "block";
-    } else {
-        // Lógica de tratamento adicional, se necessário
     }
 }
 
@@ -61,7 +59,7 @@ function handleImportTypeChange() {
 
 
 
-// Lógica para processar o envio do formulário
+// ---------------- CSV Submission ----------------
 
 const csvForm = 0 // COMMENT FOR TESTING =  document.getElementById("csv-form-js");
 
@@ -71,26 +69,26 @@ const csvForm = 0 // COMMENT FOR TESTING =  document.getElementById("csv-form-js
 csvForm.addEventListener("submit", function (event) {
     event.preventDefault();
     if (importTypeDropdown.value === "file" && csvFileInput.files.length > 0) {
-        // Processar CSV por arquivo
+        // CSV File Processing
         loadAndParseCSV(csvFileInput.files[0],false)
             .then(data=> {
                 createTabulatorTable(data);
             })
             .catch(error => {
                 console.error(error);
-            })// Call a function to download CSV from the URL// Call a function to download CSV from the file
+            })
 
     } else if (importTypeDropdown.value === "url" && csvUrlInput.value) {
-        // Processar CSV por URL
+        // CSV URL Processing
         loadAndParseCSV(csvUrlInput.value,true) // Call a function to download CSV from the URL
             .then(data=> {
                 createTabulatorTable(data);
             })
             .catch(error => {
                 console.error(error);
-            })// Call a function to download CSV from the URL// Call a function to download CSV from the file
+            })
     } else {
-        // Lógica para lidar com nenhum arquivo selecionado ou URL inserida
+        // When no file or URL is selected an error modal is displayed
         console.log("Nenhum arquivo selecionado ou URL inserida");
         errorModal.toggle();
     }
@@ -129,15 +127,30 @@ function setDelimiter(s) {
 /**
  * Loads and parses CSV data from either a file or a URL.
  *
+ * If it is an URL then it will fetch the file and then parse;
+ * If it is a File, then it will read the file content using fileReader
+ * and then parse it.
+ * Both methods will return a promise and will parse the CSV data in different ways
+ * for diferente tables:
+ * Papa library for the Tabulator table and the parse() function for
+ * ur own schedule table
+ *
  * @param {File|string} fileData - The CSV file or URL to be loaded and parsed.
  * @param {boolean} isURL - Indicates whether the input is a URL (true) or a file (false).
  * @returns {Promise<Array>} A promise that resolves with the parsed CSV data or rejects with an error message.
  */
+
+// If it is an URL then it will fetch the file and then parse;
+// If it is a File, then it will read the file content using fileReader
+// and then parse it.
+// Both methods will return a promise and will parse the CSV data in different ways
+// for diferente tables:
+// Papa library for the Tabulator table and the parse() function for
+// our own schedule table
 function loadAndParseCSV(fileData, isURL) {
     return new Promise((resolve, reject) => {
         parsedData = null;
         if (isURL) {
-            // Se for uma URL, faça uma solicitação para obter o conteúdo do CSV
             fetch(fileData)
                 .then(response => response.text())
                 .then(csvData => {
@@ -154,14 +167,16 @@ function loadAndParseCSV(fileData, isURL) {
                     startDate=getStartAndLastDate(parsedData).startDate;
                     lastDate=getStartAndLastDate(parsedData).lastDate;
                     WeekStart=getStartAndLastDate(parsedData).WeekStart;
+
+                    /* For testing porpouse for the schudule table */
                     //assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
                     //assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
                     //print(parsedData);
+
                     updateWeekStatus();
                 })
                 .catch(error => console.error(error));
         } else if (fileData instanceof File) {
-            // Se for um arquivo local, leia o conteúdo e processe diretamente
             const reader = new FileReader();
             reader.onload = function (e) {
                 // To define the tabulator table content
@@ -178,9 +193,12 @@ function loadAndParseCSV(fileData, isURL) {
                 startDate=getStartAndLastDate(parsedData).startDate;
                 lastDate=getStartAndLastDate(parsedData).lastDate;
                 WeekStart=getStartAndLastDate(parsedData).WeekStart;
+
+                /* For testing porpouse for the schudule table */
                 //assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
                 //assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
                 //print(parsedData);
+
                 updateWeekStatus();
             };
             reader.readAsText(fileData);
@@ -254,12 +272,12 @@ function updateWeekStatus() {
         let WeekFirstDateString = formatDate(WeekMonday);
         let WeekLastDateString = formatDate(WeekSunday);
 
-        // Sends the week date to the HTML span which id is "week-date"
+        // Sends the week date to the HTML span which id is "week-date" in the desired format
         // COMMENT FOR TESTING document.getElementById("week-date").textContent = WeekFirstDateString + " - " + WeekLastDateString;
     }
 }
 
-// FIRST Week Navigation Update
+// Inicial Week Navigator Update
 updateWeekStatus();
 
 // Previous Week functions
@@ -327,7 +345,7 @@ var table = new Tabulator("#example-table", {
         paginationCounter:"rows", //display count of paginated rows in footer
         movableColumns:true,      //allow column order to be changed
         initialSort:[             //set the initial sort order of the data
-            {column:"name", dir:"asc"},
+            {column:"Curso", dir:"asc"},
         ],
         columnDefaults:{
             tooltip:true,         //show tool tips on cells
@@ -408,8 +426,6 @@ for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (incl
 
 
 // -------------------------- Auxiliary Functions --------------------------
-
-// This function sets any date in the format DD/MM/YYYY
 
 /**
  * Formats a given date in the "DD/MM/YYYY" format.
