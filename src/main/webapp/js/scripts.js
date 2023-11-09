@@ -1,16 +1,24 @@
 
-
-
 // ---------------- Global Varables -------------------------------
-
+/**
+ * The 'startDate' is the reference point for the start of the current week during week navigation.
+ * It is updated as weeks are navigated, and its initial value is based on 'startDate'.
+ * @type {Date}
+ */
 let startDate;
+
+/**
+ * The 'lastDate' represents the final date of the data range and helps limit week navigation to stay within the dataset.
+ * @type {Date}
+ */
 let lastDate;
-let WeekStart;// = new Date(startDate) // This variable is used for the week navigation.
-              // It can't be directly assign to startDate or else it
-              // will update in the week navigation the both variables.
 
-
-
+/**
+ * The 'WeekStart' is the reference point for the start of the current week during week navigation.
+ * It is updated as weeks are navigated, and its initial value is based on 'startDate'.
+ * @type {Date}
+ */
+let WeekStart;
 
 
 // -------------------------------------- CSV RELATED --------------------------------------
@@ -27,7 +35,12 @@ const csvDataDisplay = 0 // COMMENT FOR TESTING = document.getElementById("csv-d
 
 
 // Define the event handler function
+/**
+ * Handles the change event of the import type dropdown menu.
+ * Shows or hides input fields based on the user's choice.
+ */
 function handleImportTypeChange() {
+
     const selectedOption = importTypeDropdown.value;
 
     // Exibir ou ocultar os campos apropriados com base na escolha do usuário
@@ -89,15 +102,37 @@ csvForm.addEventListener("submit", function (event) {
 // ---------------- CSV Processing ----------------
 
 
-
+/**
+ * The parsed data variable corresponds to a matrix which holds the data that is loaded from a csv file or URL.
+ * @type {Matrix<String>}
+ */
 let parsedData;
 
+/**
+ * The delimiter is used to specify the delimiter used in the CSV file.
+ * @type {string}
+ */
 var delimiter = ';';
 
+
+
+/**
+ * Sets the delimiter used for parsing the CSV data.
+ *
+ * @param {string} s - The delimiter character.
+ */
 function setDelimiter(s) {
     delimiter = s;
 }
 
+
+/**
+ * Loads and parses CSV data from either a file or a URL.
+ *
+ * @param {File|string} fileData - The CSV file or URL to be loaded and parsed.
+ * @param {boolean} isURL - Indicates whether the input is a URL (true) or a file (false).
+ * @returns {Promise<Array>} A promise that resolves with the parsed CSV data or rejects with an error message.
+ */
 function loadAndParseCSV(fileData, isURL) {
     return new Promise((resolve, reject) => {
         parsedData = null;
@@ -177,15 +212,26 @@ function parse(data) {
     return { totalNumberOfLines, maximumNumberOfFields, data: result };
 }
 
-//module.exports=parse
-
 
 
 // ---------------- WEEK NAVIGATOR -------------------------------
 
+/**
+ * 'WeekMonday' is used to store the starting date of the current week (Monday).
+ * @type {Date}
+ */
 let WeekMonday ;
+
+/**
+ * 'WeekSunday' is used to store the ending date of the current week (Sunday).
+ * @type {Date}
+ */
 let WeekSunday ;
 
+
+/**
+ * Updates the displayed week's status based on the 'WeekStart' date.
+ */
 function updateWeekStatus() {
     if(parsedData == null){
         // COMMENT FOR TESTING document.getElementById("week-date").textContent = "Importe um horário";
@@ -258,8 +304,12 @@ var table = new Tabulator("#example-table", {
     placeholder:"Pronto para receber os dados. Importe o ficheiro CSV",
 })
 
-// Creates the table with tabulator from an existing CSV file
-function createTabulatorTable(data) {
+/**
+ * Creates a Tabulator table and populates it with data from a CSV file.
+ *
+ * @param {Array} data - An array of data to populate the Tabulator table.
+ */
+/*function createTabulatorTable(data) {
 
     table = new Tabulator("#example-table", {
         data: data,
@@ -360,6 +410,13 @@ for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (incl
 // -------------------------- Auxiliary Functions --------------------------
 
 // This function sets any date in the format DD/MM/YYYY
+
+/**
+ * Formats a given date in the "DD/MM/YYYY" format.
+ *
+ * @param {Date} date - The date to be formatted.
+ * @returns {string} The formatted date string.
+ */
 function formatDate(date) {
     var day = date.getDate();
     var month = date.getMonth() + 1; // Os meses são indexados a partir de 0 em JavaScript
@@ -371,8 +428,15 @@ function formatDate(date) {
 
     return day + '/' + month + '/' + year;
 }
-//module.exports=formatDate
 
+/**
+ * Extracts the start and last dates from the parsed CSV data and sets them in global variables.
+ *
+ * @param {Matrix<String>} data - The parsed CSV data.
+ * @returns {{WeekStart: Date, startDate: Date, lastDate: Date}} The start date.
+ * @returns {Date} The last date.
+ * @returns {Date} The week start date.
+ */
 function getStartAndLastDate(data) {
     if (data !== null) {
         let csvFirstDate = new Date(); // Inicializa com a data atual
@@ -403,7 +467,6 @@ function getStartAndLastDate(data) {
     return { startDate: null, lastDate: null, WeekStart: null };
 
 }
-//.exports=getStartAndLastDate
 
 //Prints to HTML footer the current year
 // COMMENT FOR TESTING document.getElementById("year").innerHTML = new Date().getFullYear();
