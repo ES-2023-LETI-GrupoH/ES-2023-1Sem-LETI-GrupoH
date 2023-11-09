@@ -1,0 +1,205 @@
+Index: src/main/webapp/js/scripts.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\nlet startDate = new Date(\"October 15, 2022\");\r\nlet lastDate = new Date(\"August 23, 2023\")\r\nlet WeekDate = new Date(startDate) // This variable is used for the week navigation.\r\n                                           // It can't be directly assign to startDate or else it\r\n                                           // will update in the week navigation the both variables.\r\n\r\n\r\n\r\n\r\n// ---------------- MODAL -------------------------------\r\n\r\n\r\nvar errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {\r\n    keyboard: true,\r\n})\r\n\r\n\r\n\r\n\r\n// ----------------------------------------------------- CSV RELATED -------------------------------\r\n\r\n\r\n// ---------------- CSV Input -------------------------------\r\n\r\n// Adicione um evento de mudança para o dropdown menu\r\nconst importTypeDropdown = document.getElementById(\"csv-import\");\r\nconst csvFileInput = document.getElementById(\"csv-file\");\r\nconst csvUrlInput = document.getElementById(\"csv-url\");\r\nconst csvDataDisplay = document.getElementById(\"csv-data\");\r\n\r\n// Define the event handler function\r\nfunction handleImportTypeChange() {\r\n    const selectedOption = importTypeDropdown.value;\r\n\r\n    // Exibir ou ocultar os campos apropriados com base na escolha do usuário\r\n    if (selectedOption === \"file\") {\r\n        csvFileInput.style.display = \"block\";\r\n        csvUrlInput.style.display = \"none\";\r\n    } else if (selectedOption === \"url\") {\r\n        csvFileInput.style.display = \"none\";\r\n        csvUrlInput.style.display = \"block\";\r\n    } else {\r\n        // Lógica de tratamento adicional, se necessário\r\n    }\r\n}\r\n\r\nwindow.addEventListener(\"load\", handleImportTypeChange);\r\n\r\nimportTypeDropdown.addEventListener(\"change\", handleImportTypeChange);\r\n\r\n\r\n\r\n// Lógica para processar o envio do formulário\r\n\r\nconst csvForm = document.getElementById(\"csv-form-js\");\r\n\r\n\r\ncsvForm.addEventListener(\"submit\", function (event) {\r\n    event.preventDefault();\r\n    if (importTypeDropdown.value === \"file\" && csvFileInput.files.length > 0) {\r\n        // Processar CSV por arquivo\r\n        loadAndParseCSV(csvFileInput.files[0],false); // Call a function to download CSV from the file\r\n        //assignEvent(3,4, startDate); // Rewrite the table content\r\n        //assignEvent(3,5, lastDate); // Rewrite the table content\r\n    } else if (importTypeDropdown.value === \"url\" && csvUrlInput.value) {\r\n        // Processar CSV por URL\r\n        loadAndParseCSV(csvUrlInput.value,true); // Call a function to download CSV from the URL\r\n        //assignEvent();\r\n    } else {\r\n        // Lógica para lidar com nenhum arquivo selecionado ou URL inserida\r\n        console.log(\"Nenhum arquivo selecionado ou URL inserida\");\r\n        errorModal.toggle();\r\n    }\r\n});\r\n\r\n\r\n// ---------------- CSV Processing -------------------------------\r\n\r\nlet parsedData;\r\n\r\nvar delimiter = ';';\r\n\r\nfunction setDelimiter(s) {\r\n    delimiter = s;\r\n}\r\n\r\nfunction loadAndParseCSV(fileData, isURL) {\r\n    parsedData = null;\r\n    if (isURL) {\r\n        // Se for uma URL, faça uma solicitação para obter o conteúdo do CSV\r\n        fetch(fileData)\r\n            .then(response => response.text())\r\n            .then(data => {\r\n                // Chame a função 'parse' e 'print' para processar e exibir os dados\r\n                parsedData = parse(data);\r\n                //getStartAndLastDate(parsedData);\r\n                print(parsedData);\r\n            })\r\n            .catch(error => console.error(error));\r\n    } else if (fileData instanceof File) {\r\n        // Se for um arquivo local, leia o conteúdo e processe diretamente\r\n        const reader = new FileReader();\r\n        reader.onload = function (e) {\r\n            const csvContent = e.target.result;\r\n            parsedData = parse(csvContent);\r\n            //getStartAndLastDate(parsedData);\r\n            print(parsedData);\r\n        };\r\n        reader.readAsText(fileData);\r\n    }\r\n\r\n\r\n    updateWeekStatus();\r\n}\r\n\r\nfunction parse(data) {\r\n    const dataList = [];\r\n    let maximumNumberOfFields = 0;\r\n\r\n    const lines = data.split('\\n');\r\n    lines.forEach((line) => {\r\n        const fields = line.split(delimiter);\r\n        maximumNumberOfFields = Math.max(maximumNumberOfFields, fields.length);\r\n        dataList.push(fields);\r\n    });\r\n\r\n    const totalNumberOfLines = dataList.length;\r\n    const result = new Array(totalNumberOfLines);\r\n    for (let i = 0; i < totalNumberOfLines; i++) {\r\n        result[i] = new Array(maximumNumberOfFields);\r\n        const fields = dataList[i];\r\n        for (let j = 0; j < fields.length; j++) {\r\n            result[i][j] = fields[j];\r\n        }\r\n    }\r\n\r\n    return { totalNumberOfLines, maximumNumberOfFields, data: result };\r\n}\r\n\r\nfunction print(parsedData) {\r\n    console.log(`Total number of lines: ${parsedData.totalNumberOfLines} and each line has ${parsedData.maximumNumberOfFields} parts`);\r\n    for (let y = 0; y < parsedData.totalNumberOfLines; y++) {\r\n        console.log(parsedData.data[y].join(' | '));\r\n    }\r\n}\r\n\r\n\r\n\r\n// ---------------- WEEK NAVIGATOR -------------------------------\r\n\r\nlet WeekMonday ;\r\nlet WeekSunday ;\r\n\r\nfunction updateWeekStatus() {\r\n\r\n    //if(parsedData == null){\r\n    //   document.getElementById(\"week-date\").textContent = \"Importe um horário\";\r\n    //} else {\r\n\r\n        console.log(formatDate(WeekDate));\r\n        WeekMonday = new Date(WeekDate);\r\n        // Sets the start date for the nearest monday available ( monday = 1 )\r\n        while (WeekMonday.getDay() !== 1) {\r\n            WeekMonday.setDate(WeekMonday.getDate() - 1);\r\n        }\r\n\r\n\r\n        // Calculates the endDate for the week of the startingDay\r\n        WeekSunday = new Date(WeekMonday);\r\n        WeekSunday.setDate(WeekMonday.getDate() + 6);\r\n\r\n\r\n        // Puts the date in the Portuguese Format\r\n        let WeekFirstDateString = formatDate(WeekMonday);\r\n        let WeekLastDateString = formatDate(WeekSunday);\r\n\r\n        // Sends the week date to the HTML span which id is \"week-date\"\r\n        document.getElementById(\"week-date\").textContent = WeekFirstDateString + \" - \" + WeekLastDateString;\r\n    //}\r\n\r\n\r\n\r\n    //clearTable();\r\n\r\n}\r\n\r\n// FIRST Week Navigation Update\r\nupdateWeekStatus();\r\n\r\n// Previous Week functions\r\nconst previousWeekBttn = document.getElementById(\"previous-week\");\r\npreviousWeekBttn.addEventListener(\"click\", function () {\r\n    if (WeekDate.getTime() > startDate) { // Checks if is the first week\r\n        WeekDate.setDate(WeekDate.getDate() - 7);\r\n        updateWeekStatus();\r\n    }\r\n});\r\n\r\n// Next Week functions\r\nconst nextWeekBttn = document.getElementById(\"next-week\");\r\nnextWeekBttn.addEventListener(\"click\", function () {\r\n    let nextWeekDate = new Date(WeekDate); //Temporary variable for the next week\r\n    nextWeekDate.setDate(nextWeekDate.getDate()+7) // Predicts the next week date and stores it temporarily in the nextWeekDate var\r\n    if (nextWeekDate < lastDate) { // Compares if the predicted date is smaller than the last date\r\n        WeekDate.setDate(WeekDate.getDate() + 7);  //Updates the WeekDate for the next week\r\n        updateWeekStatus();\r\n    }\r\n});\r\n\r\n// Reset Week functions\r\nconst resetWeekBttn = document.getElementById(\"reset-week\");\r\nresetWeekBttn.addEventListener(\"click\", function () {\r\n    WeekDate.setTime(startDate.getTime()); // Updates the WeekDate for the first week. It needs to be GetTime() instead of GetDate()\r\n    updateWeekStatus();                    // because if its GetDate it only updates the day and not the entire date\r\n});\r\n\r\n// -------------------------- TABLE CREATION AND POPULATION ---------------------------------\r\n\r\n\r\n// Select the HTML table element with the 'table' tag and assign it to the 'table' variable.\r\nconst table = document.querySelector('tbody');\r\n\r\n// Loop to create time intervals between 8:00 (8 AM) and 23:00 (11:00 PM).\r\nfor (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (inclusive).\r\n    for (let minute = 0; minute < 60; minute += 30) { // Loop through minutes, incrementing by 30.\r\n        // Create the start and end times in the format \"HH:MM\" (e.g., \"8:00-8:30\").\r\n        let timeStart = `${hour}:${minute < 10 ? '0' : ''}${minute}`;\r\n        // Determine the next hour and minute for the end time of the time interval.\r\n        let nextHour = minute === 30 ? hour + 1 : hour;\r\n        // If the current minute is 30, increment the hour by 1; otherwise, keep the same hour.\r\n        let nextMinute = minute === 30 ? 0 : minute + 30;\r\n        // Create the end time in the format \"HH:MM\" (e.g., \"8:00-8:30\").\r\n        let timeEnd = `${nextHour}:${nextMinute < 10 ? '0' : ''}${nextMinute}`;\r\n\r\n        // Create a new table row for each time interval.\r\n        const row = document.createElement('tr');\r\n\r\n        // Create a table header cell (th) for the time interval and set its class to 'tempo'.\r\n        const timeCell = document.createElement('th');\r\n        timeCell.className = 'tempo';\r\n        timeCell.textContent = `${timeStart}-${timeEnd}`;\r\n        row.appendChild(timeCell);\r\n\r\n        // Loop through the days of the week (7 days) and create a cell (td) for each day.\r\n        for (let day = 0; day < 7; day++) {\r\n            // Create a table data cell for the schedule information and set its class to 'aula'.\r\n            const cell = document.createElement('td');\r\n            cell.className = 'aula';\r\n            row.appendChild(cell);\r\n        }\r\n\r\n        // Append the row to the table, adding it to the grid of cells.\r\n        table.appendChild(row);\r\n    }\r\n\r\n}\r\n// content -> what is to be written in the designated cell\r\nfunction assignEvent(rowIndex, columnIndex, content) {\r\n    const table = document.querySelector('tbody');\r\n\r\n    if (table.rows[rowIndex] && table.rows[rowIndex].cells[columnIndex]) {\r\n        const cell = table.rows[rowIndex].cells[columnIndex];\r\n        cell.textContent = content;\r\n        cell.style.backgroundColor = \"#8abdff\";\r\n    } else {\r\n        console.error(\"Invalid row or column index.\");\r\n    }\r\n}\r\n\r\n\r\nfunction clearTable() {\r\n    const table = document.querySelector('tbody');\r\n\r\n    // Loop through all rows starting from the second row (index 1)\r\n    for (let i = 1; i < table.rows.length; i++) {\r\n        // Loop through all cells in each row starting from the second cell (index 1)\r\n        for (let j = 1; j < table.rows[i].cells.length; j++) {\r\n            const cell = table.rows[i].cells[j];\r\n                cell.textContent = \"\";\r\n                cell.style.backgroundColor = \"white\";\r\n\r\n        }\r\n    }\r\n}\r\n\r\n\r\n\r\n// Auxiliary Functions\r\n\r\n// This function sets any date in the format DD/MM/YYYY\r\nfunction formatDate(date) {\r\n    var day = date.getDate();\r\n    var month = date.getMonth() + 1; // Os meses são indexados a partir de 0 em JavaScript\r\n    var year = date.getFullYear();\r\n\r\n    // Adicione um zero à frente se o dia ou o mês for menor que 10\r\n    if (day < 10) day = '0' + day;\r\n    if (month < 10) month = '0' + month;\r\n\r\n    return day + '/' + month + '/' + year;\r\n}\r\n\r\n\r\n\r\n\r\n/*function findLastWeekDay(date) {\r\n    while (date.getDay() !== 7) {\r\n        date.setDate(date.getDate() + 7);\r\n    }\r\n    return date;\r\n}*/\r\n\r\nfunction getStartAndLastDate(data){\r\n    if(data !== null) {\r\n    print(data)\r\n        let  [firstDay, firstMonth, firstYear] = data.data[8].split(\"/\").map(Number);\r\n\r\n        let csvFirstDate = new Date(firstYear, firstMonth - 1, firstDay);\r\n        console.log(formatDate(csvFirstDate));\r\n        let csvLastDate = new Date(firstYear, firstMonth - 1, firstDay);\r\n        let currentDate;\r\n        for (let i = 0; i < data.length; i++) {\r\n\r\n            let  [day, month, year] = data[i][8].split(\"/\").map(Number);\r\n\r\n            currentDate = new Date(year, month - 1, day);\r\n            if (currentDate < csvFirstDate) {\r\n                csvFirstDate = currentDate;\r\n            }\r\n            if (currentDate > csvLastDate) {\r\n                csvLastDate = currentDate;\r\n            }\r\n        }\r\n\r\n        startDate = csvFirstDate;\r\n        lastDate = csvLastDate;\r\n        WeekDate = csvFirstDate;\r\n\r\n        //data[0][8].split('/')\r\n        //const emptyStringArray = new Array(3).fill('');\r\n        //csvFirstDate.setUTCDate(emptyStringArray[1]);\r\n        //csvFirstDate.setMonth(emptyStringArray[2]);\r\n        //csvFirstDate.setFullYear(3);\r\n    }\r\n}\r\n\r\n\r\n\r\n//Prints to HTML footer the current year\r\ndocument.getElementById(\"year\").innerHTML = new Date().getFullYear();
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/js/scripts.js b/src/main/webapp/js/scripts.js
+--- a/src/main/webapp/js/scripts.js	(revision 493e11af703114257e98e30ff898b02d515709de)
++++ b/src/main/webapp/js/scripts.js	(date 1699496776938)
+@@ -8,17 +8,7 @@
+ 
+ 
+ 
+-// ---------------- MODAL -------------------------------
+-
+-
+-var errorModal = new bootstrap.Modal(document.getElementById('errorModal'), {
+-    keyboard: true,
+-})
+-
+-
+-
+-
+-// ----------------------------------------------------- CSV RELATED -------------------------------
++// ----------------------------- CSV RELATED -------------------------------
+ 
+ 
+ // ---------------- CSV Input -------------------------------
+@@ -348,4 +338,9 @@
+ 
+ 
+ //Prints to HTML footer the current year
+-document.getElementById("year").innerHTML = new Date().getFullYear();
+\ No newline at end of file
++document.getElementById("year").innerHTML = new Date().getFullYear();
++
++
++
++// -------------------- MODULE EXPORTS (For JEST Testing) --------------------
++module.exports = formatDate
+\ No newline at end of file
+Index: .idea/jarRepositories.xml
+===================================================================
+diff --git a/.idea/jarRepositories.xml b/.idea/jarRepositories.xml
+deleted file mode 100644
+--- a/.idea/jarRepositories.xml	(revision 493e11af703114257e98e30ff898b02d515709de)
++++ /dev/null	(revision 493e11af703114257e98e30ff898b02d515709de)
+@@ -1,20 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="RemoteRepositoriesConfiguration">
+-    <remote-repository>
+-      <option name="id" value="central" />
+-      <option name="name" value="Central Repository" />
+-      <option name="url" value="https://repo.maven.apache.org/maven2" />
+-    </remote-repository>
+-    <remote-repository>
+-      <option name="id" value="central" />
+-      <option name="name" value="Maven Central repository" />
+-      <option name="url" value="https://repo1.maven.org/maven2" />
+-    </remote-repository>
+-    <remote-repository>
+-      <option name="id" value="jboss.community" />
+-      <option name="name" value="JBoss Community repository" />
+-      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+-    </remote-repository>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/inspectionProfiles/Project_Default.xml
+===================================================================
+diff --git a/.idea/inspectionProfiles/Project_Default.xml b/.idea/inspectionProfiles/Project_Default.xml
+deleted file mode 100644
+--- a/.idea/inspectionProfiles/Project_Default.xml	(revision 493e11af703114257e98e30ff898b02d515709de)
++++ /dev/null	(revision 493e11af703114257e98e30ff898b02d515709de)
+@@ -1,21 +0,0 @@
+-<component name="InspectionProjectProfileManager">
+-  <profile version="1.0">
+-    <option name="myName" value="Project Default" />
+-    <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
+-      <option name="myValues">
+-        <value>
+-          <list size="7">
+-            <item index="0" class="java.lang.String" itemvalue="nobr" />
+-            <item index="1" class="java.lang.String" itemvalue="noembed" />
+-            <item index="2" class="java.lang.String" itemvalue="comment" />
+-            <item index="3" class="java.lang.String" itemvalue="noscript" />
+-            <item index="4" class="java.lang.String" itemvalue="embed" />
+-            <item index="5" class="java.lang.String" itemvalue="script" />
+-            <item index="6" class="java.lang.String" itemvalue="table-name" />
+-          </list>
+-        </value>
+-      </option>
+-      <option name="myCustomValuesEnabled" value="true" />
+-    </inspection_tool>
+-  </profile>
+-</component>
+\ No newline at end of file
+Index: .idea/jsLibraryMappings.xml
+===================================================================
+diff --git a/.idea/jsLibraryMappings.xml b/.idea/jsLibraryMappings.xml
+deleted file mode 100644
+--- a/.idea/jsLibraryMappings.xml	(revision 493e11af703114257e98e30ff898b02d515709de)
++++ /dev/null	(revision 493e11af703114257e98e30ff898b02d515709de)
+@@ -1,6 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="JavaScriptLibraryMappings">
+-    <file url="file://$PROJECT_DIR$" libraries="{Node.js Core}" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/.gitignore
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+deleted file mode 100644
+--- a/.idea/.gitignore	(revision 493e11af703114257e98e30ff898b02d515709de)
++++ /dev/null	(revision 493e11af703114257e98e30ff898b02d515709de)
+@@ -1,8 +0,0 @@
+-# Default ignored files
+-/shelf/
+-/workspace.xml
+-# Editor-based HTTP Client requests
+-/httpRequests/
+-# Datasource local storage ignored files
+-/dataSources/
+-/dataSources.local.xml
+Index: .idea/ES-2023-1Sem-LETI-GrupoH.iml
+===================================================================
+diff --git a/.idea/ES-2023-1Sem-LETI-GrupoH.iml b/.idea/ES-2023-1Sem-LETI-GrupoH.iml
+deleted file mode 100644
+--- a/.idea/ES-2023-1Sem-LETI-GrupoH.iml	(revision 493e11af703114257e98e30ff898b02d515709de)
++++ /dev/null	(revision 493e11af703114257e98e30ff898b02d515709de)
+@@ -1,8 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module type="JAVA_MODULE" version="4">
+-  <component name="AdditionalModuleElements">
+-    <content url="file://$MODULE_DIR$" dumb="true">
+-      <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
+-    </content>
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"MavenProjectsManager\">\r\n    <option name=\"originalFiles\">\r\n      <list>\r\n        <option value=\"$PROJECT_DIR$/pom.xml\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_20\" default=\"true\" project-jdk-name=\"20\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 493e11af703114257e98e30ff898b02d515709de)
++++ b/.idea/misc.xml	(date 1699494706662)
+@@ -8,7 +8,5 @@
+       </list>
+     </option>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_20" default="true" project-jdk-name="20" project-jdk-type="JavaSDK">
+-    <output url="file://$PROJECT_DIR$/out" />
+-  </component>
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="openjdk-21" project-jdk-type="JavaSDK" />
+ </project>
+\ No newline at end of file
+Index: src/main/webapp/js/scripts.test.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/js/scripts.test.js b/src/main/webapp/js/scripts.test.js
+new file mode 100644
+--- /dev/null	(date 1699497071011)
++++ b/src/main/webapp/js/scripts.test.js	(date 1699497071011)
+@@ -0,0 +1,30 @@
++
++
++
++
++// Write your Jest test cases
++describe('formatDate function', () => {
++    test('formats a date correctly', () => {
++        // Create a date object (e.g., March 15, 2022)
++        const date = new Date('2022-03-15T00:00:00.000Z');
++
++        // Call the formatDate function
++        const formattedDate = formatDate(date);
++
++        // Check if the formatted date matches the expected format
++        expect(formattedDate).toBe('15/03/2022');
++    });
++
++    test('handles single-digit day and month', () => {
++        // Create a date object with a single-digit day and month (e.g., June 5, 2022)
++        const date = new Date('2022-06-05T00:00:00.000Z');
++
++        // Call the formatDate function
++        const formattedDate = formatDate(date);
++
++        // Check if the formatted date handles single-digit day and month correctly
++        expect(formattedDate).toBe('05/06/2022');
++    });
++
++    // Add more test cases as needed
++});
+\ No newline at end of file
