@@ -31,6 +31,7 @@ const importTypeDropdown = document.getElementById("csv-import");
 const csvFileInput = document.getElementById("csv-file");
 const csvUrlInput = document.getElementById("csv-url");
 const csvDataDisplay = document.getElementById("csv-data");
+const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
 
 // Define the event handler function
 /**
@@ -66,31 +67,35 @@ const csvForm = document.getElementById("csv-form-js");
 
 csvForm.addEventListener("submit", function (event) {
     event.preventDefault();
-    if (importTypeDropdown.value === "file" && csvFileInput.files.length > 0) {
-        // Processar CSV por arquivo
-        loadAndParseCSV(csvFileInput.files[0],false)
-            .then(data=> {
-                createTabulatorTable(data);
-            })
-            .catch(error => {
-                console.error(error);
-            })// Call a function to download CSV from the URL// Call a function to download CSV from the file
 
-    } else if (importTypeDropdown.value === "url" && csvUrlInput.value) {
-        // Processar CSV por URL
-        loadAndParseCSV(csvUrlInput.value,true) // Call a function to download CSV from the URL
-            .then(data=> {
+    if (importTypeDropdown.value === "file" && csvFileInput.files.length > 0) {
+        loadAndParseCSV(csvFileInput.files[0], false)
+            .then(data => {
                 createTabulatorTable(data);
+                resetForm(); // Reset the form after successful file processing
             })
             .catch(error => {
                 console.error(error);
-            })// Call a function to download CSV from the URL// Call a function to download CSV from the file
+            });
+    } else if (importTypeDropdown.value === "url" && csvUrlInput.value) {
+        loadAndParseCSV(csvUrlInput.value, true)
+            .then(data => {
+                createTabulatorTable(data);
+                resetForm(); // Reset the form after successful URL processing
+            })
+            .catch(error => {
+                console.error(error);
+            });
     } else {
-        // Lógica para lidar com nenhum arquivo selecionado ou URL inserida
-        console.log("Nenhum arquivo selecionado ou URL inserida");
+        console.log("Nenhum arquivo selecionado ou URL inserido");
         errorModal.toggle();
     }
 });
+
+// Function to reset the form
+function resetForm() {
+    csvForm.reset();
+}
 
 
 // ---------------- CSV Processing ----------------
