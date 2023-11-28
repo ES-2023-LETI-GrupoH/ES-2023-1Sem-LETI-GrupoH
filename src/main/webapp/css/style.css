@@ -1,0 +1,54 @@
+
+/* -------------------- Body Style -------------------- */
+
+body {
+    display: flex;
+    /*create a flex container. A flex container is a block-level element that can contain flex items.
+    It enables a flex layout context for its children*/
+    flex-direction: column;
+    /* center the text content of the page both vertically and horizontally in a column layout */
+    align-items: center; /* aligns all text of the page on the center */
+    justify-content: center; /* aligns all text of the page on the center */
+    margin: 50px; /* defines the margins of the page */
+    font-family: Arial, sans-serif; /* Defines the type of font for the entire page */
+}
+
+
+/* -------------------- Table Style -------------------- */
+
+
+.table-calendar {
+    width: 100%; /* Make the table responsive to the screen width */
+    font-size: 18px; /* Adjust the size of the text inside the table */
+    border-collapse: collapse; /* Remove spacing between cells */
+    border-spacing: 0; /* Remove spacing between cells */
+}
+
+.table-name{
+    font-weight: bold !important;
+    font-size: 30px !important;
+}
+
+/* -------------------- Cell Style -------------------- */
+
+/* cell settings */
+th, td {
+    border: 1px solid black !important;/* Adjust the size of the border of the cells */
+    padding: 20px; /* Adjust the minimum size of the cells */
+    text-align: center;
+}
+
+/* make the background color of the days of the week cells and the time intervals
+ gray with white colored text*/
+th.tempo,th.dia{
+    background-color: dimgrey;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    /* Responsive styles for screens up to 768px wide */
+    .table-rows.th, .table-rows.td {
+        padding: 1px !important; /* Further adjust padding for smaller screens */
+        font-size: 17px !important; /* Adjust font size for smaller screens */
+    }
+}
