@@ -2,7 +2,7 @@
  * In this variable, we'll store all the necessary columns and the new information.
  * @type {Matrix<String>}
  */
-let MatrixTable;
+let classesMatrix;
 
 /**
  * In this variable, we'll preload all the information from the classrooms.
@@ -35,37 +35,37 @@ function chooseColumn(number,matrix) {
 
 function LoadClasses(){
     next = 0;
-    MatrixTable[0][next] = chooseColumn(2);
+    classesMatrix[0][next] = chooseColumn(2);
     next++;
-    MatrixTable[0][next] = chooseColumn(5);
+    classesMatrix[0][next] = chooseColumn(5);
     next++;
-    MatrixTable[0][next] = chooseColumn(7);
+    classesMatrix[0][next] = chooseColumn(7);
     next++;
-    MatrixTable[0][next] = chooseColumn(8);
+    classesMatrix[0][next] = chooseColumn(8);
     next++;
-    MatrixTable[0][next] = chooseColumn(9);
+    classesMatrix[0][next] = chooseColumn(9);
     next++;
-    MatrixTable[0][next] = chooseColumn(11);
+    classesMatrix[0][next] = chooseColumn(11);
     next++;
 }
 
 function checkNumberOfStudents(){
-    for(i = 1; i < MatrixTable.length; i++){
-        let classroom = MatrixTable[i][5];
-        let numberofStudents = MatrixTable[i][1];
+    for(i = 1; i < classesMatrix.length; i++){
+        let classroom = classesMatrix[i][5];
+        let numberofStudents = classesMatrix[i][1];
         for(j=1; j < classroomsSpecs.length; j++){
             if(classroom == classroomsSpecs[j][1]){
-                MatrixTable[i][6] = classroomsSpecs[j][2] - numberofStudents;
+                classesMatrix[i][6] = classroomsSpecs[j][2] - numberofStudents;
             }
         }
     }
 }
 
 function checkSobrelotation(){
-    let sobrelotation = new Boolean(false);
-        for(i = 1; i < MatrixTable.length; i++){
-            let classroom = MatrixTable[i][5];
-            let numberofStudents = MatrixTable[i][1];
+        for(i = 1; i < classesMatrix.length; i++){
+            let sobrelotation = Boolean(false);
+            let classroom = classesMatrix[i][5];
+            let numberofStudents = classesMatrix[i][1];
             for(j=1; j < classroomsSpecs.length; j++){
                 if(classroom == classroomsSpecs[j][1]){
                     if(numberofStudents > classroomsSpecs[j][2]){
@@ -73,6 +73,6 @@ function checkSobrelotation(){
                     }
                 }
             }
+           classesMatrix[i][7] = sobrelotation;
         }
-        return sobrelotation;
 }
