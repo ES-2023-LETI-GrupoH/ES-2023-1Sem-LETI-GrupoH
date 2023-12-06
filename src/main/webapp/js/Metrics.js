@@ -49,7 +49,7 @@ function LoadClasses(){
     next++;
 }
 
-function checkClassroomCapacity(){
+function checkNumberOfStudents(){
     for(i = 1; i < MatrixTable.length; i++){
         let classroom = MatrixTable[i][5];
         let numberofStudents = MatrixTable[i][1];
@@ -59,4 +59,20 @@ function checkClassroomCapacity(){
             }
         }
     }
+}
+
+function checkSobrelotation(){
+    let sobrelotation = new Boolean(false);
+        for(i = 1; i < MatrixTable.length; i++){
+            let classroom = MatrixTable[i][5];
+            let numberofStudents = MatrixTable[i][1];
+            for(j=1; j < classroomsSpecs.length; j++){
+                if(classroom == classroomsSpecs[j][1]){
+                    if(numberofStudents > classroomsSpecs[j][2]){
+                        sobrelotation = true;
+                    }
+                }
+            }
+        }
+        return sobrelotation;
 }
