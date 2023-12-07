@@ -62,6 +62,7 @@ function checkNumberOfStudents(){
 }
 
 function checkSobrelotation(){
+    let nAulasEmSobr = 0;
         for(i = 1; i < classesMatrix.length; i++){
             let sobrelotation = Boolean(false);
             let classroom = classesMatrix[i][5];
@@ -70,9 +71,22 @@ function checkSobrelotation(){
                 if(classroom == classroomsSpecs[j][1]){
                     if(numberofStudents > classroomsSpecs[j][2]){
                         sobrelotation = true;
+                            nAulasEmSobr ++;
                     }
                 }
             }
            classesMatrix[i][7] = sobrelotation;
         }
+    return nAulasEmSobr;
+}
+
+function numberOfClassesWtClassroom () {
+    let nAulasSemSala = 0;
+        for(i = 1; i < classesMatrix.length; i++){
+            let classRoom = classesMatrix[i][5]
+                if( classRoom == NULL){
+                   nAulasSemSala ++;
+            }
+        }
+    return nAulasSemSala;
 }
