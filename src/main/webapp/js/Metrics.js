@@ -22,7 +22,7 @@ function init(){
 }
 
 
-function chooseColumn(number,matrix) {
+function addColumntoWorkingMatrix(number,matrix) {
     let workingData = matrix;
     let chosenColumn;
     try {
@@ -36,7 +36,8 @@ function chooseColumn(number,matrix) {
                 }
                 console.log('Row Number: ' + (currentLine));
                 console.log('Row Value: ' + chosenColumn);
-                return chosenColumn = workingData[currentLine].shift().trim();
+                chosenColumn = workingData[currentLine].shift().trim();
+                return chosenColumn;
             }
         }
     } catch (error) {
@@ -44,20 +45,49 @@ function chooseColumn(number,matrix) {
     }
 }
 
+//Setting required columns. Later on, this will allow us to easily set columns when the file is in a different structure.
+/**
+ * In these variables, we'll store all the necessary columns and the new information.
+ * @type {List<String>}
+ * */
+let UC ; //Column 1 (starting from zero)
+let Turno;//Column 2
+let NumberofStudents; //Column 4
+let StartingHour; //Column 6
+let EndingHour; //Column 7
+let classDate; //Column 8
+let classroomType; //Column 9
+let classroom; //Column 10
+
 function LoadClasses(){
     next = 0;
-    classesMatrix[0][next] = chooseColumn(2);
+    classesMatrix[0][next] = addColumntoWorkingMatrix(2,parsedData);
     next++;
-    classesMatrix[0][next] = chooseColumn(5);
+    classesMatrix[0][next] = addColumntoWorkingMatrix(5,parsedData);
     next++;
-    classesMatrix[0][next] = chooseColumn(7);
+    classesMatrix[0][next] = addColumntoWorkingMatrix(7,parsedData);
     next++;
-    classesMatrix[0][next] = chooseColumn(8);
+    classesMatrix[0][next] = addColumntoWorkingMatrix(8,parsedData);
     next++;
-    classesMatrix[0][next] = chooseColumn(9);
+    classesMatrix[0][next] = addColumntoWorkingMatrix(9,parsedData);
     next++;
-    classesMatrix[0][next] = chooseColumn(11);
+    classesMatrix[0][next] = addColumntoWorkingMatrix(11,parsedData);
     next++;
+}
+
+function imprimirMatriz(matriz) {
+    for (let i = 0; i < matriz.length; i++) {
+        let linha = "";
+        for (let j = 0; j < matriz[i].length; j++) {
+            linha += matriz[i][j] + "\t";
+        }
+        console.log(linha);
+    }
+}
+
+function test() {
+    LoadClasses();
+    imprimirMatriz(classesMatrix);
 }
 
 function checkNumberOfStudents(){
