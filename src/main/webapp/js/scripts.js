@@ -103,7 +103,7 @@ function resetForm() {
 
 /**
  * The parsed data variable corresponds to a matrix which holds the data that is loaded from a csv file or URL.
- * @type {Matrix<String>}
+ * @type
  */
 let parsedData;
 
@@ -150,13 +150,6 @@ function loadAndParseCSV(fileData, isURL) {
 
                     // To define the schedule table content
                     parsedData = parse(csvData);
-                    startDate = getStartAndLastDate(parsedData).startDate;
-                    lastDate = getStartAndLastDate(parsedData).lastDate;
-                    WeekStart = getStartAndLastDate(parsedData).WeekStart;
-                    //assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
-                    //assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
-                    //print(parsedData);
-                    updateWeekStatus();
                 })
                 .catch(error => console.error(error));
         } else if (fileData instanceof File) {
@@ -174,13 +167,9 @@ function loadAndParseCSV(fileData, isURL) {
 
                 // To define the schedule table content
                 parsedData = parse(csvContent);
-                startDate = getStartAndLastDate(parsedData).startDate;
-                lastDate = getStartAndLastDate(parsedData).lastDate;
-                WeekStart = getStartAndLastDate(parsedData).WeekStart;
                 //assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
                 //assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
                 //print(parsedData);
-                updateWeekStatus();
             };
             reader.readAsText(fileData);
         }
@@ -209,89 +198,115 @@ function parse(data) {
         }
     }
 
-    return { totalNumberOfLines, maximumNumberOfFields, data: result };
+    return result;
 }
-
-
-
-// ---------------- WEEK NAVIGATOR -------------------------------
-
-/**
- * 'WeekMonday' is used to store the starting date of the current week (Monday).
- * @type {Date}
- */
-let WeekMonday ;
-
-/**
- * 'WeekSunday' is used to store the ending date of the current week (Sunday).
- * @type {Date}
- */
-let WeekSunday ;
-
-
-/**
- * Updates the displayed week's status based on the 'WeekStart' date.
- */
-function updateWeekStatus() {
-    if(parsedData == null){
-        document.getElementById("week-date").textContent = "Importe um horário";
-    } else {
-
-        console.log(formatDate(WeekStart));
-        WeekMonday = new Date(WeekStart);
-        // Sets the start date for the nearest monday available ( monday = 1 )
-        while (WeekMonday.getDay() !== 1) {
-            WeekMonday.setDate(WeekMonday.getDate() - 1);
-        }
-
-
-        // Calculates the endDate for the week of the startingDay
-        WeekSunday = new Date(WeekMonday);
-        WeekSunday.setDate(WeekMonday.getDate() + 6);
-
-
-        // Puts the date in the Portuguese Format
-        let WeekFirstDateString = formatDate(WeekMonday);
-        let WeekLastDateString = formatDate(WeekSunday);
-
-        // Sends the week date to the HTML span which id is "week-date"
-        document.getElementById("week-date").textContent = WeekFirstDateString + " - " + WeekLastDateString;
-    }
-}
-
-// FIRST Week Navigation Update
-updateWeekStatus();
-
-// Previous Week functions
-const previousWeekBttn = document.getElementById("previous-week");
-previousWeekBttn.addEventListener("click", function () {
-    if (WeekStart.getTime() > startDate.getTime()) { // Checks if is the first week
-        WeekStart.setDate(WeekStart.getDate() - 7);
-        updateWeekStatus();
-    }
-});
-
-// Next Week functions
-const nextWeekBttn = document.getElementById("next-week");
-nextWeekBttn.addEventListener("click", function () {
-    let nextWeekStart = new Date(WeekStart); //Temporary variable for the next week
-    nextWeekStart.setDate(nextWeekStart.getDate()+7) // Predicts the next week date and stores it temporarily in the nextWeekStart var
-    if (nextWeekStart < lastDate) { // Compares if the predicted date is smaller than the last date
-        WeekStart.setDate(WeekStart.getDate() + 7);  //Updates the WeekStart for the next week
-        updateWeekStatus();
-    }
-});
-
-// Reset Week functions
-const resetWeekBttn = document.getElementById("reset-week");
-resetWeekBttn.addEventListener("click", function () {
-    WeekStart.setTime(startDate.getTime()); // Updates the WeekStart for the first week. It needs to be GetTime() instead of GetDate()
-    updateWeekStatus();                     // because if its GetDate it only updates the day and not the entire date
-});
 
 
 // -------------------------- TABULATOR --------------------------
 
+
+// CRIAÇÂO DO FILTRO HTML
+
+// Seleciona o elemento div existente onde queres associar os elementos de filtro
+const filterContainer = document.getElementById('filter');
+filterContainer.classList.add('container-sm', 'row', 'justify-content-center', 'align-items-center', 'mb-3');
+
+const filterRow = document.createElement('div');
+filterRow.classList.add('container-sm', 'row', 'justify-content-center', 'align-items-center'); // Adiciona a classe container para diminuir o tamanho dos elementos
+
+// Cria os elementos do filtro
+const filterField = document.createElement('select');
+filterField.id = "filter-field";
+filterField.classList.add('form-select', 'col');
+
+const filterType = document.createElement('select');
+filterType.id = "filter-type";
+filterType.classList.add('form-select', 'col');
+
+const filterValue = document.createElement('input');
+filterValue.classList.add('form-control', 'col');
+filterValue.id = "filter-value";
+filterValue.type = "text";
+filterValue.placeholder = "value to filter";
+
+const filterClear = document.createElement('button');
+filterClear.classList.add('btn', 'btn-secondary', 'col-1');
+filterClear.id = "filter-clear";
+filterClear.textContent = "Clear Filter";
+
+// Adiciona opções aos selects
+const fields = []
+updateFilter();
+
+const types = ["=", "<", "<=", ">", ">=", "!=", "like"];
+types.forEach(type => {
+    const option = document.createElement('option');
+    option.value = type;
+    option.textContent = type;
+    filterType.appendChild(option);
+});
+
+// Adiciona os elementos ao div da linha
+filterRow.appendChild(filterField);
+filterRow.appendChild(filterType);
+filterRow.appendChild(filterValue);
+filterRow.appendChild(filterClear);
+
+// Adiciona a linha de filtro ao container existente
+filterContainer.appendChild(filterRow);
+
+
+// FUNCIONALIDADE DO FILTRO
+
+//Define variables for input elements
+var fieldEl = document.getElementById("filter-field");
+var typeEl = document.getElementById("filter-type");
+var valueEl = document.getElementById("filter-value");
+
+//Custom filter example
+function customFilter(data){
+    return data.car && data.rating < 3;
+}
+
+//Trigger setFilter function with correct parameters
+function updateTableByFilter(){
+
+    var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
+    var typeVal = typeEl.options[typeEl.selectedIndex].value;
+
+    console.log("Valor do filtro: " + filterVal);
+    console.log("Tipo do filtro: " + typeVal);
+
+    var filter = filterVal === "function" ? customFilter : filterVal;
+
+    if(filterVal === "function" ){
+        typeEl.disabled = true;
+        valueEl.disabled = true;
+    }else{
+        typeEl.disabled = false;
+        valueEl.disabled = false;
+    }
+
+    if(filterVal){
+        table.setFilter(filter,typeVal, valueEl.value);
+    }
+}
+
+//Update filters on value change
+document.getElementById("filter-field").addEventListener("change", updateTableByFilter);
+document.getElementById("filter-field").addEventListener("change", function(){
+});
+document.getElementById("filter-type").addEventListener("change", updateTableByFilter);
+document.getElementById("filter-value").addEventListener("keyup", updateTableByFilter);
+
+//Clear filters on "Clear Filters" button click
+document.getElementById("filter-clear").addEventListener("click", function(){
+    fieldEl.value = "";
+    typeEl.value = "=";
+    valueEl.value = "";
+
+    table.clearFilter();
+});
 
 // Defines the waiting table
 var table = new Tabulator("#example-table", {
@@ -313,6 +328,7 @@ function createTabulatorTable(data) {
         columns: Object.keys(data[0]).map(key => ({
             title: key,
             field: key,
+            //headerFilter: "input", // Adiciona filtro de cabeçalho para todas as colunas
         })),
         layout:"fitColumns",      //fit columns to width of table
         responsiveLayout:"hide",  //hide columns that don't fit on the table
@@ -329,80 +345,30 @@ function createTabulatorTable(data) {
             tooltip:true,         //show tool tips on cells
         },
     });
+    updateFilter();
 }
 
+function updateFilter() {
 
+    const currentValue = filterField.value; // Armazena o valor selecionado atualmente
+    fields.length = 0; // Limpar o array fields antes de adicionar novas opções
 
-// -------------------------- SCHEDULE TABLE CREATION AND POPULATION ---------------------------------
-
-// This section is reserved for further development of a schedule table based on Fenix+
-
-/*// Select the HTML table element with the 'table' tag and assign it to the 'table' variable.
-const table = document.querySelector('tbody');
-
-// Loop to create time intervals between 8:00 (8 AM) and 23:00 (11:00 PM).
-for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (inclusive).
-    for (let minute = 0; minute < 60; minute += 30) { // Loop through minutes, incrementing by 30.
-        // Create the start and end times in the format "HH:MM" (e.g., "8:00-8:30").
-        let timeStart = `${hour}:${minute < 10 ? '0' : ''}${minute}`;
-        // Determine the next hour and minute for the end time of the time interval.
-        let nextHour = minute === 30 ? hour + 1 : hour;
-        // If the current minute is 30, increment the hour by 1; otherwise, keep the same hour.
-        let nextMinute = minute === 30 ? 0 : minute + 30;
-        // Create the end time in the format "HH:MM" (e.g., "8:00-8:30").
-        let timeEnd = `${nextHour}:${nextMinute < 10 ? '0' : ''}${nextMinute}`;
-
-        // Create a new table row for each time interval.
-        const row = document.createElement('tr');
-
-        // Create a table header cell (th) for the time interval and set its class to 'tempo'.
-        const timeCell = document.createElement('th');
-        timeCell.className = 'tempo';
-        timeCell.textContent = `${timeStart}-${timeEnd}`;
-        row.appendChild(timeCell);
-
-        // Loop through the days of the week (7 days) and create a cell (td) for each day.
-        for (let day = 0; day < 7; day++) {
-            // Create a table data cell for the schedule information and set its class to 'aula'.
-            const cell = document.createElement('td');
-            cell.className = 'aula';
-            row.appendChild(cell);
-        }
-
-        // Append the row to the table, adding it to the grid of cells.
-        table.appendChild(row);
+    filterField.innerHTML = '';
+    if (parsedData != null && parsedData.length > 0) {
+        parsedData[0].forEach((value, index) => {
+            if (value !== undefined && value !== null && value !== '') {
+                fields.push(value);
+            }
+        });
     }
-
+    fields.forEach(field => {
+        const option = document.createElement('option');
+        option.value = field;
+        option.textContent = field.charAt(0).toUpperCase() + field.slice(1);
+        filterField.appendChild(option);
+    });
+    filterField.value = currentValue; // Restaura o valor selecionado após atualizar as opções
 }
-// content -> what is to be written in the designated cell
-function assignEvent(rowIndex, columnIndex, content) {
-    const table = document.querySelector('tbody');
-
-    if (table.rows[rowIndex] && table.rows[rowIndex].cells[columnIndex]) {
-        const cell = table.rows[rowIndex].cells[columnIndex];
-        cell.textContent = content;
-        cell.style.backgroundColor = "#8abdff";
-    } else {
-        console.error("Invalid row or column index.");
-    }
-}
-
-
-function clearTable() {
-    const table = document.querySelector('tbody');
-
-    // Loop through all rows starting from the second row (index 1)
-    for (let i = 1; i < table.rows.length; i++) {
-        // Loop through all cells in each row starting from the second cell (index 1)
-        for (let j = 1; j < table.rows[i].cells.length; j++) {
-            const cell = table.rows[i].cells[j];
-                cell.textContent = "";
-                cell.style.backgroundColor = "white";
-
-        }
-    }
-}*/
-
 
 
 // -------------------------- Auxiliary Functions --------------------------
@@ -468,5 +434,3 @@ function getStartAndLastDate(data) {
 
 //Prints to HTML footer the current year
 document.getElementById("year").innerHTML = new Date().getFullYear();
-
-

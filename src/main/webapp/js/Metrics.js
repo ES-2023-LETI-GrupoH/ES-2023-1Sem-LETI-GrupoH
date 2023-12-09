@@ -2,13 +2,24 @@
  * In this variable, we'll store all the necessary columns and the new information.
  * @type {Matrix<String>}
  */
-let classesMatrix;
+let classesMatrix = [];
 
 /**
  * In this variable, we'll preload all the information from the classrooms.
  * @type {Matrix<String>}
  */
 let classroomsSpecs = loadAndParseCSV("/src/main/webapp/files/CaracterizaçãoDasSalas.csv");
+
+function init(){
+    for (let i = 0; i < parsedData.value().length; i++) {
+        classesMatrix[i] = [];
+
+        // Initialize each element in the row to zero
+        for (let j = 0; j < parsedData.value()[0].length; j++) {
+            classesMatrix[i][j] = 0;
+        }
+    }
+}
 
 
 function chooseColumn(number,matrix) {
