@@ -26,13 +26,10 @@ let WeekStart;
 
 // ---------------- CSV Input ----------------
 
-// All the html fields related to CSV submission form
-
-const importTypeDropdown = 0 // COMMENT FOR TESTING = document.getElementById("csv-import");
-const csvFileInput = 0 // COMMENT FOR TESTING = document.getElementById("csv-file");
-const csvUrlInput = 0 // COMMENT FOR TESTING = document.getElementById("csv-url");
-const csvDataDisplay = 0 // COMMENT FOR TESTING = document.getElementById("csv-data");
-
+// Adicione um evento de mudança para o dropdown menu
+const importTypeDropdown = document.getElementById("csv-import");
+const csvFileInput = document.getElementById("csv-file");
+const csvUrlInput = document.getElementById("csv-url");
 
 // Define the event handler function
 /**
@@ -43,58 +40,59 @@ function handleImportTypeChange() {
 
     const selectedOption = importTypeDropdown.value;
 
-    // Hide or show input fields depending on the dropdown option
+    // Exibir ou ocultar os campos apropriados com base na escolha do usuário
     if (selectedOption === "file") {
         csvFileInput.style.display = "block";
         csvUrlInput.style.display = "none";
     } else if (selectedOption === "url") {
         csvFileInput.style.display = "none";
         csvUrlInput.style.display = "block";
+    } else {
+        // Lógica de tratamento adicional, se necessário
     }
 }
 
-// COMMENT FOR TESTING window.addEventListener("load", handleImportTypeChange);
+window.addEventListener("load", handleImportTypeChange);
 
-// COMMENT FOR TESTING importTypeDropdown.addEventListener("change", handleImportTypeChange);
-
-
-
-// ---------------- CSV Submission ----------------
-
-const csvForm = 0 // COMMENT FOR TESTING =  document.getElementById("csv-form-js");
+importTypeDropdown.addEventListener("change", handleImportTypeChange);
 
 
-/*
-// COMMENT FOR TESTING
+
+// Lógica para processar o envio do formulário
+
+const csvForm = document.getElementById("csv-form-js");
+
+
 csvForm.addEventListener("submit", function (event) {
     event.preventDefault();
+
     if (importTypeDropdown.value === "file" && csvFileInput.files.length > 0) {
-        // CSV File Processing
+        // Processar CSV por arquivo
         loadAndParseCSV(csvFileInput.files[0],false)
             .then(data=> {
                 createTabulatorTable(data);
+                resetForm(); // Reset the form after successful file processing
             })
             .catch(error => {
                 console.error(error);
-            })
+            })// Call a function to download CSV from the URL// Call a function to download CSV from the file
 
     } else if (importTypeDropdown.value === "url" && csvUrlInput.value) {
-        // CSV URL Processing
+        // Processar CSV por URL
         loadAndParseCSV(csvUrlInput.value,true) // Call a function to download CSV from the URL
             .then(data=> {
                 createTabulatorTable(data);
+                resetForm(); // Reset the form after successful URL processing
             })
             .catch(error => {
                 console.error(error);
-            })
+            })// Call a function to download CSV from the URL// Call a function to download CSV from the file
     } else {
-        // When no file or URL is selected an error modal is displayed
+        // Lógica para lidar com nenhum arquivo selecionado ou URL inserida
         console.log("Nenhum arquivo selecionado ou URL inserida");
         errorModal.toggle();
     }
 });
-
- */
 
 
 // ---------------- CSV Processing ----------------
@@ -114,43 +112,19 @@ var delimiter = ';';
 
 
 
-/**
- * Sets the delimiter used for parsing the CSV data.
- *
- * @param {string} s - The delimiter character.
- */
-function setDelimiter(s) {
-    delimiter = s;
-}
-
 
 /**
  * Loads and parses CSV data from either a file or a URL.
- *
- * If it is an URL then it will fetch the file and then parse;
- * If it is a File, then it will read the file content using fileReader
- * and then parse it.
- * Both methods will return a promise and will parse the CSV data in different ways
- * for diferente tables:
- * Papa library for the Tabulator table and the parse() function for
- * ur own schedule table
  *
  * @param {File|string} fileData - The CSV file or URL to be loaded and parsed.
  * @param {boolean} isURL - Indicates whether the input is a URL (true) or a file (false).
  * @returns {Promise<Array>} A promise that resolves with the parsed CSV data or rejects with an error message.
  */
-
-// If it is an URL then it will fetch the file and then parse;
-// If it is a File, then it will read the file content using fileReader
-// and then parse it.
-// Both methods will return a promise and will parse the CSV data in different ways
-// for diferente tables:
-// Papa library for the Tabulator table and the parse() function for
-// our own schedule table
 function loadAndParseCSV(fileData, isURL) {
     return new Promise((resolve, reject) => {
         parsedData = null;
         if (isURL) {
+            // Se for uma URL, faça uma solicitação para obter o conteúdo do CSV
             fetch(fileData)
                 .then(response => response.text())
                 .then(csvData => {
@@ -164,19 +138,17 @@ function loadAndParseCSV(fileData, isURL) {
 
                     // To define the schedule table content
                     parsedData = parse(csvData);
-                    startDate=getStartAndLastDate(parsedData).startDate;
-                    lastDate=getStartAndLastDate(parsedData).lastDate;
-                    WeekStart=getStartAndLastDate(parsedData).WeekStart;
-
-                    /* For testing porpouse for the schudule table */
+                    startDate = getStartAndLastDate(parsedData).startDate;
+                    lastDate = getStartAndLastDate(parsedData).lastDate;
+                    WeekStart = getStartAndLastDate(parsedData).WeekStart;
                     //assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
                     //assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
                     //print(parsedData);
-
                     updateWeekStatus();
                 })
                 .catch(error => console.error(error));
         } else if (fileData instanceof File) {
+            // Se for um arquivo local, leia o conteúdo e processe diretamente
             const reader = new FileReader();
             reader.onload = function (e) {
                 // To define the tabulator table content
@@ -190,21 +162,19 @@ function loadAndParseCSV(fileData, isURL) {
 
                 // To define the schedule table content
                 parsedData = parse(csvContent);
-                startDate=getStartAndLastDate(parsedData).startDate;
-                lastDate=getStartAndLastDate(parsedData).lastDate;
-                WeekStart=getStartAndLastDate(parsedData).WeekStart;
-
-                /* For testing porpouse for the schudule table */
+                startDate = getStartAndLastDate(parsedData).startDate;
+                lastDate = getStartAndLastDate(parsedData).lastDate;
+                WeekStart = getStartAndLastDate(parsedData).WeekStart;
                 //assignEvent(3,4, formatDate(startDate)); // Rewrite the table content
                 //assignEvent(3,5, formatDate(lastDate)); // Rewrite the table content
                 //print(parsedData);
-
                 updateWeekStatus();
             };
             reader.readAsText(fileData);
         }
     });
 }
+
 
 function parse(data) {
     const dataList = [];
@@ -252,7 +222,7 @@ let WeekSunday ;
  */
 function updateWeekStatus() {
     if(parsedData == null){
-        // COMMENT FOR TESTING document.getElementById("week-date").textContent = "Importe um horário";
+        document.getElementById("week-date").textContent = "Importe um horário";
     } else {
 
         console.log(formatDate(WeekStart));
@@ -272,17 +242,16 @@ function updateWeekStatus() {
         let WeekFirstDateString = formatDate(WeekMonday);
         let WeekLastDateString = formatDate(WeekSunday);
 
-        // Sends the week date to the HTML span which id is "week-date" in the desired format
-        // COMMENT FOR TESTING document.getElementById("week-date").textContent = WeekFirstDateString + " - " + WeekLastDateString;
+        // Sends the week date to the HTML span which id is "week-date"
+        document.getElementById("week-date").textContent = WeekFirstDateString + " - " + WeekLastDateString;
     }
 }
 
-// Inicial Week Navigator Update
+// FIRST Week Navigation Update
 updateWeekStatus();
 
 // Previous Week functions
-const previousWeekBttn = 0// COMMENT FOR TESTING = document.getElementById("previous-week");
-/* COMMENT FOR TESTING
+const previousWeekBttn = document.getElementById("previous-week");
 previousWeekBttn.addEventListener("click", function () {
     if (WeekStart.getTime() > startDate.getTime()) { // Checks if is the first week
         WeekStart.setDate(WeekStart.getDate() - 7);
@@ -291,7 +260,7 @@ previousWeekBttn.addEventListener("click", function () {
 });
 
 // Next Week functions
-const nextWeekBttn = 0// COMMENT FOR TESTING = document.getElementById("next-week");
+const nextWeekBttn = document.getElementById("next-week");
 nextWeekBttn.addEventListener("click", function () {
     let nextWeekStart = new Date(WeekStart); //Temporary variable for the next week
     nextWeekStart.setDate(nextWeekStart.getDate()+7) // Predicts the next week date and stores it temporarily in the nextWeekStart var
@@ -301,21 +270,18 @@ nextWeekBttn.addEventListener("click", function () {
     }
 });
 
-
-
 // Reset Week functions
-const resetWeekBttn=0 // COMMENT FOR TESTING = document.getElementById("reset-week");
+const resetWeekBttn = document.getElementById("reset-week");
 resetWeekBttn.addEventListener("click", function () {
     WeekStart.setTime(startDate.getTime()); // Updates the WeekStart for the first week. It needs to be GetTime() instead of GetDate()
     updateWeekStatus();                     // because if its GetDate it only updates the day and not the entire date
 });
 
-*/
+
 // -------------------------- TABULATOR --------------------------
 
 
 // Defines the waiting table
-/* COMMENT FOR TESTING
 var table = new Tabulator("#example-table", {
     layout:"fitColumns",
     autoColumns:true,
@@ -327,7 +293,7 @@ var table = new Tabulator("#example-table", {
  *
  * @param {Array} data - An array of data to populate the Tabulator table.
  */
-/*function createTabulatorTable(data) {
+function createTabulatorTable(data) {
 
     table = new Tabulator("#example-table", {
         data: data,
@@ -345,25 +311,22 @@ var table = new Tabulator("#example-table", {
         paginationCounter:"rows", //display count of paginated rows in footer
         movableColumns:true,      //allow column order to be changed
         initialSort:[             //set the initial sort order of the data
-            {column:"Curso", dir:"asc"},
+            {column:"name", dir:"asc"},
         ],
         columnDefaults:{
             tooltip:true,         //show tool tips on cells
         },
     });
 }
-*/
+
 
 
 // -------------------------- SCHEDULE TABLE CREATION AND POPULATION ---------------------------------
 
-/* COMMENT FOR TESTING
-
-
 // This section is reserved for further development of a schedule table based on Fenix+
 
-// Select the HTML table element with the 'table' tag and assign it to the 'table' variable.
-const tableSchedule=0// COMMENT FOR TESTING = document.querySelector('tbody');
+/*// Select the HTML table element with the 'table' tag and assign it to the 'table' variable.
+const table = document.querySelector('tbody');
 
 // Loop to create time intervals between 8:00 (8 AM) and 23:00 (11:00 PM).
 for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (inclusive).
@@ -378,13 +341,14 @@ for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (incl
         let timeEnd = `${nextHour}:${nextMinute < 10 ? '0' : ''}${nextMinute}`;
 
         // Create a new table row for each time interval.
-        const row = 0// COMMENT FOR TESTING = document.createElement('tr');
+        const row = document.createElement('tr');
 
         // Create a table header cell (th) for the time interval and set its class to 'tempo'.
-        const timeCell =0// COMMENT FOR TESTING = document.createElement('th');
+        const timeCell = document.createElement('th');
         timeCell.className = 'tempo';
         timeCell.textContent = `${timeStart}-${timeEnd}`;
         row.appendChild(timeCell);
+
         // Loop through the days of the week (7 days) and create a cell (td) for each day.
         for (let day = 0; day < 7; day++) {
             // Create a table data cell for the schedule information and set its class to 'aula'.
@@ -394,29 +358,32 @@ for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (incl
         }
 
         // Append the row to the table, adding it to the grid of cells.
-        tableSchedule.appendChild(row);
+        table.appendChild(row);
     }
 
-}*/
+}
 // content -> what is to be written in the designated cell
-/*function assignEvent(rowIndex, columnIndex, content) {
+function assignEvent(rowIndex, columnIndex, content) {
+    const table = document.querySelector('tbody');
 
-    if (tableSchedule.rows[rowIndex] && tableSchedule.rows[rowIndex].cells[columnIndex]) {
-        const cell = tableSchedule.rows[rowIndex].cells[columnIndex];
+    if (table.rows[rowIndex] && table.rows[rowIndex].cells[columnIndex]) {
+        const cell = table.rows[rowIndex].cells[columnIndex];
         cell.textContent = content;
         cell.style.backgroundColor = "#8abdff";
     } else {
         console.error("Invalid row or column index.");
     }
-}*/
+}
 
 
-/*function clearTable() {
+function clearTable() {
+    const table = document.querySelector('tbody');
+
     // Loop through all rows starting from the second row (index 1)
-    for (let i = 1; i < tableSchedule.rows.length; i++) {
+    for (let i = 1; i < table.rows.length; i++) {
         // Loop through all cells in each row starting from the second cell (index 1)
-        for (let j = 1; j < tableSchedule.rows[i].cells.length; j++) {
-            const cell = tableSchedule.rows[i].cells[j];
+        for (let j = 1; j < table.rows[i].cells.length; j++) {
+            const cell = table.rows[i].cells[j];
                 cell.textContent = "";
                 cell.style.backgroundColor = "white";
 
@@ -425,7 +392,10 @@ for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (incl
 }*/
 
 
+
 // -------------------------- Auxiliary Functions --------------------------
+
+// This function sets any date in the format DD/MM/YYYY
 
 /**
  * Formats a given date in the "DD/MM/YYYY" format.
@@ -485,7 +455,7 @@ function getStartAndLastDate(data) {
 }
 
 //Prints to HTML footer the current year
-// COMMENT FOR TESTING document.getElementById("year").innerHTML = new Date().getFullYear();
+document.getElementById("year").innerHTML = new Date().getFullYear();
 
 
 // ------------------------------- TEST FUNCTION

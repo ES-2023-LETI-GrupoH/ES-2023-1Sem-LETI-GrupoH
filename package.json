@@ -4,7 +4,6 @@
   "description": "\"# ES-2023-1Sem-LETI-GrupoH || ESCREVER NO FINAL\"",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
     "doc": "jsdoc -c jsdoc.json"
   },
   "keywords": [],
@@ -12,8 +11,10 @@
   "license": "ISC",
   "devDependencies": {
     "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
     "jsdoc": "^4.0.2"
+  },
+  "directories": {
+    "doc": "docs"
   },
   "dependencies": {
     "argparse": "^2.0.1",
@@ -36,8 +37,5 @@
     "uc.micro": "^1.0.6",
     "underscore": "^1.13.6",
     "xmlcreate": "^2.0.4"
-  },
-  "directories": {
-    "doc": "docs"
   }
 }
