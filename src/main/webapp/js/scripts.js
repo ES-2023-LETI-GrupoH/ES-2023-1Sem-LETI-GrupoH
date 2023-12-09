@@ -227,12 +227,12 @@ const filterValue = document.createElement('input');
 filterValue.classList.add('form-control', 'col');
 filterValue.id = "filter-value";
 filterValue.type = "text";
-filterValue.placeholder = "value to filter";
+filterValue.placeholder = "Valor a filtrar";
 
 const filterClear = document.createElement('button');
 filterClear.classList.add('btn', 'btn-secondary', 'col-1');
 filterClear.id = "filter-clear";
-filterClear.textContent = "Clear Filter";
+filterClear.textContent = "Limpar Filtro";
 
 // Adiciona opções aos selects
 const fields = []
