@@ -30,6 +30,8 @@ let WeekStart;
 const importTypeDropdown = document.getElementById("csv-import");
 const csvFileInput = document.getElementById("csv-file");
 const csvUrlInput = document.getElementById("csv-url");
+const csvDataDisplay = document.getElementById("csv-data");
+const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
 
 // Define the event handler function
 /**
@@ -67,32 +69,33 @@ csvForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
     if (importTypeDropdown.value === "file" && csvFileInput.files.length > 0) {
-        // Processar CSV por arquivo
-        loadAndParseCSV(csvFileInput.files[0],false)
-            .then(data=> {
+        loadAndParseCSV(csvFileInput.files[0], false)
+            .then(data => {
                 createTabulatorTable(data);
                 resetForm(); // Reset the form after successful file processing
             })
             .catch(error => {
                 console.error(error);
-            })// Call a function to download CSV from the URL// Call a function to download CSV from the file
-
+            });
     } else if (importTypeDropdown.value === "url" && csvUrlInput.value) {
-        // Processar CSV por URL
-        loadAndParseCSV(csvUrlInput.value,true) // Call a function to download CSV from the URL
-            .then(data=> {
+        loadAndParseCSV(csvUrlInput.value, true)
+            .then(data => {
                 createTabulatorTable(data);
                 resetForm(); // Reset the form after successful URL processing
             })
             .catch(error => {
                 console.error(error);
-            })// Call a function to download CSV from the URL// Call a function to download CSV from the file
+            });
     } else {
-        // Lógica para lidar com nenhum arquivo selecionado ou URL inserida
-        console.log("Nenhum arquivo selecionado ou URL inserida");
+        console.log("Nenhum arquivo selecionado ou URL inserido");
         errorModal.toggle();
     }
 });
+
+// Function to reset the form
+function resetForm() {
+    csvForm.reset();
+}
 
 
 // ---------------- CSV Processing ----------------
@@ -111,6 +114,15 @@ let parsedData;
 var delimiter = ';';
 
 
+
+/**
+ * Sets the delimiter used for parsing the CSV data.
+ *
+ * @param {string} s - The delimiter character.
+ */
+function setDelimiter(s) {
+    delimiter = s;
+}
 
 
 /**
@@ -281,6 +293,109 @@ resetWeekBttn.addEventListener("click", function () {
 // -------------------------- TABULATOR --------------------------
 
 
+// CRIAÇÂO DO FILTRO HTML
+
+// Seleciona o elemento div existente onde queres associar os elementos de filtro
+const filterContainer = document.getElementById('filter');
+filterContainer.classList.add('container-sm', 'row', 'justify-content-center', 'align-items-center', 'mb-3');
+
+const filterRow = document.createElement('div');
+filterRow.classList.add('container-sm', 'row', 'justify-content-center', 'align-items-center'); // Adiciona a classe container para diminuir o tamanho dos elementos
+
+// Cria os elementos do filtro
+const filterField = document.createElement('select');
+filterField.id = "filter-field";
+filterField.classList.add('form-select', 'col');
+
+const filterType = document.createElement('select');
+filterType.id = "filter-type";
+filterType.classList.add('form-select', 'col');
+
+const filterValue = document.createElement('input');
+filterValue.classList.add('form-control', 'col');
+filterValue.id = "filter-value";
+filterValue.type = "text";
+filterValue.placeholder = "Valor a filtrar";
+
+const filterClear = document.createElement('button');
+filterClear.classList.add('btn', 'btn-secondary', 'col-1');
+filterClear.id = "filter-clear";
+filterClear.textContent = "Limpar Filtro";
+
+// Adiciona opções aos selects
+const fields = []
+updateFilter();
+
+const types = ["=", "<", "<=", ">", ">=", "!=", "like"];
+types.forEach(type => {
+    const option = document.createElement('option');
+    option.value = type;
+    option.textContent = type;
+    filterType.appendChild(option);
+});
+
+// Adiciona os elementos ao div da linha
+filterRow.appendChild(filterField);
+filterRow.appendChild(filterType);
+filterRow.appendChild(filterValue);
+filterRow.appendChild(filterClear);
+
+// Adiciona a linha de filtro ao container existente
+filterContainer.appendChild(filterRow);
+
+
+// FUNCIONALIDADE DO FILTRO
+
+//Define variables for input elements
+var fieldEl = document.getElementById("filter-field");
+var typeEl = document.getElementById("filter-type");
+var valueEl = document.getElementById("filter-value");
+
+//Custom filter example
+function customFilter(data){
+    return data.car && data.rating < 3;
+}
+
+//Trigger setFilter function with correct parameters
+function updateTableByFilter(){
+
+    var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
+    var typeVal = typeEl.options[typeEl.selectedIndex].value;
+
+    console.log("Valor do filtro: " + filterVal);
+    console.log("Tipo do filtro: " + typeVal);
+
+    var filter = filterVal === "function" ? customFilter : filterVal;
+
+    if(filterVal === "function" ){
+        typeEl.disabled = true;
+        valueEl.disabled = true;
+    }else{
+        typeEl.disabled = false;
+        valueEl.disabled = false;
+    }
+
+    if(filterVal){
+        table.setFilter(filter,typeVal, valueEl.value);
+    }
+}
+
+//Update filters on value change
+document.getElementById("filter-field").addEventListener("change", updateTableByFilter);
+document.getElementById("filter-field").addEventListener("change", function(){
+});
+document.getElementById("filter-type").addEventListener("change", updateTableByFilter);
+document.getElementById("filter-value").addEventListener("keyup", updateTableByFilter);
+
+//Clear filters on "Clear Filters" button click
+document.getElementById("filter-clear").addEventListener("click", function(){
+    fieldEl.value = "";
+    typeEl.value = "=";
+    valueEl.value = "";
+
+    table.clearFilter();
+});
+
 // Defines the waiting table
 var table = new Tabulator("#example-table", {
     layout:"fitColumns",
@@ -301,6 +416,7 @@ function createTabulatorTable(data) {
         columns: Object.keys(data[0]).map(key => ({
             title: key,
             field: key,
+            //headerFilter: "input", // Adiciona filtro de cabeçalho para todas as colunas
         })),
         layout:"fitColumns",      //fit columns to width of table
         responsiveLayout:"hide",  //hide columns that don't fit on the table
@@ -317,6 +433,7 @@ function createTabulatorTable(data) {
             tooltip:true,         //show tool tips on cells
         },
     });
+    updateFilter();
 }
 
 
@@ -357,40 +474,27 @@ for (let hour = 8; hour < 23; hour++) { // Loop through hours from 8 to 22 (incl
             row.appendChild(cell);
         }
 
-        // Append the row to the table, adding it to the grid of cells.
-        table.appendChild(row);
-    }
+function updateFilter() {
 
+    const currentValue = filterField.value; // Armazena o valor selecionado atualmente
+    fields.length = 0; // Limpar o array fields antes de adicionar novas opções
+
+    filterField.innerHTML = '';
+    if (parsedData != null && parsedData.length > 0) {
+        parsedData[0].forEach((value, index) => {
+            if (value !== undefined && value !== null && value !== '') {
+                fields.push(value);
+            }
+        });
+    }
+    fields.forEach(field => {
+        const option = document.createElement('option');
+        option.value = field;
+        option.textContent = field.charAt(0).toUpperCase() + field.slice(1);
+        filterField.appendChild(option);
+    });
+    filterField.value = currentValue; // Restaura o valor selecionado após atualizar as opções
 }
-// content -> what is to be written in the designated cell
-function assignEvent(rowIndex, columnIndex, content) {
-    const table = document.querySelector('tbody');
-
-    if (table.rows[rowIndex] && table.rows[rowIndex].cells[columnIndex]) {
-        const cell = table.rows[rowIndex].cells[columnIndex];
-        cell.textContent = content;
-        cell.style.backgroundColor = "#8abdff";
-    } else {
-        console.error("Invalid row or column index.");
-    }
-}
-
-
-function clearTable() {
-    const table = document.querySelector('tbody');
-
-    // Loop through all rows starting from the second row (index 1)
-    for (let i = 1; i < table.rows.length; i++) {
-        // Loop through all cells in each row starting from the second cell (index 1)
-        for (let j = 1; j < table.rows[i].cells.length; j++) {
-            const cell = table.rows[i].cells[j];
-                cell.textContent = "";
-                cell.style.backgroundColor = "white";
-
-        }
-    }
-}*/
-
 
 
 // -------------------------- Auxiliary Functions --------------------------
