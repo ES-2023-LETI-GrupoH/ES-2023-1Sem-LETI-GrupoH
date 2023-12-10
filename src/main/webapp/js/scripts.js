@@ -138,21 +138,11 @@ function resetForm() {
 let parsedData;
 
 /**
- * The delimiter is used to specify the delimiter used in the CSV file.
+ * The usedDelimiter is used to specify the delimiter used in the CSV file.
  * @type {string}
  */
-var delimiter = ';';
+var usedDelimiter = ';';
 
-
-
-/**
- * Sets the delimiter used for parsing the CSV data.
- *
- * @param {string} s - The delimiter character.
- */
-function setDelimiter(s) {
-    delimiter = s;
-}
 
 
 /**
@@ -202,14 +192,19 @@ function loadAndParseCSV(fileData, isURL) {
     });
 }
 
-
+/**
+ * Parses the given data into a two-dimensional array, splitting lines and fields.
+ *
+ * @param {string} data - The input data to be parsed.
+ * @returns {Array<Array<string>>} - A two-dimensional array representing the parsed data.
+ */
 function parse(data) {
     const dataList = [];
     let maximumNumberOfFields = 0;
 
     const lines = data.split('\n');
     lines.forEach((line) => {
-        const fields = line.split(delimiter);
+        const fields = line.split(usedDelimiter);
         maximumNumberOfFields = Math.max(maximumNumberOfFields, fields.length);
         dataList.push(fields);
     });
@@ -350,7 +345,7 @@ function createTabulatorTable(data) {
 
     table = new Tabulator("#example-table", {
         data: data,
-        delimiter: ";",
+        delimiter: usedDelimiter,
         columns: Object.keys(data[0]).map(key => ({
             title: key,
             field: key,
