@@ -11,7 +11,90 @@
 </head>
 <body class="text-center">
 
-<!-- CSV File Submition Form Section -->
+<!-- Botão para abrir o modal -->
+<button type="button" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#scheduleModal">
+    Carregar Arquivo
+</button>
+
+<!-- Modal para carregar o arquivo -->
+<div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="scheduleModalLabel">Carregar arquivo do horário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <form id="schedule-form-js" class="" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="csv-form mt-2 mb-5 container row justify-content-center align-items-center"  >
+                            <div class="mb-3">
+                            </div>
+                            <div class="col-3 mt-1">
+                                <select id="csv-import-schedule" class="form-select">
+                                    <option value="file">Arquivo</option>
+                                    <option value="url">URL</option>
+                                </select>
+                            </div>
+                            <div class="col-9">
+                                <input type="file" class="form-control" id="csv-file-schedule" name="csv-file" accept=".csv">
+                                <input type="url" class="form-control" id="csv-url-schedule" name="csv-url">
+                            </div>
+
+                    </div>
+                </div>
+                <div class="row justify-content-center align-items-center modal-footer">
+                    <div class="col-4">
+                        <button class="btn btn-primary" data-bs-target="#classroomModal" data-bs-dismiss="modal">Próximo</button>
+                    </div>
+                    <div class="progress col-8">
+                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal para carregar o arquivo -->
+<div class="modal fade" id="classroomModal" tabindex="-1" aria-labelledby="classroomModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="classroomLabel">Carregar arquivo de caracterização das salas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <form id="classroom-form-js" class="" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="csv-form mt-2 mb-5 container row justify-content-center align-items-center"  >
+                        <div class="mb-3">
+                        </div>
+                        <div class="col-3 mt-1">
+                            <select id="csv-import-classroom" class="form-select">
+                                <option value="file">Arquivo</option>
+                                <option value="url">URL</option>
+                            </select>
+                        </div>
+                        <div class="col-9">
+                            <input type="file" class="form-control" id="csv-file-classroom" name="csv-file-classroom" accept=".csv">
+                            <input type="url" class="form-control" id="csv-url-classroom" name="csv-url-classroom">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row justify-content-center align-items-center modal-footer">
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Enviar</button>
+                    </div>
+                    <div class="progress col-8">
+                        <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- CSV File Submition Form Section
 <div class="csv-form mt-2 mb-5 container"  >
     <form id="csv-form-js" class="row justify-content-center align-items-center" enctype="multipart/form-data">
         <div class="mb-3">
@@ -31,7 +114,7 @@
             <button type="submit" data-bs-toggle="modal"  class="btn btn-primary">Enviar</button>
         </div>
     </form>
-</div>
+</div>-->
 
 <!-- Modal Section-->
 <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
