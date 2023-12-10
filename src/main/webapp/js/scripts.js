@@ -1,21 +1,72 @@
 // ---------------- CSV Input ----------------
 
 // Adicione um evento de mudança para o dropdown menu
+
+/**
+ * Represents the dropdown element for selecting import type for schedule.
+ * @type {HTMLSelectElement}
+ */
 const importTypeDropdownSchedule = document.getElementById("csv-import-schedule");
+
+/**
+ * Represents the file input element for uploading CSV for schedule.
+ * @type {HTMLInputElement}
+ */
 const csvFileInputSchedule = document.getElementById("csv-file-schedule");
+
+/**
+ * Represents the URL input element for importing CSV for schedule.
+ * @type {HTMLInputElement}
+ */
 const csvUrlInputSchedule = document.getElementById("csv-url-schedule");
+
+/**
+ * Array to store schedule data.
+ * @type {Array}
+ */
 let scheduleData = [];
 
-
+/**
+ * Represents the dropdown element for selecting import type for classroom.
+ * @type {HTMLSelectElement}
+ */
 const importTypeDropdownClassroom = document.getElementById("csv-import-classroom");
+
+/**
+ * Represents the file input element for uploading CSV for classroom.
+ * @type {HTMLInputElement}
+ */
 const csvFileInputClassroom = document.getElementById("csv-file-classroom");
+/**
+ * Represents the URL input element for importing CSV for classroom.
+ * @type {HTMLInputElement}
+ */
 const csvUrlInputClassroom = document.getElementById("csv-url-classroom");
+/**
+ * Array to store classroom data.
+ * @type {Array}
+ */
 let classroomData = [];
 
+/**
+ * Bootstrap modal for the schedule.
+ * @type {bootstrap.Modal}
+ */
 const scheduleModal = new bootstrap.Modal(document.getElementById('scheduleModal'));
+/**
+ * Bootstrap modal for the classroom.
+ * @type {bootstrap.Modal}
+ */
 const classroomModal = new bootstrap.Modal(document.getElementById('classroomModal'));
+/**
+ * Bootstrap modal for errors.
+ * @type {bootstrap.Modal}
+ */
 const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-
+/**
+ * Flag to track if schedule is uploaded.
+ * @type {boolean}
+ */
 let isScheduleUploaded = false;
 
 // Define the event handler function
@@ -46,10 +97,11 @@ function handleImportTypeChange() {
     }
 }
 
+// Trigger handleImportTypeChange on page load
 window.addEventListener("load", handleImportTypeChange);
 
+// Add event listeners for import type dropdown changes
 importTypeDropdownSchedule.addEventListener("change", handleImportTypeChange);
-
 importTypeDropdownClassroom.addEventListener("change", handleImportTypeChange);
 
 
@@ -60,7 +112,10 @@ const csvFormSchedule = document.getElementById("schedule-form-js");
 const csvFormClassroom = document.getElementById("classroom-form-js");
 
 
-
+/**
+ * Handles the form submission for schedule CSV.
+ * @param {Event} event - The form submission event.
+ */
 csvFormSchedule.addEventListener("submit", function (event) {
     event.preventDefault();
     if (importTypeDropdownSchedule.value === "file" && csvFileInputSchedule.files.length > 0) {
@@ -95,6 +150,10 @@ csvFormSchedule.addEventListener("submit", function (event) {
     }
 });
 
+/**
+ * Handles the form submission for classroom CSV.
+ * @param {Event} event - The form submission event.
+ */
 csvFormClassroom.addEventListener("submit", function (event) {
     event.preventDefault();
     console.log(importTypeDropdownClassroom.value);
@@ -128,7 +187,9 @@ csvFormClassroom.addEventListener("submit", function (event) {
     }
 });
 
-// Function to reset the form
+/**
+ * Resets the schedule and classroom forms.
+ */
 function resetForm() {
     csvFormSchedule.reset();
     csvFormClassroom.reset();
@@ -140,7 +201,7 @@ function resetForm() {
 
 /**
  * The parsed data variable corresponds to a matrix which holds the data that is loaded from a csv file or URL.
- * @type
+ * @type {Array}
  */
 let parsedData;
 
@@ -235,12 +296,31 @@ function parse(data) {
 
 // CRIAÇÂO DO FILTRO HTML
 
-let scheduleAlreadyTouched,classroomAlreadyTouched = false;
+/**
+     * Flag to track if schedule table initialization has already been touched.
+     * @type {boolean}
+     */
+let scheduleAlreadyTouched = false;
+
+ /**
+     * Flag to track if classroom table initialization has already been touched.
+     * @type {boolean}
+     */
+let classroomAlreadyTouched = false;
 
 
-
+/**
+ * Metadata array to store filter field and its options for the schedule table.
+ * @type {Array}
+ */
 scheduleMetadata = [];
+
+/**
+ * Metadata array to store filter field and its options for the classroom table.
+ * @type {Array}
+ */
 classroomMetadata = [];
+
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -488,6 +568,12 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 })
 
+/**
+ * Updates the filter options based on the parsed data for the given filter field.
+ *
+ * @param {HTMLSelectElement} filterField - The filter field select element.
+ * @param {Array} fields - The array to store filter options.
+ */
 function updateFilter(filterField,fields) {
 
     const currentValue = filterField.value; // Armazena o valor selecionado atualmente
@@ -514,6 +600,8 @@ function updateFilter(filterField,fields) {
  * Creates a Tabulator table and populates it with data from a CSV file.
  *
  * @param {Array} data - An array of data to populate the Tabulator table.
+ * @param {Array} metadata - The metadata array containing filter field and options.
+ * @param {string} type - The type of table ('schedule' or 'classroom').
  */
 function createTabulatorTable(data,metadata,type) {
 
@@ -591,7 +679,6 @@ function createTabulatorTable(data,metadata,type) {
         });
     }
 
-    //Calculo de sobrelotação
 
 
 

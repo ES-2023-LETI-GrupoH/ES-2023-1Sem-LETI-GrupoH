@@ -98,13 +98,13 @@
 
         
             
-<h4 class="name" id="WeekMonday"><span class="type-signature"></span>WeekMonday<span class="type-signature"> :Date</span></h4>
+<h4 class="name" id="classroomAlreadyTouched"><span class="type-signature"></span>classroomAlreadyTouched<span class="type-signature"> :boolean</span></h4>
 
 
 
 
 <div class="description">
-    <p>'WeekMonday' is used to store the starting date of the current week (Monday).</p>
+    <p>Flag to track if classroom table initialization has already been touched.</p>
 </div>
 
 
@@ -113,7 +113,7 @@
     <ul>
         <li>
             
-<span class="param-type">Date</span>
+<span class="param-type">boolean</span>
 
 
         </li>
@@ -152,7 +152,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line241">line 241</a>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line309">line 309</a>
     </li></ul></dd>
     
 
@@ -170,14 +170,13 @@
 
         
             
-<h4 class="name" id="WeekStart"><span class="type-signature"></span>WeekStart<span class="type-signature"> :Date</span></h4>
+<h4 class="name" id="classroomData"><span class="type-signature"></span>classroomData<span class="type-signature"> :Array</span></h4>
 
 
 
 
 <div class="description">
-    <p>The 'WeekStart' is the reference point for the start of the current week during week navigation.
-It is updated as weeks are navigated, and its initial value is based on 'startDate'.</p>
+    <p>Array to store classroom data.</p>
 </div>
 
 
@@ -186,7 +185,439 @@ It is updated as weeks are navigated, and its initial value is based on 'startDa
     <ul>
         <li>
             
-<span class="param-type">Date</span>
+<span class="param-type">Array</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line49">line 49</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="classroomMetadata"><span class="type-signature"></span>classroomMetadata<span class="type-signature"> :Array</span></h4>
+
+
+
+
+<div class="description">
+    <p>Metadata array to store filter field and its options for the classroom table.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line322">line 322</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="classroomModal"><span class="type-signature">(constant) </span>classroomModal<span class="type-signature"> :bootstrap.Modal</span></h4>
+
+
+
+
+<div class="description">
+    <p>Bootstrap modal for the classroom.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">bootstrap.Modal</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line60">line 60</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="csvFileInputClassroom"><span class="type-signature">(constant) </span>csvFileInputClassroom<span class="type-signature"> :HTMLInputElement</span></h4>
+
+
+
+
+<div class="description">
+    <p>Represents the file input element for uploading CSV for classroom.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">HTMLInputElement</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line39">line 39</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="csvFileInputSchedule"><span class="type-signature">(constant) </span>csvFileInputSchedule<span class="type-signature"> :HTMLInputElement</span></h4>
+
+
+
+
+<div class="description">
+    <p>Represents the file input element for uploading CSV for schedule.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">HTMLInputElement</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line15">line 15</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="csvUrlInputClassroom"><span class="type-signature">(constant) </span>csvUrlInputClassroom<span class="type-signature"> :HTMLInputElement</span></h4>
+
+
+
+
+<div class="description">
+    <p>Represents the URL input element for importing CSV for classroom.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">HTMLInputElement</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line44">line 44</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="csvUrlInputSchedule"><span class="type-signature">(constant) </span>csvUrlInputSchedule<span class="type-signature"> :HTMLInputElement</span></h4>
+
+
+
+
+<div class="description">
+    <p>Represents the URL input element for importing CSV for schedule.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">HTMLInputElement</span>
 
 
         </li>
@@ -243,13 +674,13 @@ It is updated as weeks are navigated, and its initial value is based on 'startDa
 
         
             
-<h4 class="name" id="WeekSunday"><span class="type-signature"></span>WeekSunday<span class="type-signature"> :Date</span></h4>
+<h4 class="name" id="errorModal"><span class="type-signature">(constant) </span>errorModal<span class="type-signature"> :bootstrap.Modal</span></h4>
 
 
 
 
 <div class="description">
-    <p>'WeekSunday' is used to store the ending date of the current week (Sunday).</p>
+    <p>Bootstrap modal for errors.</p>
 </div>
 
 
@@ -258,7 +689,7 @@ It is updated as weeks are navigated, and its initial value is based on 'startDa
     <ul>
         <li>
             
-<span class="param-type">Date</span>
+<span class="param-type">bootstrap.Modal</span>
 
 
         </li>
@@ -297,7 +728,7 @@ It is updated as weeks are navigated, and its initial value is based on 'startDa
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line247">line 247</a>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line65">line 65</a>
     </li></ul></dd>
     
 
@@ -315,13 +746,589 @@ It is updated as weeks are navigated, and its initial value is based on 'startDa
 
         
             
-<h4 class="name" id="delimiter"><span class="type-signature"></span>delimiter<span class="type-signature"> :string</span></h4>
+<h4 class="name" id="importTypeDropdownClassroom"><span class="type-signature">(constant) </span>importTypeDropdownClassroom<span class="type-signature"> :HTMLSelectElement</span></h4>
 
 
 
 
 <div class="description">
-    <p>The delimiter is used to specify the delimiter used in the CSV file.</p>
+    <p>Represents the dropdown element for selecting import type for classroom.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">HTMLSelectElement</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line33">line 33</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="importTypeDropdownSchedule"><span class="type-signature">(constant) </span>importTypeDropdownSchedule<span class="type-signature"> :HTMLSelectElement</span></h4>
+
+
+
+
+<div class="description">
+    <p>Represents the dropdown element for selecting import type for schedule.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">HTMLSelectElement</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line9">line 9</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="isScheduleUploaded"><span class="type-signature"></span>isScheduleUploaded<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
+    <p>Flag to track if schedule is uploaded.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line70">line 70</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="parsedData"><span class="type-signature"></span>parsedData<span class="type-signature"> :Array</span></h4>
+
+
+
+
+<div class="description">
+    <p>The parsed data variable corresponds to a matrix which holds the data that is loaded from a csv file or URL.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line206">line 206</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="scheduleAlreadyTouched"><span class="type-signature"></span>scheduleAlreadyTouched<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
+    <p>Flag to track if schedule table initialization has already been touched.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line303">line 303</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="scheduleData"><span class="type-signature"></span>scheduleData<span class="type-signature"> :Array</span></h4>
+
+
+
+
+<div class="description">
+    <p>Array to store schedule data.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line27">line 27</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="scheduleMetadata"><span class="type-signature"></span>scheduleMetadata<span class="type-signature"> :Array</span></h4>
+
+
+
+
+<div class="description">
+    <p>Metadata array to store filter field and its options for the schedule table.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line316">line 316</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="scheduleModal"><span class="type-signature">(constant) </span>scheduleModal<span class="type-signature"> :bootstrap.Modal</span></h4>
+
+
+
+
+<div class="description">
+    <p>Bootstrap modal for the schedule.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">bootstrap.Modal</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line55">line 55</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="usedDelimiter"><span class="type-signature"></span>usedDelimiter<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    <p>The usedDelimiter is used to specify the delimiter used in the CSV file.</p>
 </div>
 
 
@@ -369,224 +1376,7 @@ It is updated as weeks are navigated, and its initial value is based on 'startDa
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line113">line 113</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="lastDate"><span class="type-signature"></span>lastDate<span class="type-signature"> :Date</span></h4>
-
-
-
-
-<div class="description">
-    <p>The 'lastDate' represents the final date of the data range and helps limit week navigation to stay within the dataset.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">Date</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line14">line 14</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="parsedData"><span class="type-signature"></span>parsedData<span class="type-signature"> :Matrix.&lt;String></span></h4>
-
-
-
-
-<div class="description">
-    <p>The parsed data variable corresponds to a matrix which holds the data that is loaded from a csv file or URL.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">Matrix.&lt;String></span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line107">line 107</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="startDate"><span class="type-signature"></span>startDate<span class="type-signature"> :Date</span></h4>
-
-
-
-
-<div class="description">
-    <p>The 'startDate' is the reference point for the start of the current week during week navigation.
-It is updated as weeks are navigated, and its initial value is based on 'startDate'.</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">Date</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line8">line 8</a>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line212">line 212</a>
     </li></ul></dd>
     
 
@@ -614,7 +1404,7 @@ It is updated as weeks are navigated, and its initial value is based on 'startDa
     
 
     
-    <h4 class="name" id="formatDate"><span class="type-signature"></span>formatDate<span class="signature">(date)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="createTabulatorTable"><span class="type-signature"></span>createTabulatorTable<span class="signature">(data, metadata, type)</span><span class="type-signature"></span></h4>
     
 
     
@@ -622,166 +1412,7 @@ It is updated as weeks are navigated, and its initial value is based on 'startDa
 
 
 <div class="description">
-    <p>Formats a given date in the &quot;DD/MM/YYYY&quot; format.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>date</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Date</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The date to be formatted.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line436">line 436</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>The formatted date string.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getStartAndLastDate"><span class="type-signature"></span>getStartAndLastDate<span class="signature">(data)</span><span class="type-signature"> &rarr; {Object|Date|Date}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Extracts the start and last dates from the parsed CSV data and sets them in global variables.</p>
+    <p>Creates a Tabulator table and populates it with data from a CSV file.</p>
 </div>
 
 
@@ -823,7 +1454,7 @@ It is updated as weeks are navigated, and its initial value is based on 'startDa
             <td class="type">
             
                 
-<span class="param-type">Matrix.&lt;String></span>
+<span class="param-type">Array</span>
 
 
             
@@ -833,7 +1464,53 @@ It is updated as weeks are navigated, and its initial value is based on 'startDa
 
             
 
-            <td class="description last"><p>The parsed CSV data.</p></td>
+            <td class="description last"><p>An array of data to populate the Tabulator table.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>metadata</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The metadata array containing filter field and options.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The type of table ('schedule' or 'classroom').</p></td>
         </tr>
 
     
@@ -874,7 +1551,7 @@ It is updated as weeks are navigated, and its initial value is based on 'startDa
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line456">line 456</a>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line606">line 606</a>
     </li></ul></dd>
     
 
@@ -899,68 +1576,6 @@ It is updated as weeks are navigated, and its initial value is based on 'startDa
 
 
 
-<h5>Returns:</h5>
-<ul>
-        <li>
-<div class="param-desc">
-    <p>The start date.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
-    </dd>
-</dl>
-</li>
-    
-        <li>
-<div class="param-desc">
-    <p>The last date.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Date</span>
-
-
-    </dd>
-</dl>
-</li>
-    
-        <li>
-<div class="param-desc">
-    <p>The week start date.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Date</span>
-
-
-    </dd>
-</dl>
-</li>
-    </ul>
 
 
 
@@ -1025,7 +1640,7 @@ Shows or hides input fields based on the user's choice.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line42">line 42</a>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line77">line 77</a>
     </li></ul></dd>
     
 
@@ -1070,13 +1685,6 @@ Shows or hides input fields based on the user's choice.</p>
 
 <div class="description">
     <p>Loads and parses CSV data from either a file or a URL.</p>
-<p>If it is an URL then it will fetch the file and then parse;
-If it is a File, then it will read the file content using fileReader
-and then parse it.
-Both methods will return a promise and will parse the CSV data in different ways
-for diferente tables:
-Papa library for the Tabulator table and the parse() function for
-ur own schedule table</p>
 </div>
 
 
@@ -1195,7 +1803,7 @@ ur own schedule table</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line150">line 150</a>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line223">line 223</a>
     </li></ul></dd>
     
 
@@ -1253,7 +1861,7 @@ ur own schedule table</p>
     
 
     
-    <h4 class="name" id="setDelimiter"><span class="type-signature"></span>setDelimiter<span class="signature">(s)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="parse"><span class="type-signature"></span>parse<span class="signature">(data)</span><span class="type-signature"> &rarr; {Array.&lt;Array.&lt;string>>}</span></h4>
     
 
     
@@ -1261,7 +1869,7 @@ ur own schedule table</p>
 
 
 <div class="description">
-    <p>Sets the delimiter used for parsing the CSV data.</p>
+    <p>Parses the given data into a two-dimensional array, splitting lines and fields.</p>
 </div>
 
 
@@ -1297,7 +1905,7 @@ ur own schedule table</p>
 
         <tr>
             
-                <td class="name"><code>s</code></td>
+                <td class="name"><code>data</code></td>
             
 
             <td class="type">
@@ -1313,7 +1921,7 @@ ur own schedule table</p>
 
             
 
-            <td class="description last"><p>The delimiter character.</p></td>
+            <td class="description last"><p>The input data to be parsed.</p></td>
         </tr>
 
     
@@ -1354,7 +1962,7 @@ ur own schedule table</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line122">line 122</a>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line269">line 269</a>
     </li></ul></dd>
     
 
@@ -1379,6 +1987,30 @@ ur own schedule table</p>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>A two-dimensional array representing the parsed data.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;Array.&lt;string>></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -1390,7 +2022,7 @@ ur own schedule table</p>
     
 
     
-    <h4 class="name" id="updateWeekStatus"><span class="type-signature"></span>updateWeekStatus<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="resetForm"><span class="type-signature"></span>resetForm<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -1398,7 +2030,7 @@ ur own schedule table</p>
 
 
 <div class="description">
-    <p>Updates the displayed week's status based on the 'WeekStart' date.</p>
+    <p>Resets the schedule and classroom forms.</p>
 </div>
 
 
@@ -1442,7 +2074,167 @@ ur own schedule table</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line253">line 253</a>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line193">line 193</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="updateFilter"><span class="type-signature"></span>updateFilter<span class="signature">(filterField, fields)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Updates the filter options based on the parsed data for the given filter field.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>filterField</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLSelectElement</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The filter field select element.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fields</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The array to store filter options.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="scripts.js.html">scripts.js</a>, <a href="scripts.js.html#line577">line 577</a>
     </li></ul></dd>
     
 
@@ -1488,13 +2280,13 @@ ur own schedule table</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#WeekMonday">WeekMonday</a></li><li><a href="global.html#WeekStart">WeekStart</a></li><li><a href="global.html#WeekSunday">WeekSunday</a></li><li><a href="global.html#delimiter">delimiter</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getStartAndLastDate">getStartAndLastDate</a></li><li><a href="global.html#handleImportTypeChange">handleImportTypeChange</a></li><li><a href="global.html#lastDate">lastDate</a></li><li><a href="global.html#loadAndParseCSV">loadAndParseCSV</a></li><li><a href="global.html#parsedData">parsedData</a></li><li><a href="global.html#setDelimiter">setDelimiter</a></li><li><a href="global.html#startDate">startDate</a></li><li><a href="global.html#updateWeekStatus">updateWeekStatus</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#classroomAlreadyTouched">classroomAlreadyTouched</a></li><li><a href="global.html#classroomData">classroomData</a></li><li><a href="global.html#classroomMetadata">classroomMetadata</a></li><li><a href="global.html#classroomModal">classroomModal</a></li><li><a href="global.html#createTabulatorTable">createTabulatorTable</a></li><li><a href="global.html#csvFileInputClassroom">csvFileInputClassroom</a></li><li><a href="global.html#csvFileInputSchedule">csvFileInputSchedule</a></li><li><a href="global.html#csvUrlInputClassroom">csvUrlInputClassroom</a></li><li><a href="global.html#csvUrlInputSchedule">csvUrlInputSchedule</a></li><li><a href="global.html#errorModal">errorModal</a></li><li><a href="global.html#handleImportTypeChange">handleImportTypeChange</a></li><li><a href="global.html#importTypeDropdownClassroom">importTypeDropdownClassroom</a></li><li><a href="global.html#importTypeDropdownSchedule">importTypeDropdownSchedule</a></li><li><a href="global.html#isScheduleUploaded">isScheduleUploaded</a></li><li><a href="global.html#loadAndParseCSV">loadAndParseCSV</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#parsedData">parsedData</a></li><li><a href="global.html#resetForm">resetForm</a></li><li><a href="global.html#scheduleAlreadyTouched">scheduleAlreadyTouched</a></li><li><a href="global.html#scheduleData">scheduleData</a></li><li><a href="global.html#scheduleMetadata">scheduleMetadata</a></li><li><a href="global.html#scheduleModal">scheduleModal</a></li><li><a href="global.html#updateFilter">updateFilter</a></li><li><a href="global.html#usedDelimiter">usedDelimiter</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Nov 09 2023 13:54:44 GMT+0000 (Hora padrão da Europa Ocidental)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun Dec 10 2023 22:57:47 GMT+0000 (Hora padrão da Europa Ocidental)
 </footer>
 
 <script> prettyPrint(); </script>
