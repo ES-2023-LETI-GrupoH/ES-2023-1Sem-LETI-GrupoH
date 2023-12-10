@@ -1,23 +1,17 @@
 
-// ---------------- Global Varables -------------------------------
-
-
-// -------------------------------------- CSV RELATED --------------------------------------
-
-
 // ---------------- CSV Input ----------------
 
 // Adicione um evento de mudança para o dropdown menu
 const importTypeDropdownSchedule = document.getElementById("csv-import-schedule");
 const csvFileInputSchedule = document.getElementById("csv-file-schedule");
 const csvUrlInputSchedule = document.getElementById("csv-url-schedule");
-let scheduleData = '';
+let scheduleData = [];
 
 
 const importTypeDropdownClassroom = document.getElementById("csv-import-classroom");
 const csvFileInputClassroom = document.getElementById("csv-file-classroom");
 const csvUrlInputClassroom = document.getElementById("csv-url-classroom");
-let classroomData = '';
+let classroomData = [];
 
 const scheduleModal = new bootstrap.Modal(document.getElementById('scheduleModal'));
 const classroomModal = new bootstrap.Modal(document.getElementById('classroomModal'));
@@ -71,7 +65,8 @@ csvFormSchedule.addEventListener("submit", function (event) {
     if (importTypeDropdownSchedule.value === "file" && csvFileInputSchedule.files.length > 0) {
         loadAndParseCSV(csvFileInputSchedule.files[0], false)
             .then(data => {
-                scheduleData = data;
+                //scheduleData = data;
+                createTabulatorTable(data);
                 scheduleModal.hide();
                 classroomModal.show();
             })
@@ -81,7 +76,8 @@ csvFormSchedule.addEventListener("submit", function (event) {
     } else if (importTypeDropdownSchedule.value === "url" && csvUrlInputClassroom.value) {
         loadAndParseCSV(csvUrlInputClassroom.value, true)
             .then(data => {
-                scheduleData = data;
+                //scheduleData = data;
+                createTabulatorTable(data);
                 scheduleModal.hide();
                 classroomModal.show();
             })
@@ -103,7 +99,7 @@ csvFormClassroom.addEventListener("submit", function (event) {
         loadAndParseCSV(csvFileInputClassroom.files[0], false)
             .then(data => {
                 classroomData = data;
-                createTabulatorTable(scheduleData);
+                //createTabulatorTable(scheduleData);
                 resetForm(); // Reset the form after successful file processing
             })
             .catch(error => {
@@ -113,7 +109,7 @@ csvFormClassroom.addEventListener("submit", function (event) {
         loadAndParseCSV(csvUrlInputClassroom.value, true)
             .then(data => {
                 classroomData = data;
-                createTabulatorTable(scheduleData);
+                //createTabulatorTable(scheduleData);
                 resetForm(); // Reset the form after successful URL processing
             })
             .catch(error => {
@@ -137,7 +133,7 @@ function resetForm() {
 
 /**
  * The parsed data variable corresponds to a matrix which holds the data that is loaded from a csv file or URL.
- * @type {Matrix<String>}
+ * @type
  */
 let parsedData;
 
@@ -168,7 +164,6 @@ function setDelimiter(s) {
  */
 function loadAndParseCSV(fileData, isURL) {
     return new Promise((resolve, reject) => {
-        parsedData = null;
         if (isURL) {
             // Se for uma URL, faça uma solicitação para obter o conteúdo do CSV
             fetch(fileData)
@@ -184,7 +179,6 @@ function loadAndParseCSV(fileData, isURL) {
 
                     // To define the schedule table content
                     parsedData = parse(csvData);
-
                 })
                 .catch(error => console.error(error));
         } else if (fileData instanceof File) {
@@ -202,7 +196,6 @@ function loadAndParseCSV(fileData, isURL) {
 
                 // To define the schedule table content
                 parsedData = parse(csvContent);
-
             };
             reader.readAsText(fileData);
         }
@@ -231,10 +224,8 @@ function parse(data) {
         }
     }
 
-    return { totalNumberOfLines, maximumNumberOfFields, data: result };
+    return result;
 }
-
-
 
 
 // -------------------------- TABULATOR --------------------------
@@ -383,7 +374,27 @@ function createTabulatorTable(data) {
     updateFilter();
 }
 
+function updateFilter() {
 
+    const currentValue = filterField.value; // Armazena o valor selecionado atualmente
+    fields.length = 0; // Limpar o array fields antes de adicionar novas opções
+
+    filterField.innerHTML = '';
+    if (parsedData != null && parsedData.length > 0) {
+        parsedData[0].forEach((value, index) => {
+            if (value !== undefined && value !== null && value !== '') {
+                fields.push(value);
+            }
+        });
+    }
+    fields.forEach(field => {
+        const option = document.createElement('option');
+        option.value = field;
+        option.textContent = field.charAt(0).toUpperCase() + field.slice(1);
+        filterField.appendChild(option);
+    });
+    filterField.value = currentValue; // Restaura o valor selecionado após atualizar as opções
+}
 
 
 // -------------------------- Auxiliary Functions --------------------------
@@ -392,7 +403,3 @@ function createTabulatorTable(data) {
 
 //Prints to HTML footer the current year
 document.getElementById("year").innerHTML = new Date().getFullYear();
-
-
-// ------------------------------- TEST FUNCTION
-module.exports.parse = parse;
