@@ -46,28 +46,6 @@
                                 <arguments>ci</arguments>
                             </configuration>
                         </execution>
-                        <!--
-                        <execution>
-                            <id>javascript tests</id>
-                            <goals>
-                                <goal>npm</goal>
-                            </goals>
-                            <configuration>
-                                <arguments>run test</arguments>
-                            </configuration>
-                        </execution>
-                        -->
-                        <!--
-                        <execution>
-                            <id>npm run build</id>
-                            <goals>
-                                <goal>npm</goal>
-                            </goals>
-                            <configuration>
-                                <arguments>run build</arguments>
-                            </configuration>
-                        </execution>
-                    -->
                         <execution>
                             <id>npm install jest</id>
                             <goals>
@@ -75,6 +53,24 @@
                             </goals>
                             <configuration>
                                 <arguments>install --save-dev jest</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>npm install papaparse</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <configuration>
+                                <arguments>install papaparse</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>npm install -D jest-environment-jsdom</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <configuration>
+                                <arguments>install -D jest-environment-jsdom </arguments>
                             </configuration>
                         </execution>
                     </executions>
@@ -108,6 +104,11 @@
                 <groupId>org.webjars.npm</groupId>
                 <artifactId>papaparse</artifactId>
                 <version>5.4.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>bootstrap</artifactId>
+                <version>5.3.2</version>
             </dependency>
 
         </dependencies>

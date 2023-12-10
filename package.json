@@ -11,6 +11,7 @@
   "license": "ISC",
   "devDependencies": {
     "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "jsdoc": "^4.0.2"
   },
   "directories": {
@@ -32,6 +33,7 @@
     "marked": "^4.3.0",
     "mdurl": "^1.0.1",
     "mkdirp": "^1.0.4",
+    "papaparse": "^5.4.1",
     "requizzle": "^0.2.4",
     "strip-json-comments": "^3.1.1",
     "uc.micro": "^1.0.6",
