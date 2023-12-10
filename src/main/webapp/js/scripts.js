@@ -12,9 +12,9 @@ const csvFileInputClassroom = document.getElementById("csv-file-classroom");
 const csvUrlInputClassroom = document.getElementById("csv-url-classroom");
 let classroomData = [];
 
-const scheduleModal = new bootstrap.Modal(document.getElementById('scheduleModal'));
-const classroomModal = new bootstrap.Modal(document.getElementById('classroomModal'));
-const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+//const scheduleModal = new bootstrap.Modal(document.getElementById('scheduleModal'));
+//const classroomModal = new bootstrap.Modal(document.getElementById('classroomModal'));
+//const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
 
 let isScheduleUploaded = false;
 
@@ -46,22 +46,22 @@ function handleImportTypeChange() {
     }
 }
 
-window.addEventListener("load", handleImportTypeChange);
+/*window.addEventListener("load", handleImportTypeChange);
 
 importTypeDropdownSchedule.addEventListener("change", handleImportTypeChange);
 
-importTypeDropdownClassroom.addEventListener("change", handleImportTypeChange);
+importTypeDropdownClassroom.addEventListener("change", handleImportTypeChange);*/
 
 
 
 // Lógica para processar o envio do formulário
 
-const csvFormSchedule = document.getElementById("schedule-form-js");
-const csvFormClassroom = document.getElementById("classroom-form-js");
+//const csvFormSchedule = document.getElementById("schedule-form-js");
+//const csvFormClassroom = document.getElementById("classroom-form-js");
 
 
 
-csvFormSchedule.addEventListener("submit", function (event) {
+/*csvFormSchedule.addEventListener("submit", function (event) {
     event.preventDefault();
     if (importTypeDropdownSchedule.value === "file" && csvFileInputSchedule.files.length > 0) {
         loadAndParseCSV(csvFileInputSchedule.files[0], false)
@@ -132,7 +132,7 @@ csvFormClassroom.addEventListener("submit", function (event) {
 function resetForm() {
     csvFormSchedule.reset();
     csvFormClassroom.reset();
-}
+}*/
 
 
 // ---------------- CSV Processing ----------------
@@ -177,7 +177,7 @@ function loadAndParseCSV(fileData, isURL) {
                     // To define the schedule table content
                     parsedData = parse(csvData);
                 })
-                .catch(error => console.error(error));
+                //.catch(error => console.error(error));
         } else if (fileData instanceof File) {
             // Se for um arquivo local, leia o conteúdo e processe diretamente
             const reader = new FileReader();
@@ -242,7 +242,7 @@ let scheduleAlreadyTouched,classroomAlreadyTouched = false;
 scheduleMetadata = [];
 classroomMetadata = [];
 
-document.addEventListener('DOMContentLoaded', function() {
+/*document.addEventListener('DOMContentLoaded', function() {
 
     if(scheduleAlreadyTouched){
         return;
@@ -486,7 +486,7 @@ document.addEventListener("DOMContentLoaded", function () {
         autoColumns: true,
         placeholder: "Pronto para receber os dados. Importe o ficheiro CSV",
     })
-})
+})*/
 
 function updateFilter(filterField,fields) {
 
@@ -515,7 +515,7 @@ function updateFilter(filterField,fields) {
  *
  * @param {Array} data - An array of data to populate the Tabulator table.
  */
-function createTabulatorTable(data,metadata,type) {
+/*function createTabulatorTable(data,metadata,type) {
 
     if (type === "schedule") {
         table = new Tabulator("#scheduleTable", {
@@ -589,17 +589,13 @@ function createTabulatorTable(data,metadata,type) {
                 tooltip: true,         //show tool tips on cells
             }
         });
-    }
-
-    //Calculo de sobrelotação
-
-
+    }*/
 
 
 // -------------------------- Auxiliary Functions --------------------------
 
 
-//Prints to HTML footer the current year
-    document.getElementById("year").innerHTML = new Date().getFullYear();
-}
-module.exports = { loadAndParseCSV, parse };
+    //Prints to HTML footer the current year
+    //document.getElementById("year").innerHTML = new Date().getFullYear();
+
+module.exports = { loadAndParseCSV, parse, updateFilter };
