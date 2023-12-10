@@ -16,6 +16,20 @@
     Carregar Arquivo
 </button>
 
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="schedule-tab" data-bs-toggle="tab" data-bs-target="#scheduleTablePanel" type="button" role="tab" aria-controls="table1" aria-selected="true">Horário</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="classroom-tab" data-bs-toggle="tab" data-bs-target="#classroomTablePanel" type="button" role="tab" aria-controls="table2" aria-selected="false">Caracterização das Salas</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="metrics-tab" data-bs-toggle="tab" data-bs-target="#metricsTablePanel" type="button" role="tab" aria-controls="table2" aria-selected="false">Métricas</button>
+    </li>
+    <!-- Adicione mais guias conforme necessário -->
+</ul>
+
 <!-- Modal para carregar o arquivo -->
 <div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -127,49 +141,35 @@
         </div>
     </div>
 </div>
-<!--<div class="week-navigation mt-5 row justify-content-center align-items-center ">
-    <div class="col-auto">
-        <button id="previous-week" class="btn btn-primary me-3">Anterior</button>
-    </div>
-    <div class="col-auto">
-        <span id="week-date" class="h3 text-dark"></span>
-    </div>
-    <div class="col-auto">
-        <button id="next-week" class="btn btn-primary ms-3">Próxima</button>
-    </div>
-    <div class="reset-bttn mt-3 mb-5 text-center">
-        <button id="reset-week" class="btn btn-secondary">Voltar ao Inicio</button>
-    </div>
-</div>-->
 
-<!-- Tables section -->
-<div class="container-fluid">
+<!-- Tab panes -->
+<div class="tab-content container-fluid pt-5" id="myTabContent">
+    <div class="tab-pane fade show active" id="scheduleTablePanel" role="tabpanel" aria-labelledby="table1-tab">
+        <div class="">
+            <div class="container">
+                <div id="scheduleFilter" class="container-sm align-items-center"></div>
+            </div>
 
-
-    <div id="filter" class="container-sm"></div>
-
-    <div id="example-table"></div>
-    <!-- <div class="table-responsive">
-        <table id="csv-table" class="table table-calendar">
-            <thead>
-                <tr>
-                    <td colspan="8" class="table-name text-center">Horário</td>
-                </tr>
-            </thead>
-            <tr>
-                <th class="dia">Horas/Dias</th>
-                <th class="dia">Segunda-feira</th>
-                <th class="dia">Terça-feira</th>
-                <th class="dia">Quarta-feira</th>
-                <th class="dia">Quinta-feira</th>
-                <th class="dia">Sexta-feira</th>
-                <th class="dia">Sábado</th>
-                <th class="dia">Domingo</th>
-            </tr>
-            <tbody class="table-rows"></tbody>
-        </table>
-    </div>-->
+            <div id="scheduleTable"></div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="classroomTablePanel" role="tabpanel" aria-labelledby="table2-tab">
+        <div class="">
+            <div class="container">
+                <div id="classroomFilter" class="container-sm"></div>
+            </div>
+            <div id="classroomTable"></div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="metricsTablePanel" role="tabpanel" aria-labelledby="table2-tab">
+        <div class="">
+            <div class="">
+                <div id="metricsTable"></div>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <!-- Footer Section -->
 <div class="container-fluid bg-dark text-white text-center py-2 mt-5">
