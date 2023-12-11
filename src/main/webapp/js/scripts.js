@@ -156,11 +156,6 @@ csvFormSchedule.addEventListener("submit", function (event) {
  */
 csvFormClassroom.addEventListener("submit", function (event) {
     event.preventDefault();
-    console.log(importTypeDropdownClassroom.value);
-    console.log(csvUrlInputClassroom.value);
-
-
-
     if (importTypeDropdownClassroom.value === "file" && csvFileInputClassroom.files.length > 0) {
         loadAndParseCSV(csvFileInputClassroom.files[0], false)
             .then(data => {
@@ -329,114 +324,9 @@ document.addEventListener('DOMContentLoaded', function() {
     } else scheduleAlreadyTouched = true;
 
 
-    // Seleciona o elemento div existente onde queres associar os elementos de filtro
-    const filterContainer = document.getElementById('scheduleFilter');
-    filterContainer.classList.add('container-sm', 'row', 'justify-content-center', 'align-items-center', 'mb-3');
-
-    const filterRow = document.createElement('div');
-    filterRow.classList.add('container-sm', 'row', 'justify-content-center', 'align-items-center'); // Adiciona a classe container para diminuir o tamanho dos elementos
-
-    // Cria os elementos do filtro
-    const filterField = document.createElement('select');
-    filterField.id = "filter-field";
-    filterField.classList.add('form-select', 'col');
-
-    const filterType = document.createElement('select');
-    filterType.id = "filter-type";
-    filterType.classList.add('form-select', 'col');
-
-    const filterValue = document.createElement('input');
-    filterValue.classList.add('form-control', 'col');
-    filterValue.id = "filter-value";
-    filterValue.type = "text";
-    filterValue.placeholder = "Valor a filtrar";
-
-    const filterClear = document.createElement('button');
-    filterClear.classList.add('btn', 'btn-secondary', 'col-1');
-    filterClear.id = "filter-clear";
-    filterClear.textContent = "Limpar Filtro";
-
-    // Adiciona opções aos selects
-    const fields = []
-    scheduleMetadata.push(filterField);
-    scheduleMetadata.push(fields);
-
-    updateFilter(filterField,fields);
-
-    const types = ["=", "<", "<=", ">", ">=", "!=", "like"];
-    types.forEach(type => {
-        const option = document.createElement('option');
-        option.value = type;
-        option.textContent = type;
-        filterType.appendChild(option);
-    });
-
-    // Adiciona os elementos ao div da linha
-    filterRow.appendChild(filterField);
-    filterRow.appendChild(filterType);
-    filterRow.appendChild(filterValue);
-    filterRow.appendChild(filterClear);
-
-    // Adiciona a linha de filtro ao container existente
-    filterContainer.appendChild(filterRow);
 
 
-    // FUNCIONALIDADE DO FILTRO
 
-    //Define variables for input elements
-    var fieldEl = document.getElementById("filter-field");
-    var typeEl = document.getElementById("filter-type");
-    var valueEl = document.getElementById("filter-value");
-
-    //Custom filter example
-    function customFilter(data) {
-        return data.car && data.rating < 3;
-    }
-
-    //Trigger setFilter function with correct parameters
-    function updateTableByFilter() {
-
-        var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
-        var typeVal = typeEl.options[typeEl.selectedIndex].value;
-
-        console.log("Valor do filtro: " + filterVal);
-        console.log("Tipo do filtro: " + typeVal);
-
-        var filter = filterVal === "function" ? customFilter : filterVal;
-
-        if (filterVal === "function") {
-            typeEl.disabled = true;
-            valueEl.disabled = true;
-        } else {
-            typeEl.disabled = false;
-            valueEl.disabled = false;
-        }
-
-        if (filterVal) {
-            table.setFilter(filter, typeVal, valueEl.value);
-        }
-    }
-
-    //Update filters on value change
-    document.getElementById("filter-field").addEventListener("change", updateTableByFilter);
-    document.getElementById("filter-type").addEventListener("change", updateTableByFilter);
-    document.getElementById("filter-value").addEventListener("keyup", updateTableByFilter);
-
-    //Clear filters on "Clear Filters" button click
-    document.getElementById("filter-clear").addEventListener("click", function () {
-        fieldEl.value = "";
-        typeEl.value = "=";
-        valueEl.value = "";
-
-        table.clearFilter();
-    });
-
-    // Defines the waiting table
-    var table = new Tabulator("#scheduleTable", {
-        layout: "fitColumns",
-        autoColumns: true,
-        placeholder: "Pronto para receber os dados. Importe o ficheiro CSV",
-    })
 
 });
 
@@ -446,122 +336,240 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     } else classroomAlreadyTouched = true;
 
-    // Seleciona o elemento div existente onde queres associar os elementos de filtro
-    const filterContainer = document.getElementById('classroomFilter');
-    filterContainer.classList.add('container', 'row', 'justify-content-center', 'align-items-center', 'mb-3');
-
-    const filterRow = document.createElement('div');
-    filterRow.classList.add( 'container','row', 'justify-content-center', 'align-items-center'); // Adiciona a classe container para diminuir o tamanho dos elementos
-
-    // Cria os elementos do filtro
-    const filterField = document.createElement('select');
-    filterField.id = "filter-field";
-    filterField.classList.add('form-select', 'col');
-
-    const filterType = document.createElement('select');
-    filterType.id = "filter-type";
-    filterType.classList.add('form-select', 'col');
-
-    const filterValue = document.createElement('input');
-    filterValue.classList.add('form-control', 'col');
-    filterValue.id = "filter-value";
-    filterValue.type = "text";
-    filterValue.placeholder = "Valor a filtrar";
-
-    const filterClear = document.createElement('button');
-    filterClear.classList.add('btn', 'btn-secondary', 'col-1');
-    filterClear.id = "filter-clear";
-    filterClear.textContent = "Limpar Filtro";
-
-    // Adiciona opções aos selects
-    const fields = []
-    classroomMetadata.push(filterField);
-    classroomMetadata.push(fields);
-    updateFilter(filterField,fields);
-
-    const types = ["=", "<", "<=", ">", ">=", "!=", "like"];
-    types.forEach(type => {
-        const option = document.createElement('option');
-        option.value = type;
-        option.textContent = type;
-        filterType.appendChild(option);
-    });
-
-    // Adiciona os elementos ao div da linha
-    filterRow.appendChild(filterField);
-    filterRow.appendChild(filterType);
-    filterRow.appendChild(filterValue);
-    filterRow.appendChild(filterClear);
-
-    // Adiciona a linha de filtro ao container existente
-    filterContainer.appendChild(filterRow);
 
 
-    // FUNCIONALIDADE DO FILTRO
-
-    //Define variables for input elements
-    var fieldEl = document.getElementById("filter-field");
-    var typeEl = document.getElementById("filter-type");
-    var valueEl = document.getElementById("filter-value");
-
-    //Custom filter example
-    function customFilter(data) {
-        return data.car && data.rating < 3;
-    }
-
-    //Trigger setFilter function with correct parameters
-    function updateTableByFilter() {
-
-        var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
-        var typeVal = typeEl.options[typeEl.selectedIndex].value;
-
-        console.log("Valor do filtro: " + filterVal);
-        console.log("Tipo do filtro: " + typeVal);
-
-        var filter = filterVal === "function" ? customFilter : filterVal;
-
-        if (filterVal === "function") {
-            typeEl.disabled = true;
-            valueEl.disabled = true;
-        } else {
-            typeEl.disabled = false;
-            valueEl.disabled = false;
-        }
-
-        if (filterVal) {
-            table.setFilter(filter, typeVal, valueEl.value);
-        }
-    }
-
-    //Update filters on value change
-    document.getElementById("filter-field").addEventListener("change", updateTableByFilter);
-    document.getElementById("filter-field").addEventListener("change", function () {
-    });
-    document.getElementById("filter-type").addEventListener("change", updateTableByFilter);
-    document.getElementById("filter-value").addEventListener("keyup", updateTableByFilter);
-
-    //Clear filters on "Clear Filters" button click
-    document.getElementById("filter-clear").addEventListener("click", function () {
-        fieldEl.value = "";
-        typeEl.value = "=";
-        valueEl.value = "";
-
-        table.clearFilter();
-    });
-
-    // Defines the waiting table
-    var table = new Tabulator("#classroomTable", {
-        layout: "fitColumns",
-        autoColumns: true,
-        placeholder: "Pronto para receber os dados. Importe o ficheiro CSV",
-    })
 
 
 });
 
+// Seleciona o elemento div existente onde queres associar os elementos de filtro
+const filterContainerSchedule = document.getElementById('scheduleFilter');
+filterContainerSchedule.classList.add('container-sm', 'row', 'justify-content-center', 'align-items-center', 'mb-3');
+
+const filterRowSchedule = document.createElement('div');
+filterRowSchedule.classList.add('container-sm', 'row', 'justify-content-center', 'align-items-center'); // Adiciona a classe container para diminuir o tamanho dos elementos
+
+// Cria os elementos do filtro
+const filterFieldSchedule = document.createElement('select');
+filterFieldSchedule.id = "filter-field-schedule";
+filterFieldSchedule.classList.add('form-select', 'col');
+
+const filterTypeSchedule = document.createElement('select');
+filterTypeSchedule.id = "filter-type-schedule";
+filterTypeSchedule.classList.add('form-select', 'col');
+
+const filterValueSchedule = document.createElement('input');
+filterValueSchedule.classList.add('form-control', 'col');
+filterValueSchedule.id = "filter-value-schedule";
+filterValueSchedule.type = "text";
+filterValueSchedule.placeholder = "Valor a filtrar";
+
+const filterClearSchedule = document.createElement('button');
+filterClearSchedule.classList.add('btn', 'btn-secondary', 'col-1');
+filterClearSchedule.id = "filter-clear-schedule";
+filterClearSchedule.textContent = "Limpar Filtro";
+
+// Adiciona opções aos selects
+const fieldsSchedule = []
+scheduleMetadata.push(filterFieldSchedule);
+scheduleMetadata.push(fieldsSchedule);
+
+updateFilter(filterFieldSchedule,fieldsSchedule);
+
+const types = ["=", "<", "<=", ">", ">=", "!=", "like"];
+types.forEach(type => {
+    const option = document.createElement('option');
+    option.value = type;
+    option.textContent = type;
+    filterTypeSchedule.appendChild(option);
+});
+
+// Adiciona os elementos ao div da linha
+filterRowSchedule.appendChild(filterFieldSchedule);
+filterRowSchedule.appendChild(filterTypeSchedule);
+filterRowSchedule.appendChild(filterValueSchedule);
+filterRowSchedule.appendChild(filterClearSchedule);
+
+// Adiciona a linha de filtro ao container existente
+filterContainerSchedule.appendChild(filterRowSchedule);
+
+
+// Defines the waiting table
+var scheduleTable = new Tabulator("#scheduleTable", {
+    layout: "fitColumns",
+    autoColumns: true,
+    placeholder: "Pronto para receber os dados. Importe o ficheiro CSV",
+})
+
+
+// FUNCIONALIDADE DO FILTRO
+
+//Define variables for input elements
+var fieldElSchedule = document.getElementById("filter-field-schedule");
+var typeElSchedule = document.getElementById("filter-type-schedule");
+var valueElSchedule = document.getElementById("filter-value-schedule");
+
+
+//Trigger setFilter function with correct parameters
+function updateTableByFilterSchedule() {
+
+    var filterVal = fieldElSchedule.options[fieldElSchedule.selectedIndex].value;
+    var typeVal = typeElSchedule.options[typeElSchedule.selectedIndex].value;
+
+    //console.log("Valor do filtro: " + filterVal);
+    //console.log("Tipo do filtro: " + typeVal);
+
+    var filter = filterVal === "function" ? customFilter : filterVal;
+
+    if (filterVal === "function") {
+        typeElSchedule.disabled = true;
+        valueElSchedule.disabled = true;
+    } else {
+        typeElSchedule.disabled = false;
+        valueElSchedule.disabled = false;
+    }
+
+    if (filterVal) {
+        classroomTable.setFilter(filter, typeVal, valueElSchedule.value);
+    }
+}
+
+
+    //Update filters on value change
+    document.getElementById("filter-field-schedule").addEventListener("change", updateTableByFilterSchedule);
+    document.getElementById("filter-field-schedule").addEventListener("change", function () {
+    });
+    document.getElementById("filter-type-schedule").addEventListener("change", updateTableByFilterSchedule);
+    document.getElementById("filter-value-schedule").addEventListener("keyup", updateTableByFilterSchedule);
+
+    //Clear filters on "Clear Filters" button click
+    document.getElementById("filter-clear-schedule").addEventListener("click", function () {
+        fieldElSchedule.value = "";
+        typeElSchedule.value = "=";
+        valueElSchedule.value = "";
+
+        classroomTable.clearFilter();
+    });
+
+
+
+
+
+
+
+
+
+// Seleciona o elemento div existente onde queres associar os elementos de filtro
+const filterContainerClassroom = document.getElementById('classroomFilter');
+filterContainerClassroom.classList.add('container', 'row', 'justify-content-center', 'align-items-center', 'mb-3');
+
+const filterRowClassroom = document.createElement('div');
+filterRowClassroom.classList.add( 'container','row', 'justify-content-center', 'align-items-center'); // Adiciona a classe container para diminuir o tamanho dos elementos
+
+// Cria os elementos do filtro
+const filterFieldClassroom = document.createElement('select');
+filterFieldClassroom.id = "filter-field-classroom";
+filterFieldClassroom.classList.add('form-select', 'col');
+
+const filterTypeClassroom = document.createElement('select');
+filterTypeClassroom.id = "filter-type-classroom";
+filterTypeClassroom.classList.add('form-select', 'col');
+
+const filterValueClassroom = document.createElement('input');
+filterValueClassroom.classList.add('form-control', 'col');
+filterValueClassroom.id = "filter-value-classroom";
+filterValueClassroom.type = "text";
+filterValueClassroom.placeholder = "Valor a filtrar";
+
+const filterClearClassroom = document.createElement('button');
+filterClearClassroom.classList.add('btn', 'btn-secondary', 'col-1');
+filterClearClassroom.id = "filter-clear-classroom";
+filterClearClassroom.textContent = "Limpar Filtro";
+
+// Adiciona opções aos selects
+const fieldsClassroom = []
+classroomMetadata.push(filterFieldClassroom);
+classroomMetadata.push(fieldsClassroom);
+updateFilter(filterFieldClassroom,fieldsClassroom);
+
+
+types.forEach(type => {
+    const option = document.createElement('option');
+    option.value = type;
+    option.textContent = type;
+    filterTypeClassroom.appendChild(option);
+});
+
+// Adiciona os elementos ao div da linha
+filterRowClassroom.appendChild(filterFieldClassroom);
+filterRowClassroom.appendChild(filterTypeClassroom);
+filterRowClassroom.appendChild(filterValueClassroom);
+filterRowClassroom.appendChild(filterClearClassroom);
+
+// Adiciona a linha de filtro ao container existente
+filterContainerClassroom.appendChild(filterRowClassroom);
+
+// FUNCIONALIDADE DO FILTRO
+
+//Define variables for input elements
+var fieldElClassroom = document.getElementById("filter-field-classroom");
+var typeElClassroom = document.getElementById("filter-type-classroom");
+var valueElClassroom = document.getElementById("filter-value-classroom");
+
+//Custom filter example
+function customFilter(data) {
+    return data.car && data.rating < 3;
+}
+
+//Trigger setFilter function with correct parameters
+function updateTableByFilterClassroom() {
+
+    var filterVal = fieldElClassroom.options[fieldElClassroom.selectedIndex].value;
+    var typeVal = typeElClassroom.options[typeElClassroom.selectedIndex].value;
+
+    var filter = filterVal === "function" ? customFilter : filterVal;
+
+    if (filterVal === "function") {
+        typeElClassroom.disabled = true;
+        valueElClassroom.disabled = true;
+    } else {
+        typeElClassroom.disabled = false;
+        valueElClassroom.disabled = false;
+    }
+
+    if (filterVal) {
+        classroomTable.setFilter(filter, typeVal, valueElClassroom.value);
+    }
+}
+
+//Update filters on value change
+document.getElementById("filter-field-classroom").addEventListener("change", updateTableByFilterClassroom);
+document.getElementById("filter-field-classroom").addEventListener("change", function () {
+});
+document.getElementById("filter-type-classroom").addEventListener("change", updateTableByFilterClassroom);
+document.getElementById("filter-value-classroom").addEventListener("keyup", updateTableByFilterClassroom);
+
+//Clear filters on "Clear Filters" button click
+document.getElementById("filter-clear-classroom").addEventListener("click", function () {
+    fieldElClassroom.value = "";
+    typeElClassroom.value = "=";
+    valueElClassroom.value = "";
+
+    classroomTable.clearFilter();
+});
+
+// Defines the waiting table
+var classroomTable = new Tabulator("#classroomTable", {
+    layout: "fitColumns",
+    autoColumns: true,
+    placeholder: "Pronto para receber os dados. Importe o ficheiro CSV",
+})
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
     // Defines the waiting table
-    var table = new Tabulator("#metricsTable", {
+    var metricsTable = new Tabulator("#metricsTable", {
         layout: "fitColumns",
         autoColumns: true,
         placeholder: "Pronto para receber os dados. Importe o ficheiro CSV",
@@ -603,10 +611,14 @@ function updateFilter(filterField,fields) {
  * @param {Array} metadata - The metadata array containing filter field and options.
  * @param {string} type - The type of table ('schedule' or 'classroom').
  */
+
+scheduleTable = null;
+classroomTable = null;
+metricsTable = null;
 function createTabulatorTable(data,metadata,type) {
 
     if (type === "schedule") {
-        table = new Tabulator("#scheduleTable", {
+        scheduleTable = new Tabulator("#scheduleTable", {
             data: data,
             delimiter: usedDelimiter,
             columns: Object.keys(data[0]).map(key => ({
@@ -631,7 +643,7 @@ function createTabulatorTable(data,metadata,type) {
         });
         updateFilter(metadata.at(0), metadata.at(1));
     } else if (type === 'classroom') {
-        table = new Tabulator("#classroomTable", {
+        classroomTable = new Tabulator("#classroomTable", {
             data: data,
             delimiter: usedDelimiter,
             columns: Object.keys(data[0]).map(key => ({
@@ -656,7 +668,7 @@ function createTabulatorTable(data,metadata,type) {
         });
         updateFilter(metadata.at(0), metadata.at(1));
     } else {
-        table = new Tabulator("#metricsTable", {
+        metricsTable = new Tabulator("#metricsTable", {
             data: data,
             columns: [
                 {title: "Métrica", field: "metricLabel"},
